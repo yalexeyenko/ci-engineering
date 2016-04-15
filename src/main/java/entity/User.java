@@ -1,6 +1,5 @@
 package entity;
 
-import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,7 +7,8 @@ public class User extends BaseEntity {
     private String firstName;
     private String lastName;
     private String email;
-    private FileInputStream photo;
+    private String password;
+    private Image image;
     private Role role;
     private String degree;
     private List<TechSkill> techSkills;
@@ -49,15 +49,15 @@ public class User extends BaseEntity {
         this.email = email;
     }
 
-    public FileInputStream getPhoto() {
-        return photo;
+    public Image getImage() {
+        return image;
     }
 
-    public void setPhoto(FileInputStream photo) {
-        if (photo == null) {
-            throw new NullPointerException("Attempt to set null to photo");
+    public void setImage(Image image) {
+        if (image == null) {
+            throw new NullPointerException("Attempt to set null to image");
         }
-        this.photo = photo;
+        this.image = image;
     }
 
     public Role getRole() {
@@ -104,7 +104,15 @@ public class User extends BaseEntity {
         this.techSkills.clear();
     }
 
-    private enum Role {
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public enum Role {
         admin,
         manager,
         senior,
