@@ -9,7 +9,7 @@ public class ActionFactory {
     public ActionFactory() {
         this.actions = new HashMap<>();
 
-        actions.put("GET/s", new ShowPageAction("signInUp"));
+        actions.put("GET/", new ShowPageAction("welcome"));
         actions.put("POST/signIn", new SignInAction());
         actions.put("POST/signUp", new SignUpAction());
     }
