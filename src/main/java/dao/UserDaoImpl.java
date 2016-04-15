@@ -9,9 +9,11 @@ import java.util.List;
 
 public class UserDaoImpl implements UserDao{
     private static final String FIND_USER_BY_ID = "SELECT FROM user WHERE id = ?";
-    private static final String INSERT_USER = "INSERT INTO user (firstName, lastName, email, password, degree, role) " +
-            "values (?, ?, ?, ?, ?, ?)";
+    private static final String INSERT_USER = "INSERT INTO user (firstName, lastName, email, password) " +
+            "values (?, ?, ?, ?)";
     private static final String UPDATE_USER = "UPDATE user SET firstName = ?, lastName = ?, email = ?, password = ?, " +
+            "degree = ?, imageId = ? WHERE id = ?";
+    private static final String UPDATE_USER_FULL = "UPDATE user SET firstName = ?, lastName = ?, email = ?, password = ?, " +
             "degree = ?, role = ?, imageId = ? WHERE id = ?";
     private static final String DELETE_USER_BY_ID = "DELETE FROM user WHERE id = ?";
     private static final String FIND_ALL_USERS = "SELECT * FROM user";
@@ -61,8 +63,6 @@ public class UserDaoImpl implements UserDao{
             preparedStatement.setString(2, user.getLastName());
             preparedStatement.setString(3, user.getEmail());
             preparedStatement.setString(4, user.getPassword());
-            preparedStatement.setString(5, user.getDegree());
-            preparedStatement.setString(6, user.getRole().name());
             ResultSet resultSet = preparedStatement.executeQuery();
             resultSet.next();
             user.setId(resultSet.getInt("id"));
@@ -90,9 +90,8 @@ public class UserDaoImpl implements UserDao{
             preparedStatement.setString(3, user.getEmail());
             preparedStatement.setString(4, user.getPassword());
             preparedStatement.setString(5, user.getDegree());
-            preparedStatement.setString(6, user.getRole().name());
-            preparedStatement.setInt(7, user.getImage().getId());
-            preparedStatement.setInt(8, user.getId());
+            preparedStatement.setInt(6, user.getImage().getId());
+            preparedStatement.setInt(7, user.getId());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new DaoException("SQL UPDATE_USER error.", e);
@@ -159,5 +158,32 @@ public class UserDaoImpl implements UserDao{
             }
         }
         return users;
+    }
+
+    @Override
+    public void updateUserFull(User user) throws DaoException {
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = connection.prepareStatement(UPDATE_USER_FULL);
+            preparedStatement.setString(1, user.getFirstName());
+            preparedStatement.setString(2, user.getLastName());
+            preparedStatement.setString(3, user.getEmail());
+            preparedStatement.setString(4, user.getPassword());
+            preparedStatement.setString(5, user.getDegree());
+            preparedStatement.setString(6, user.getRole().name());
+            preparedStatement.setInt(7, user.getImage().getId());
+            preparedStatement.setInt(8, user.getId());
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new DaoException("SQL UPDATE_USER error.", e);
+        } finally {
+            if (preparedStatement != null) {
+                try {
+                    preparedStatement.close();
+                } catch (SQLException e) {
+                    throw new DaoException("Failed to close PreparedStatement", e);
+                }
+            }
+        }
     }
 }
