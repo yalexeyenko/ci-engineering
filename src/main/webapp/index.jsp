@@ -5,6 +5,6 @@
     <title>Title</title>
 </head>
 <body>
-    <c:redirect url="/do/"/>
+    <c:redirect url="/do/welcome"/>
 </body>
 </html>
