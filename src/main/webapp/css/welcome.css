@@ -1,85 +1,84 @@
+* {
+	margin: 0;
+	padding: 0;
+}
+html {
+	height: 100%;
+}
+article, aside, details, figcaption, figure, footer, header, hgroup, main, nav, section, summary {
+	display: block;
+}
+body {
+	font: 12px/18px Arial, sans-serif;
+	height: 100%;
+}
 .wrapper {
-	margin: 60px auto;
-	max-width: 350px;
+	width: 100%;
+	min-width: 1000px;
+	min-height: 100%;
+	height: auto !important;
+	height: 100%;
 }
 
-.tab-content > div:first-child {
-  display: none;
+
+/* Header
+-----------------------------------------------------------------------------*/
+.header {
+	height: 120px;
+	background: #FFE680;
 }
 
-.wrapper #logo img {
+#sign_in_form {
+	margin-right: 20px;
+	margin-top: 10px;
+	display: inline-block;
+	float: right;
+}
+
+#sign_in_form form {
+	text-align: right;
+}
+
+#sign_in_form form input {
+	margin-bottom: 5px;
+}
+
+/* Middle
+-----------------------------------------------------------------------------*/
+.content {
+	padding: 0 0 100px;
+}
+
+#sign_up_form {
+	max-width: 300px;
 	display: block;
-	margin: 0px auto 10px;
+	margin: 50px auto;
 }
 
-h4 {
-	text-align: center;
-	margin: 0 0 5px;
-	font-size: 18px;
+#sign_up_form form {
+	text-align: center
 }
 
-.form img {
-	display: block;
-	margin: 0px auto 15px;
+#sign_up_form h3 {
+	padding-bottom: 5px;
+	text-align: center
 }
 
-.tab-group {
-  list-style: none;
-  padding: 0;
-  margin: 0 0 5px 0;
+#sign_up_form form input {
+	margin: 0px 0 5px 0;
+
 }
 
-.tab-group {
-	text-align: center;
+.signError {
+	color: red;
 }
 
-.tab-group li {
-	display: inline;
+/* Footer
+-----------------------------------------------------------------------------*/
+.footer {
+	margin: -100px auto 0;
+	min-width: 1000px;
+	height: 100px;
+	background: #BFF08E;
+	position: relative;
 }
-
-.tab-group li a {
-  text-decoration: none;
-  padding: 5px;
-  text-align: center;
-  color: black;
-}
-
-.tab-group .active a {	
-	text-decoration: underline;
-	color: #09571F;
-}
-
-.tab-group li a:hover {
-	text-decoration: underline;
-	color: #09571F;
-}
-
-input, textarea {
-	margin: 0 auto;
-  font-size: 14px;
-  display: block;
-} 
-
-.field-wrap {
-  margin-bottom: 5px;
-}
-
-.button-block {
-  display: block;
-margin: 0 auto;
-width: 50%;
-}
-
-.forgot {
-	color: #000000;;
-	text-align: center;
-	font-size: 12px;
-}
-
-
-
-
-
-
-
-
