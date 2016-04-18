@@ -10,7 +10,7 @@ public class ClientDaoImpl implements ClientDao {
     private static final String UPDATE_CLIENT = "UPDATE client SET country = ?, city = ?, address = ?, telephone = ?, " +
             "email = ?, bankAccountNumber = ?";
 
-    Connection connection;
+    private final Connection connection;
 
     public ClientDaoImpl(Connection connection) {
         this.connection = connection;
