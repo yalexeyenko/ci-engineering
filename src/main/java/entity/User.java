@@ -113,10 +113,10 @@ public class User extends BaseEntity {
     }
 
     public enum Role {
-        admin,
-        manager,
-        senior,
-        engineer
+        ADMIN,
+        MANAGER,
+        SENIOR,
+        ENGINEER
     }
 
     @Override
