@@ -19,6 +19,8 @@
         <junit.version>4.12</junit.version>
         <joda-time.version>2.9.3</joda-time.version>
         <tomcat-dbcp.version>9.0.0.M4</tomcat-dbcp.version>
+        <sl4j.version>1.7.19</sl4j.version>
+        <logback.version>1.1.6</logback.version>
     </properties>
 
     <dependencies>
@@ -61,6 +63,17 @@
             <groupId>org.apache.tomcat</groupId>
             <artifactId>tomcat-dbcp</artifactId>
             <version>${tomcat-dbcp.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${sl4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${logback.version}</version>
         </dependency>
     </dependencies>
 </project>
