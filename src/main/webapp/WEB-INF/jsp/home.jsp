@@ -11,20 +11,23 @@
 
 <body>
 <div class="wrapper">
-    <div class="header">
+
+    <header class="header">
         <h3>
             Welcome, ${user.firstName}!
         </h3>
-        <a href="${pageContext.request.contextPath}/do/signOut">Sign out</a>
-    </div>
+        <a href="${pageContext.request.contextPath}/do/signOut">log out</a>
+    </header><!-- .header-->
 
-    <div class="content">
+    <main class="content">
 
-    </div>
-    <div class="footer">
+    </main><!-- .content -->
 
-    </div>
-</div>
+</div><!-- .wrapper -->
+
+<footer class="footer">
+
+</footer><!-- .footer -->
 
 </body>
 </html>
