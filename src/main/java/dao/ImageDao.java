@@ -15,7 +15,7 @@ public class ImageDao implements Dao<Image> {
     private static final String UPDATE_IMAGE = "UPDATE image SET imageFile = ? WHERE id = ?";
     private static final String FIND_ALL_IMAGES = "SELECT * FROM image";
 
-    Connection connection;
+    private final Connection connection;
 
     public ImageDao(Connection connection) {
         this.connection = connection;
