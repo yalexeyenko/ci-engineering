@@ -14,7 +14,7 @@ public class TechSkillDao implements Dao<TechSkill> {
     private static final String DELETE_TECHSKILL_BY_ID = "DELETE FROM techskill WHERE id = ?";
     private static final String FIND_ALL_TECHSKILLS = "SELECT * FROM techskill";
 
-    Connection connection;
+    private final Connection connection;
 
     public TechSkillDao(Connection connection) {
         this.connection = connection;
