@@ -9,9 +9,11 @@ public class ActionFactory {
     public ActionFactory() {
         this.actions = new HashMap<>();
 
-        actions.put("GET/", new ShowPageAction("welcome"));
+        actions.put("GET/welcome", new ShowPageAction("welcome"));
+        actions.put("GET/home", new ShowPageAction("home"));
         actions.put("POST/signIn", new SignInAction());
         actions.put("POST/signUp", new SignUpAction());
+        actions.put("GET/signOut", new SignOutAction());
     }
 
     public Action getAction(String actionName) {
