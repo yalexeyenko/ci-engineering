@@ -16,8 +16,8 @@ public class SignInAction implements Action {
 
     @Override
     public ActionResult execute(HttpServletRequest req, HttpServletResponse resp) {
-        String email = req.getParameter("email");
-        String password = req.getParameter("password");
+        String email = req.getParameter("email_in");
+        String password = req.getParameter("password_in");
 
         User user = new User();
         user.setEmail(email);
