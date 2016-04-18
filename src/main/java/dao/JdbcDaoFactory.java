@@ -1,16 +1,16 @@
 package dao;
 
-import connection.DBConnection;
+import connection.DBConnectionPool;
 import entity.BaseEntity;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 
 public class JdbcDaoFactory extends DaoFactory {
-    Connection connection;
+    private final Connection connection;
 
     public JdbcDaoFactory() {
-        connection = DBConnection.getConnection();
+        connection = DBConnectionPool.getConnection();
     }
 
     @Override
@@ -33,8 +33,35 @@ public class JdbcDaoFactory extends DaoFactory {
             try {
                 connection.close();
             } catch (SQLException e) {
-                throw new DaoException("Cannot close connection.", e);
+                throw new DaoException("Failed to close factory", e);
             }
+        }
+    }
+
+    @Override
+    public void startTransaction() throws DaoException {
+        try {
+            connection.setAutoCommit(false);
+        } catch (SQLException e) {
+            throw new DaoException("Failed to setAutoCommit to false", e);
+        }
+    }
+
+    @Override
+    public void finishTransaction() throws DaoException {
+        try {
+            connection.commit();
+        } catch (SQLException e) {
+            throw new DaoException("Failed to commit transaction", e);
+        }
+    }
+
+    @Override
+    public void rollback() throws DaoException {
+        try {
+            connection.rollback();
+        } catch (SQLException e) {
+            throw new DaoException("Failed to rollback", e);
         }
     }
 }
