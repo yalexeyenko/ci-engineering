@@ -50,7 +50,7 @@ public class SignUpAction implements Action {
             return home;
         } else {
             log.debug("user == null. home.getView(): {}", home.getView());
-            req.setAttribute("singUpError", "Email already exists.");
+            req.setAttribute("signUpError", "email already exists");
             return singUpAgain;
         }
     }
