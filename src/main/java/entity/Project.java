@@ -87,7 +87,7 @@ public class Project extends NamedEntity {
 
     public void setSenior(User senior) {
         if (senior == null) {
-            throw new NullPointerException("Attempt to set null to senior");
+            throw new NullPointerException("Attempt to set null to SENIOR");
         }
         this.senior = senior;
     }
