@@ -4,10 +4,12 @@ import dao.*;
 import entity.Image;
 import entity.TechSkill;
 import entity.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.util.List;
+public class UserService implements AutoCloseable {
+    private static final Logger log = LoggerFactory.getLogger(UserService.class);
 
-public class UserService {
     private DaoFactory jdbcDaoFactory;
     private UserDao userDao;
     private Dao<Image> imageDao;
@@ -20,15 +22,29 @@ public class UserService {
         techSkillDao = jdbcDaoFactory.createDao(TechSkill.class);
     }
 
-    public User createUser(User user) throws DaoException {
-        return userDao.insert(user);
+    public User createUser(User user) {
+        User userCreated;
+        log.debug("createUser()...");
+        log.debug("user.getFirstName(): {}", user.getFirstName());
+        log.debug("user.getLastName(): {}", user.getLastName());
+        log.debug("user.getEmail(): {}", user.getEmail());
+        log.debug("user.getPassword(): {}", user.getPassword());
+        try {
+            userCreated = userDao.insert(user);
+            log.debug("userCreated == null: {}", userCreated == null);
+            return userCreated;
+        } catch (DaoException e) {
+            log.debug("Caught null");
+            return null;
+        }
     }
 
-    public void updateUser(User user) throws DaoException {
-        Image imageWithId = imageDao.insert(user.getImage());
-        user.setImage(imageWithId);
-
-        List<TechSkill> techSkills = user.
+    public User findUserByCredentials(String email, String password) {
+        try {
+            return userDao.findUserByEmailAndPassword(email, password);
+        } catch (DaoException e) {
+            return null;
+        }
     }
 
     public void updateUserFull(User user) throws DaoException {
@@ -52,5 +68,13 @@ public class UserService {
 
     public boolean removeImage(User user) throws DaoException {
         return imageDao.delete(user.getImage().getId());
+    }
+
+
+    @Override
+    public void close() throws Exception {
+        if (jdbcDaoFactory != null) {
+            jdbcDaoFactory.close();
+        }
     }
 }
