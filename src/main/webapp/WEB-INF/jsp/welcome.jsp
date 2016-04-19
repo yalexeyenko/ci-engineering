@@ -47,6 +47,7 @@
                 <div class="field-wrap">
                     <input type="text" name="email"  value="${param.email}" placeholder="Email address*" required/>
                     <span class="violation">${emailViolation}</span>
+                    <span class="violation">${signUpError}</span>
                 </div>
                 <div class="field-wrap">
                     <input type="password" name="password" placeholder="Password*" id="password" required/>
@@ -54,8 +55,7 @@
                 </div>
                 <div class="field-wrap">
                     <input type="password" name="repeatPassword" placeholder="Repeat password*" id="confirm_password" required/>
-                    <span class="violation">${passwordViolation}</span>
-                    <span class="violation">${signUpError}</span>
+                    <span class="violation">${repeatPasswordViolation}</span>
                 </div>
                 <button class="create" type="submit" class="button-block"/>Create account</button>
             </form>
