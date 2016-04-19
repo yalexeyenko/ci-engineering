@@ -15,6 +15,12 @@ public class SignOutAction implements Action {
     public ActionResult execute(HttpServletRequest req, HttpServletResponse resp) {
         log.debug("SignOutAction execute...");
         req.getSession().invalidate();
+
+        resp.setHeader("Pragma","no-cache");
+        resp.setHeader("Cache-Control","no-store");
+        resp.setHeader("Expires","0");
+        resp.setDateHeader("Expires",-1);
+
         return welcome;
     }
 }
