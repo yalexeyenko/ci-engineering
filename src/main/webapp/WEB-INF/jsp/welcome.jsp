@@ -16,7 +16,7 @@
 
     <header class="header">
         <div id="sign_in_form">
-            <form action="${pageContext.request.contextPath}/do/signIn" method="post" name="sign_in" onSubmit="return validate_form(this);">
+            <form action="${pageContext.request.contextPath}/do/signIn" method="post" name="sign_in">
                 <div class="field-wrap">
                     <span>Email: </span>
                     <input type="text" name="email_in" value="${param.email_in}" placeholder="Enter your email" required/>
