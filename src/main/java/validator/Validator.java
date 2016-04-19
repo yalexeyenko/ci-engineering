@@ -28,26 +28,34 @@ public class Validator {
         log.debug("validate...");
 
         Set<Violation> violations = new HashSet<>();
-            for (Map.Entry<String, String[]> entry : parameterMap.entrySet()) {
+        for (Map.Entry<String, String[]> entry : parameterMap.entrySet()) {
 
-                String value = entry.getValue()[0];
-                String key = entry.getKey();
-                String regex = regexMap.get(key);
+            String value = entry.getValue()[0];
+            String key = entry.getKey();
+            String regex = regexMap.get(key);
 
-                log.debug("key: {}", key);
-                log.debug("value: {}", value);
-                log.debug("regex: {}", regex);
+            log.debug("repeatPassword.equals(key): {}", "repeatPassword".equals(key));
 
-                log.debug("value.matches(regex): {}", value.matches(regex));
+            if (key.equals("repeatPassword")) {
+                log.debug("password: {}", parameterMap.get("password")[0]);
+                log.debug("repeatPassword: {}", value);
 
-                if (!value.matches(regex)) {
+                if (!(value.equals(parameterMap.get("password")[0]))) {
                     Violation violation = new Violation();
                     violation.setName(key + "Violation");
-                    violation.setViolation("Please specify a valid " + key);
+                    violation.setViolation("Password mismatch");
                     violations.add(violation);
                 }
+                continue;
             }
+
+            if (!value.matches(regex)) {
+                Violation violation = new Violation();
+                violation.setName(key + "Violation");
+                violation.setViolation("Please specify a valid " + key);
+                violations.add(violation);
+            }
+        }
         return violations;
     }
-
 }
