@@ -1,0 +1,9 @@
+/* Footer
+-----------------------------------------------------------------------------*/
+.footer {
+    margin: -100px auto 0;
+    min-width: 1000px;
+    height: 100px;
+    background: #BFF08E;
+    position: relative;
+}

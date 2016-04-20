@@ -1,0 +1,22 @@
+/* Header
+-----------------------------------------------------------------------------*/
+.header {
+    height: 120px;
+    background: #FFE680;
+}
+
+#sign_in_form {
+    margin-right: 20px;
+    margin-top: 10px;
+    display: inline-block;
+    float: right;
+}
+
+#sign_in_form form {
+    text-align: right;
+}
+
+#sign_in_form form input {
+    padding: 2px;
+    margin-bottom: 5px;
+}
