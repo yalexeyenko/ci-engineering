@@ -36,24 +36,29 @@
             <form action="${pageContext.request.contextPath}/do/signUp" method="post" name="sign_up" onSubmit="return validate_form(this);">
                 <div class="top-row">
                     <div class="field-wrap">
+                        <span>First name: </span>
                         <input type="text" name="firstName" value="${param.firstName}" placeholder="First name*" required/>
                         <span class="violation">${firstNameViolation}</span>
                     </div>
                     <div class="field-wrap">
+                        <span>Last name: </span>
                         <input type="text" name="lastName"  value="${param.lastName}" placeholder="Last name*" required/>
                         <span class="violation">${lastNameViolation}</span>
                     </div>
                 </div>
                 <div class="field-wrap">
-                    <input type="text" name="email"  value="${param.email}" placeholder="Email address*" required/>
+                    <span>Email: </span>
+                    <input type="text" name="email"  value="${param.email}" placeholder="Enter your email*" required/>
                     <span class="violation">${emailViolation}</span>
                     <span class="violation">${signUpError}</span>
                 </div>
                 <div class="field-wrap">
+                    <span>Password: </span>
                     <input type="password" name="password" placeholder="Password*" id="password" required/>
                     <span class="violation">${passwordViolation}</span>
                 </div>
                 <div class="field-wrap">
+                    <span>Repeat password: </span>
                     <input type="password" name="repeatPassword" placeholder="Repeat password*" id="confirm_password" required/>
                     <span class="violation">${repeatPasswordViolation}</span>
                 </div>
