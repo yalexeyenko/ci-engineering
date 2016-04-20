@@ -1,11 +1,15 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
+<c:url var="sign_out_action" value="/do/signOut"/>
+<c:url var="welcome_css" value="${pageContext.request.contextPath}/css/welcome.css"/>
+
 <html>
 <head>
     <meta charset="UTF-8">
     <title>Home</title>
-    <link href='http://fonts.googleapis.com/css?family=Titillium+Web:400,300,600' rel='stylesheet' type='text/css'>
 
-    <link rel="stylesheet" href="../css/welcome.css">
+    <link rel="stylesheet" href="${welcome_css}">
 
 </head>
 
@@ -13,10 +17,8 @@
 <div class="wrapper">
 
     <header class="header">
-        <h3>
-            Welcome, ${user.firstName}!
-        </h3>
-        <a href="${pageContext.request.contextPath}/do/signOut">log out</a>
+        <h3>${user.firstName} ${user.lastName}</h3>
+        <a href="${sign_out_action}">Sign out</a>
     </header><!-- .header-->
 
     <main class="content">
