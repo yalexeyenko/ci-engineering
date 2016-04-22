@@ -2,3 +2,9 @@
     height: 120px;
     background: #FFE680;
 }
+
+#sign-out {
+    margin: -60px 10px 0 0;
+    display: block;
+    float: right;
+}
