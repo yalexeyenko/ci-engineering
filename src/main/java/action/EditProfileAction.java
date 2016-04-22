@@ -23,7 +23,7 @@ public class EditProfileAction implements Action {
         formValidator = new Validator();
     }
 
-    private ActionResult home = new ActionResult("home", true);
+    private ActionResult mainPage = new ActionResult("main-page", true);
     private ActionResult editProfileAgain = new ActionResult("edit-profile");
 
     @Override
@@ -86,7 +86,7 @@ public class EditProfileAction implements Action {
             return editProfileAgain;
         }
         req.getSession().setAttribute("user", currentUser);
-        return home;
+        return mainPage;
 
     }
 }
