@@ -17,7 +17,7 @@ public class SignUpAction implements Action {
 
     private Validator formValidator;
 
-    private ActionResult home = new ActionResult("home", true);
+    private ActionResult userMain = new ActionResult("user-main", true);
     private ActionResult singUpAgain = new ActionResult("welcome");
 
     public SignUpAction() {
@@ -63,12 +63,12 @@ public class SignUpAction implements Action {
         }
 
         if (user != null) {
-            log.debug("user != null. home.getView(): {}", home.getView());
+            log.debug("user != null. userMain.getView(): {}", userMain.getView());
             req.getSession().setAttribute("user", user);
             log.debug("session user.getFirstName(): {}", user.getFirstName());
-            return home;
+            return userMain;
         } else {
-            log.debug("user == null. home.getView(): {}", home.getView());
+            log.debug("user == null. userMain.getView(): {}", userMain.getView());
             req.setAttribute("signUpError", "Email already registered");
             return singUpAgain;
         }
