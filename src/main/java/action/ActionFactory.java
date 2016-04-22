@@ -10,7 +10,11 @@ public class ActionFactory {
         this.actions = new HashMap<>();
 
         actions.put("GET/welcome", new ShowPageAction("welcome"));
-        actions.put("GET/home", new ShowPageAction("home"));
+        actions.put("GET/user-main", new ShowPageAction("user-main"));
+        actions.put("GET/admin-main", new ShowPageAction("admin-main"));
+        actions.put("GET/manager-main", new ShowPageAction("manager-main"));
+        actions.put("GET/engineer-main", new ShowPageAction("engineer-main"));
+        actions.put("GET/senior-main", new ShowPageAction("senior-main"));
         actions.put("POST/signIn", new SignInAction());
         actions.put("POST/signUp", new SignUpAction());
         actions.put("GET/signOut", new SignOutAction());
