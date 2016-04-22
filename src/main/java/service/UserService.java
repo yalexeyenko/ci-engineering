@@ -47,8 +47,8 @@ public class UserService implements AutoCloseable {
         }
     }
 
-    public void updateUserFull(User user) throws DaoException {
-        userDao.updateUserFull(user);
+    public void updateUser(User user) throws DaoException {
+        userDao.update(user);
     }
 
     public User addImage(Image image, User user) throws DaoException {
