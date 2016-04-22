@@ -34,9 +34,6 @@ public class SignUpAction implements Action {
 
 
         Map<String, String[]> parameterMap = req.getParameterMap();
-
-
-
         Set<Violation> violations = formValidator.validate(parameterMap);
         log.debug("violations.size(): {}", violations.size());
         if (!violations.isEmpty()) {
