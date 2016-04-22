@@ -9,18 +9,16 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserDaoImpl implements UserDao{
+public class UserDaoImpl implements UserDao {
     private static final Logger log = LoggerFactory.getLogger(UserDaoImpl.class);
 
     private static final String FIND_USER_BY_ID = "SELECT FROM user WHERE id = ?";
     private static final String INSERT_USER = "INSERT INTO user (firstName, lastName, email, password) VALUES (?, ?, ?, ?)";
     private static final String UPDATE_USER = "UPDATE user SET firstName = ?, lastName = ?, email = ?, password = ?, " +
-            "degree = ?, imageId = ? WHERE id = ?";
-    private static final String UPDATE_USER_FULL = "UPDATE user SET firstName = ?, lastName = ?, email = ?, password = ?, " +
-            "degree = ?, role = ?, imageId = ? WHERE id = ?";
+            "degree = ?, role = ? WHERE id = ?";
     private static final String DELETE_USER_BY_ID = "DELETE FROM user WHERE id = ?";
     private static final String FIND_ALL_USERS = "SELECT * FROM user";
-    private static final String FIND_USER_BY_EMAIL_AND_PASSWORD = "SELECT id, firstName, lastName, email, password FROM user WHERE email= ? AND password= ?";
+    private static final String FIND_USER_BY_EMAIL_AND_PASSWORD = "SELECT id, firstName, lastName, email, password, role, degree FROM user WHERE email= ? AND password= ?";
 
     private final Connection connection;
 
@@ -107,11 +105,15 @@ public class UserDaoImpl implements UserDao{
             preparedStatement.setString(3, user.getEmail());
             preparedStatement.setString(4, user.getPassword());
             preparedStatement.setString(5, user.getDegree());
-            preparedStatement.setInt(6, user.getImage().getId());
+            if (user.getRole() == null) {
+                preparedStatement.setString(6, null);
+            } else {
+                preparedStatement.setString(6, user.getRole().name());
+            }
             preparedStatement.setInt(7, user.getId());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            throw new DaoException("SQL UPDATE_USER error.", e);
+            throw new DaoException("SQL UPDATE error.", e);
         } finally {
             if (preparedStatement != null) {
                 try {
@@ -178,33 +180,6 @@ public class UserDaoImpl implements UserDao{
     }
 
     @Override
-    public void updateUserFull(User user) throws DaoException {
-        PreparedStatement preparedStatement = null;
-        try {
-            preparedStatement = connection.prepareStatement(UPDATE_USER_FULL);
-            preparedStatement.setString(1, user.getFirstName());
-            preparedStatement.setString(2, user.getLastName());
-            preparedStatement.setString(3, user.getEmail());
-            preparedStatement.setString(4, user.getPassword());
-            preparedStatement.setString(5, user.getDegree());
-            preparedStatement.setString(6, user.getRole().name());
-            preparedStatement.setInt(7, user.getImage().getId());
-            preparedStatement.setInt(8, user.getId());
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            throw new DaoException("SQL UPDATE_USER error.", e);
-        } finally {
-            if (preparedStatement != null) {
-                try {
-                    preparedStatement.close();
-                } catch (SQLException e) {
-                    throw new DaoException("Failed to close PreparedStatement", e);
-                }
-            }
-        }
-    }
-
-    @Override
     public User findUserByEmailAndPassword(String email, String password) throws DaoException {
         log.debug("findUserByEmailAndPassword()...");
         log.debug("email: {}", email);
@@ -227,6 +202,12 @@ public class UserDaoImpl implements UserDao{
             user.setLastName(resultSet.getString(3));
             user.setEmail(resultSet.getString(4));
             user.setPassword(resultSet.getString(5));
+            if (resultSet.getString(7) != null) {
+                user.setDegree(resultSet.getString((7)));
+            }
+            if (resultSet.getString(6) != null) {
+                user.setRole(User.Role.valueOf(resultSet.getString((6))));
+            }
             log.debug("user == null: {}", user == null);
             return user;
         } catch (SQLException e) {
