@@ -20,6 +20,7 @@ public class ActionFactory {
         actions.put("GET/signOut", new SignOutAction());
         actions.put("POST/editProfile", new EditProfileAction());
         actions.put("GET/edit-profile", new ShowPageAction("edit-profile"));
+        actions.put("GET/main-page", new ChooseMainPageAction());
     }
 
     public Action getAction(String actionName) {
