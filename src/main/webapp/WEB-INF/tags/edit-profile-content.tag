@@ -41,7 +41,7 @@
                 <span class="violation">${degreeViolation}</span>
             </c:if>
         </div>
-        <c:if test="${user.role eq 'ADMIN'}"><%-- maybe should use == --%>
+        <c:if test="${user.role eq 'ADMIN'}">
             <div class="field-wrap">
                 <span>Role: </span>
                 <select name="role" size="1">

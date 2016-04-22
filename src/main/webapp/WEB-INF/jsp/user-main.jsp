@@ -6,8 +6,8 @@
 <t:head/>
 <body>
 <div class="wrapper">
-    <t:home-header/>
-    <t:homecontent/>
+    <t:user-header/>
+    <t:user-content/>
 </div><!-- .wrapper -->
 <t:footer/>
 </body>

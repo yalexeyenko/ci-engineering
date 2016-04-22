@@ -6,7 +6,7 @@
 <t:head/>
 <body>
 <div class="wrapper">
-    <t:home-header/>
+    <t:user-header/>
     <t:edit-profile-content/>
 </div><!-- .wrapper -->
 <t:footer/>

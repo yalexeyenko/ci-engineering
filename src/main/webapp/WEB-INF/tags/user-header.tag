@@ -3,7 +3,7 @@
 <c:url var="edit_profile_action" value="/do/edit-profile"/>
 <c:url var="css_path" value="${pageContext.request.contextPath}/css"/>
 
-<link rel="stylesheet" href="${css_path}/home-header.css">
+<link rel="stylesheet" href="${css_path}/user-header.css">
 
 <header class="header">
     <h3>${user.firstName} ${user.lastName}</h3>
