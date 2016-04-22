@@ -11,7 +11,11 @@ import javax.servlet.http.HttpServletResponse;
 public class SignInAction implements Action {
     private static final Logger log = LoggerFactory.getLogger(SignInAction.class);
 
-    private ActionResult home = new ActionResult("home", true);
+    private ActionResult userMain = new ActionResult("user-main", true);
+    private ActionResult adminMain = new ActionResult("admin-main", true);
+    private ActionResult managerMain = new ActionResult("manager-main", true);
+    private ActionResult seniorMain = new ActionResult("senior-main", true);
+    private ActionResult engineerMain = new ActionResult("engineer-main", true);
     private ActionResult loginAgain = new ActionResult("welcome");
 
     @Override
@@ -34,7 +38,23 @@ public class SignInAction implements Action {
 
         if (user != null) {
             req.getSession().setAttribute("user", user);
-            return home;
+
+            if (user.getRole() != null) {
+                switch (user.getRole().name()) {
+                    case "ADMIN":
+                        return adminMain;
+                    case "ENGINEER":
+                        return engineerMain;
+                    case "MANAGER":
+                        return managerMain;
+                    case "SENIOR":
+                        return seniorMain;
+                    default:
+                        return userMain;
+                }
+            } else {
+                return userMain;
+            }
         } else {
             req.setAttribute("signInError", "Email or password is wrong");
             return loginAgain;
