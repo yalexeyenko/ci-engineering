@@ -16,8 +16,11 @@ public class Validator {
     static {
         regexMap.put("firstName", "[A-Za-z0-9]{3,20}$");
         regexMap.put("lastName", "[A-Za-z0-9]{3,20}$");
+        regexMap.put("degree", "[A-Za-z 0-9]{3,60}$");
+        regexMap.put("role", "[A-Za-z]{3,20}$");
         regexMap.put("email", "^([\\w-]+(?:\\.[\\w-]+)*)@((?:[\\w-]+\\.)*\\w[\\w-]{0,66})\\.([a-z]{2,6}(?:\\.[a-z]{2})?)$");
         regexMap.put("password", "^[A-Za-z0-9!@#$%^&*()_]{6,20}$");
+        regexMap.put("current_password", "^[A-Za-z0-9!@#$%^&*()_]{6,20}$");
         regexMap.put("repeatPassword", "^[A-Za-z0-9!@#$%^&*()_]{6,20}$");
     }
 
@@ -34,7 +37,11 @@ public class Validator {
             String key = entry.getKey();
             String regex = regexMap.get(key);
 
-            log.debug("repeatPassword.equals(key): {}", "repeatPassword".equals(key));
+            log.debug("key: {}", key);
+            log.debug("value: {}", value);
+            log.debug("regex: {}", regex);
+
+//            log.debug("repeatPassword.equals(key): {}", "repeatPassword".equals(key));
 
             if (key.equals("repeatPassword")) {
                 log.debug("password: {}", parameterMap.get("password")[0]);
