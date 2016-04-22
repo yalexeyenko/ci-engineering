@@ -14,6 +14,8 @@ public class ActionFactory {
         actions.put("POST/signIn", new SignInAction());
         actions.put("POST/signUp", new SignUpAction());
         actions.put("GET/signOut", new SignOutAction());
+        actions.put("POST/editProfile", new EditProfileAction());
+        actions.put("GET/edit-profile", new ShowPageAction("edit-profile"));
     }
 
     public Action getAction(String actionName) {
