@@ -1,7 +1,6 @@
 package entity;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class User extends BaseEntity {
     private String firstName;
@@ -12,6 +11,7 @@ public class User extends BaseEntity {
     private Role role;
     private String degree;
     private List<TechSkill> techSkills;
+    private List<Role> roleValues;
 
     public User() {
     }
@@ -110,6 +110,10 @@ public class User extends BaseEntity {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public List<Role> getRoleValues() {
+        return Arrays.asList(Role.values());
     }
 
     public enum Role {
