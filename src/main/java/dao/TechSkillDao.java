@@ -135,4 +135,9 @@ public class TechSkillDao implements Dao<TechSkill> {
         }
         return techSkills;
     }
+
+    @Override
+    public List<TechSkill> findAll(int start, int count) throws DaoException {
+        return null;
+    }
 }
