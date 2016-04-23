@@ -12,13 +12,14 @@ import java.util.List;
 public class UserDaoImpl implements UserDao {
     private static final Logger log = LoggerFactory.getLogger(UserDaoImpl.class);
 
-    private static final String FIND_USER_BY_ID = "SELECT FROM user WHERE id = ?";
-    private static final String INSERT_USER = "INSERT INTO user (firstName, lastName, email, password) VALUES (?, ?, ?, ?)";
-    private static final String UPDATE_USER = "UPDATE user SET firstName = ?, lastName = ?, email = ?, password = ?, " +
+    private static final String FIND_USER_BY_ID = "SELECT FROM staff WHERE id = ?";
+    private static final String INSERT_USER = "INSERT INTO staff (firstName, lastName, email, password) VALUES (?, ?, ?, ?)";
+    private static final String UPDATE_USER = "UPDATE staff SET firstName = ?, lastName = ?, email = ?, password = ?, " +
             "degree = ?, role = ? WHERE id = ?";
-    private static final String DELETE_USER_BY_ID = "DELETE FROM user WHERE id = ?";
-    private static final String FIND_ALL_USERS = "SELECT * FROM user";
-    private static final String FIND_USER_BY_EMAIL_AND_PASSWORD = "SELECT id, firstName, lastName, email, password, role, degree FROM user WHERE email= ? AND password= ?";
+    private static final String DELETE_USER_BY_ID = "DELETE FROM staff WHERE id = ?";
+    private static final String FIND_ALL = "SELECT * FROM staff";
+    private static final String FIND_USER_BY_EMAIL_AND_PASSWORD = "SELECT id, firstName, lastName, email, password, role, degree FROM staff WHERE email= ? AND password= ?";
+    private static final String FIND_ALL_LIMIT = "SELECT * FROM staff LIMIT ? OFFSET ?";
 
     private final Connection connection;
 
@@ -147,12 +148,11 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public List<User> findAll() throws DaoException {
-        Dao imageDao = new ImageDao(connection);
         List<User> users = new ArrayList<>();
         Statement statement = null;
         try {
             statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(FIND_ALL_USERS);
+            ResultSet resultSet = statement.executeQuery(FIND_ALL);
             while (resultSet.next()) {
                 User user = new User();
                 user.setId(resultSet.getInt("id"));
@@ -160,13 +160,16 @@ public class UserDaoImpl implements UserDao {
                 user.setLastName(resultSet.getString("lastName"));
                 user.setEmail(resultSet.getString("email"));
                 user.setPassword(resultSet.getString("password"));
-                user.setDegree(resultSet.getString("degree"));
-                user.setRole(User.Role.valueOf(resultSet.getString("role")));
-                user.setImage((Image) imageDao.findById(resultSet.getInt("imageId")));
+                if (resultSet.getString("degree") != null) {
+                    user.setDegree(resultSet.getString("degree"));
+                }
+                if (resultSet.getString("role") != null) {
+                    user.setRole(User.Role.valueOf(resultSet.getString("role")));
+                }
                 users.add(user);
             }
         } catch (SQLException e) {
-            throw new DaoException("SQL FIND_ALL_USERS error.", e);
+            throw new DaoException("SQL FIND_ALL error.", e);
         } finally {
             if (statement != null) {
                 try {
@@ -177,6 +180,28 @@ public class UserDaoImpl implements UserDao {
             }
         }
         return users;
+    }
+
+    @Override
+    public List<User> findAll(int start, int count) throws DaoException {
+        List<User> users = new ArrayList<>();
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = connection.prepareStatement(FIND_ALL_LIMIT);
+            preparedStatement.setInt(1, count);
+
+        }catch (SQLException e) {
+            throw new DaoException("SQL FIND_ALL_LIMIT error.", e);
+        } finally {
+            if (preparedStatement != null) {
+                try {
+                    preparedStatement.close();
+                } catch (SQLException e) {
+                    throw new DaoException("Failed to close PreparedStatement", e);
+                }
+            }
+        }
+        return null;
     }
 
     @Override
