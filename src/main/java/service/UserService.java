@@ -7,6 +7,8 @@ import entity.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
+
 public class UserService implements AutoCloseable {
     private static final Logger log = LoggerFactory.getLogger(UserService.class);
 
@@ -49,6 +51,10 @@ public class UserService implements AutoCloseable {
 
     public void updateUser(User user) throws DaoException {
         userDao.update(user);
+    }
+
+    public List<User> findAllUsers() throws DaoException {
+        return userDao.findAll();
     }
 
     public User addImage(Image image, User user) throws DaoException {
