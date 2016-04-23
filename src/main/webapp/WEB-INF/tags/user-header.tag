@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@tag description="userHeader" pageEncoding="UTF-8" %>
 <c:url var="sign_out_action" value="/do/signOut"/>
 <c:url var="edit_profile_action" value="/do/edit-profile"/>
 <c:url var="css_path" value="${pageContext.request.contextPath}/css"/>

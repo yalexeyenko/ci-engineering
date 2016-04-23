@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@tag description="welcomeContent" pageEncoding="UTF-8" %>
 <c:url var="sign_up_action" value="/do/signUp"/>
 <c:url var="css_path" value="${pageContext.request.contextPath}/css"/>
 
