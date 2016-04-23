@@ -5,9 +5,9 @@ import entity.User;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class ChooseMainPageAction implements Action {
+public class StaffMainPageAction implements Action {
     private ActionResult userMain = new ActionResult("user-main", true);
-    private ActionResult adminMain = new ActionResult("admin-main", true);
+    private ActionResult adminContentAction = new ActionResult("admin-content-action", true);
     private ActionResult managerMain = new ActionResult("manager-main", true);
     private ActionResult seniorMain = new ActionResult("senior-main", true);
     private ActionResult engineerMain = new ActionResult("engineer-main", true);
@@ -18,7 +18,7 @@ public class ChooseMainPageAction implements Action {
         if ((user != null) && (user.getRole() != null)) {
             switch (user.getRole().name()) {
                 case "ADMIN":
-                    return adminMain;
+                    return adminContentAction;
                 case "ENGINEER":
                     return engineerMain;
                 case "MANAGER":
