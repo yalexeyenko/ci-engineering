@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@tag description="head" pageEncoding="UTF-8" %>
 <c:url var="css_path" value="${pageContext.request.contextPath}/css"/>
 
 <head>
