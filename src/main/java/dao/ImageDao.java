@@ -136,4 +136,9 @@ public class ImageDao implements Dao<Image> {
         }
         return images;
     }
+
+    @Override
+    public List<Image> findAll(int start, int count) throws DaoException {
+        return null;
+    }
 }
