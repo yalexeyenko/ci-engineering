@@ -40,4 +40,9 @@ public class ClientDaoImpl implements ClientDao {
     public List<Client> findAll() throws DaoException {
         return null;
     }
+
+    @Override
+    public List<Client> findAll(int start, int count) throws DaoException {
+        return null;
+    }
 }
