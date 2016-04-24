@@ -5,7 +5,7 @@ import javax.servlet.http.HttpServletResponse;
 
 public class AdminContentAction implements Action {
     private ActionResult adminContentStaff = new ActionResult("admin-content-staff", true);
-    private ActionResult adminContentProjects = new ActionResult("admin-main-projects", true);
+    private ActionResult adminContentProjects = new ActionResult("admin-content-projects", true);
 
     @Override
     public ActionResult execute(HttpServletRequest req, HttpServletResponse resp) {
