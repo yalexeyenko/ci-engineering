@@ -15,16 +15,16 @@ import java.util.Map;
 import java.util.Set;
 
 public class EditProfileAction implements Action {
-    private static final Logger log = LoggerFactory.getLogger(SignInAction.class);
+    private static final Logger log = LoggerFactory.getLogger(EditProfileAction.class);
 
     private Validator formValidator;
+
+    private ActionResult mainPage = new ActionResult("main-page", true);
+    private ActionResult editProfileAgain = new ActionResult("edit-profile");
 
     public EditProfileAction() {
         formValidator = new Validator();
     }
-
-    private ActionResult mainPage = new ActionResult("main-page", true);
-    private ActionResult editProfileAgain = new ActionResult("edit-profile");
 
     @Override
     public ActionResult execute(HttpServletRequest req, HttpServletResponse resp) {
@@ -39,7 +39,7 @@ public class EditProfileAction implements Action {
         Map<String, String[]> parameterMap = req.getParameterMap();
         Set<Violation> violations = formValidator.validate(parameterMap);
 
-        HttpSession session = req.getSession(true);// true or false???
+        HttpSession session = req.getSession(false);
         User currentUser = (User) session.getAttribute("user");
         log.debug("currentUser is null: {}", currentUser == null);
         if (!currentPassword.equals(currentUser.getPassword())) {
