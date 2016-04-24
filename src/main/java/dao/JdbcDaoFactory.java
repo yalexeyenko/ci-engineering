@@ -18,10 +18,10 @@ public class JdbcDaoFactory extends DaoFactory {
         switch (clazz.getSimpleName()) {
             case "User":
                 return (Dao<T>) new UserDaoImpl(connection);
-            case "Image":
-                return (Dao<T>) new ImageDao(connection);
-            case "TechSkill":
-                return (Dao<T>) new TechSkillDao(connection);
+            case "Client":
+                return (Dao<T>) new ClientDaoImpl(connection);
+            case "Project":
+                return (Dao<T>) new ProjectDaoImpl(connection);
             default:
                 return null;
         }
