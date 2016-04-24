@@ -1,0 +1,13 @@
+#navlist li {
+    display: inline;
+    list-style-type: none;
+    padding-right: 20px;
+}
+
+#table-users table, th, td {
+    border: 1px solid black;
+}
+
+#table-users table tr th {
+    font-size: 11px;
+}
