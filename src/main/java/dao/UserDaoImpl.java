@@ -1,6 +1,5 @@
 package dao;
 
-import entity.Image;
 import entity.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -184,23 +183,6 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public List<User> findAll(int start, int count) throws DaoException {
-        List<User> users = new ArrayList<>();
-        PreparedStatement preparedStatement = null;
-        try {
-            preparedStatement = connection.prepareStatement(FIND_ALL_LIMIT);
-            preparedStatement.setInt(1, count);
-
-        }catch (SQLException e) {
-            throw new DaoException("SQL FIND_ALL_LIMIT error.", e);
-        } finally {
-            if (preparedStatement != null) {
-                try {
-                    preparedStatement.close();
-                } catch (SQLException e) {
-                    throw new DaoException("Failed to close PreparedStatement", e);
-                }
-            }
-        }
         return null;
     }
 
