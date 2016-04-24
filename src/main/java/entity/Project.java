@@ -35,6 +35,10 @@ public class Project extends NamedEntity {
         return startDate;
     }
 
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
+    }
+
     public LocalDate getDeadline() {
         return deadline;
     }
