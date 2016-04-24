@@ -42,6 +42,10 @@ public class Module extends NamedEntity {
         return startDate;
     }
 
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
+    }
+
     public boolean addFileDoc(FileDoc fileDoc) {
         return this.fileDocs.add(fileDoc);
     }
