@@ -20,8 +20,8 @@ public class DBConnectionPool {
         private static final DataSource DATASOURCE = create();
 
         private static DataSource create() {
-            InitialContext initialContext = null;
-            DataSource dataSource = null;
+            InitialContext initialContext;
+            DataSource dataSource;
             try {
                 initialContext = new InitialContext();
                 dataSource = (DataSource) initialContext.lookup("java:/comp/env/jdbc/ci-engineering");
