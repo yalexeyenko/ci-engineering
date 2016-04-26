@@ -15,6 +15,8 @@ public class PassProjectIdAction implements Action {
     private ActionResult viewProject = new ActionResult("view-project");
     private ActionResult editMainProjectInfo = new ActionResult("edit-main-project-info");
     private ActionResult createClient = new ActionResult("create-client");
+    private ActionResult viewClient = new ActionResult("view-client");
+    private ActionResult editClient = new ActionResult("edit-client");
 
     @Override
     public ActionResult execute(HttpServletRequest req, HttpServletResponse resp) {
@@ -54,6 +56,10 @@ public class PassProjectIdAction implements Action {
             return editMainProjectInfo;
         } else if (passParam.equalsIgnoreCase("create-client")) {
             return createClient;
+        } else if (passParam.equalsIgnoreCase("view-client")) {
+            return viewClient;
+        } else if (passParam.equalsIgnoreCase("edit-client")) {
+            return editClient;
         }
         return null;
     }
