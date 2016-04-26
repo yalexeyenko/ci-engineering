@@ -34,9 +34,8 @@ public class ActionFactory {
         actions.put("GET/create-project", new ShowPageAction("create-project"));
         actions.put("POST/createProject", new CreateProjectAction());
 
-        actions.put("GET/pass-projectId", new PassProjectIdToViewProjectAction());
+        actions.put("GET/pass-projectId", new PassProjectIdAction());
         actions.put("GET/view-project", new ShowPageAction("view-project"));
-        actions.put("GET/pass-projectId-to-edit-main-project-info", new PassProjectIdToEditMainProjectInfoAction());
         actions.put("GET/edit-main-project-info", new ShowPageAction("edit-main-project-info"));
         actions.put("POST/edit-main-project-info-post", new EditMainProjectInfoPostAction());
 
