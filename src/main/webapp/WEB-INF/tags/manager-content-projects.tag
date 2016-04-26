@@ -2,7 +2,7 @@
 <%@tag description="managerContentProjects" pageEncoding="UTF-8" %>
 <c:url var="css_path" value="${pageContext.request.contextPath}/css"/>
 <c:url var="create_project_action" value="/do/create-project"/>
-<c:url var="pass_projectId" value="/do/pass-projectId"/>
+<c:url var="view_project" value="/do/pass-projectId"/>
 
 <link rel="stylesheet" href="${css_path}/manager-content-projects.css">
 
@@ -45,9 +45,9 @@
                     <td>${item.senior.firstName} ${item.senior.lastName}</td>
                     <td>
                         <a href="
-                        <c:url value="${pass_projectId}">
+                        <c:url value="${view_project}">
                             <c:param name="projectId" value="${item.id}"></c:param>
-                            <c:param name="passProjectId" value="passProjectIdToViewProject"></c:param>
+                            <c:param name="passProjectId" value="view-project"></c:param>
                         </c:url>
                         ">View</a>
                     </td>

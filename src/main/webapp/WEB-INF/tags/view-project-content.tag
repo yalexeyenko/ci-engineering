@@ -13,7 +13,7 @@
     <a id="edit-main-project-info" href="
             <c:url value="${edit_main_project_info}">
                 <c:param name="projectId" value="${project.id}"></c:param>
-                <c:param name="passProjectId" value="passProjectIdToEditMainProjectInfoAction"></c:param>
+                <c:param name="passProjectId" value="edit-main-project-info"></c:param>
             </c:url>
     ">Edit main project info</a>
     <h4>Client:
@@ -22,7 +22,7 @@
         </c:if>
         <c:if test="${empty project.client}">
             <%--<a href="--%>
-                <%--<c:url value="${pass_project_id_to_create_client}">--%>
+                <%--<c:url value="${create_client}">--%>
                     <%--<c:param name="projectId" value="${project.id}"></c:param>--%>
                 <%--</c:url>--%>
                     <%--">View</a>--%>

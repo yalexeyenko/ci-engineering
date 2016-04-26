@@ -38,9 +38,9 @@ public class PassProjectIdAction implements Action {
         }
 
         req.setAttribute("project", project);
-        if (passParam.equalsIgnoreCase("passProjectIdToViewProject")) {
+        if (passParam.equalsIgnoreCase("view-project")) {
             return viewProject;
-        } else if (passParam.equalsIgnoreCase("passProjectIdToEditMainProjectInfoAction")) {
+        } else if (passParam.equalsIgnoreCase("edit-main-project-info")) {
             return editMainProjectInfo;
         }
         return null;
