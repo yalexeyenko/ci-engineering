@@ -2,6 +2,7 @@
 <%@tag description="managerContentProjects" pageEncoding="UTF-8" %>
 <c:url var="css_path" value="${pageContext.request.contextPath}/css"/>
 <c:url var="create_project_action" value="/do/create-project"/>
+<c:url var="pass_projectId" value="/do/pass-projectId"/>
 
 <link rel="stylesheet" href="${css_path}/manager-content-projects.css">
 
@@ -37,9 +38,18 @@
                     <td>${item.startDate}</td>
                     <td>${item.deadline}</td>
                     <td>${item.finished}</td>
-                    <td></td>
-                    <td></td>
-                    <td><a href="#">Edit</a></td>
+                    <td>
+                        <c:if test="${item.client.clientType eq 'LEGAL'}">${item.client.firstName}</c:if>
+                        <c:if test="${item.client.clientType eq 'INDIVIDUAL'}">${item.client.firstName} ${item.client.lastName}</c:if>
+                    </td>
+                    <td>${item.senior.firstName} ${item.senior.lastName}</td>
+                    <td>
+                        <a href="
+                        <c:url value="${pass_projectId}">
+                            <c:param name="projectId" value="${item.id}"></c:param>
+                        </c:url>
+                        ">View</a>
+                    </td>
                 </tr>
             </c:forEach>
         </table>
