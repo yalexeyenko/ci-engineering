@@ -47,6 +47,7 @@
                         <a href="
                         <c:url value="${pass_projectId}">
                             <c:param name="projectId" value="${item.id}"></c:param>
+                            <c:param name="passProjectId" value="passProjectIdToViewProject"></c:param>
                         </c:url>
                         ">View</a>
                     </td>
