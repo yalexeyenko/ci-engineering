@@ -27,9 +27,13 @@ public class ControllerServlet extends javax.servlet.http.HttpServlet {
     public void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         log.debug("service()...");
         String actionName = req.getMethod() + req.getPathInfo();
+        log.debug("passProjectClientAction");
+        log.debug(actionName);
+
         Action action = actionFactory.getAction(actionName);
 
         if (action == null) {
+            log.debug("action is null");
             resp.sendError(HttpServletResponse.SC_NOT_FOUND, "Not found");
             return;
         }
