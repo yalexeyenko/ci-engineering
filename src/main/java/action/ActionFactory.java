@@ -42,6 +42,9 @@ public class ActionFactory {
         actions.put("GET/create-client", new ShowPageAction("create-client"));
         actions.put("POST/createClientAction", new CreateClientAction());
 
+        actions.put("GET/view-client", new ShowPageAction("view-client"));
+        actions.put("GET/edit-client", new ShowPageAction("edit-client"));
+        actions.put("POST/editClientAction", new EditClientAction());
 
     }
 
