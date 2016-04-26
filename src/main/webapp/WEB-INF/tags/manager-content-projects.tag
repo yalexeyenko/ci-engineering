@@ -28,7 +28,7 @@
                 <th>Finished</th>
                 <th>Client</th>
                 <th>Senior Engineer</th>
-                <th>Edit project</th>
+                <th>View project</th>
             </tr>
             <c:forEach items="${projects}" var="item" varStatus="status">
                 <tr>
