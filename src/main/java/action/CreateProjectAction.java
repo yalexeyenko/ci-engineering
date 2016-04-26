@@ -48,7 +48,7 @@ public class CreateProjectAction implements Action {
             return createProjectAgain;
         }
 
-        req.getSession().setAttribute("project", currentProject);
+        req.setAttribute("project", currentProject);
         return mainPage;
 
     }
