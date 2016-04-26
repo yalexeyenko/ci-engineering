@@ -1,6 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@tag description="editProfileContent" pageEncoding="UTF-8" %>
+<%@tag description="viewProjectContent" pageEncoding="UTF-8" %>
 <c:url var="edit_main_project_info" value="/do/pass-projectId"/>
+<c:url var="create_client" value="/do/pass-projectId"/>
 <c:url var="css_path" value="${pageContext.request.contextPath}/css"/>
 
 <link rel="stylesheet" href="${css_path}/edit-project-content.css">
@@ -18,14 +19,16 @@
     ">Edit main project info</a>
     <h4>Client:
         <c:if test="${not empty project.client}">
-            ${project.client.firstName} ${project.client.lastName}
+            <c:if test="${project.client.clientType eq 'LEGAL'}">${project.client.firstName}</c:if>
+            <c:if test="${project.client.clientType eq 'INDIVIDUAL'}">${project.client.firstName} ${project.client.lastName}</c:if>
         </c:if>
         <c:if test="${empty project.client}">
-            <%--<a href="--%>
-                <%--<c:url value="${create_client}">--%>
-                    <%--<c:param name="projectId" value="${project.id}"></c:param>--%>
-                <%--</c:url>--%>
-                    <%--">View</a>--%>
+            <a href="
+                <c:url value="${create_client}">
+                    <c:param name="projectId" value="${project.id}"></c:param>
+                    <c:param name="passProjectId" value="create-client"></c:param>
+                </c:url>
+                    ">create</a>
         </c:if>
     </h4>
     <h4>Senior engineer:
