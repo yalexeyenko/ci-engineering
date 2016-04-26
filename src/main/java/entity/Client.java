@@ -8,11 +8,9 @@ public class Client extends BaseEntity {
     private String email;
     private String bankAccountNumber;
     private ClientType clientType;
-    private String clientName;
-    private String ein;
+    private String einSsn;
     private String firstName;
     private String lastName;
-    private String ssn;
 
     public Client() {
     }
@@ -92,26 +90,15 @@ public class Client extends BaseEntity {
         this.clientType = clientType;
     }
 
-    public String getClientName() {
-        return clientName;
+    public String getEinSsn() {
+        return einSsn;
     }
 
-    public void setClientName(String clientName) {
-        if (clientName == null) {
-            throw new NullPointerException("Attempt to set null to clientName");
-        }
-        this.clientName = clientName;
-    }
-
-    public String getEin() {
-        return ein;
-    }
-
-    public void setEin(String ein) {
-        if (ein == null) {
+    public void setEinSsn(String einSsn) {
+        if (einSsn == null) {
             throw new NullPointerException("Attempt to set null to ein");
         }
-        this.ein = ein;
+        this.einSsn = einSsn;
     }
 
     public String getFirstName() {
@@ -134,17 +121,6 @@ public class Client extends BaseEntity {
             throw new NullPointerException("Attempt to set null to lastName");
         }
         this.lastName = lastName;
-    }
-
-    public String getSsn() {
-        return ssn;
-    }
-
-    public void setSsn(String ssn) {
-        if (ssn == null) {
-            throw new NullPointerException("Attempt to set null to ssn");
-        }
-        this.ssn = ssn;
     }
 
     public enum ClientType {

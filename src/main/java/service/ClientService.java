@@ -20,20 +20,10 @@ public class ClientService implements AutoCloseable {
         clientDao = (ClientDao) jdbcDaoFactory.createDao(Client.class);
     }
 
-    public Client createLegalClient(Client legalClient) {
+    public Client createClient(Client client) {
         Client clientWithId;
         try {
-            clientWithId = clientDao.insert(legalClient);
-            return clientWithId;
-        } catch (DaoException e) {
-            return null;
-        }
-    }
-
-    public Client createIndividualClient(Client individualClient) {
-        Client clientWithId;
-        try {
-            clientWithId = clientDao.insertIndivid(individualClient);
+            clientWithId = clientDao.insert(client);
             return clientWithId;
         } catch (DaoException e) {
             return null;
@@ -42,10 +32,6 @@ public class ClientService implements AutoCloseable {
 
     public void updateClient(Client client) throws DaoException {
         clientDao.update(client);
-    }
-
-    public void updateIndividualClient(Client client) throws DaoException {
-        clientDao.updateIndivid(client);
     }
 
     public Client findClientById(int id) throws DaoException {
