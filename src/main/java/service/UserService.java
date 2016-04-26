@@ -77,6 +77,11 @@ public class UserService implements AutoCloseable {
     }
 
 
+    public List<User> findAllSeniors() throws DaoException {
+        log.debug("findAllSeniors()...");
+        return userDao.findAllSeniors();
+    }
+
     @Override
     public void close() throws Exception {
         if (jdbcDaoFactory != null) {
