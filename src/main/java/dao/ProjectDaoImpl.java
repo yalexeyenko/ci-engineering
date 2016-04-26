@@ -14,7 +14,7 @@ public class ProjectDaoImpl implements ProjectDao {
     private static final Logger log = LoggerFactory.getLogger(ProjectDaoImpl.class);
 
     private static final String INSERT_PROJECT = "INSERT INTO project (startDate, projectName, deadLine, finished) VALUES (?, ?, ?, ?) ";
-    private static final String FIND_PROJECT_BY_ID = "SELECT startDate, deadline, projectName, id, finished FROM project WHERE id = ?";
+    private static final String FIND_PROJECT_BY_ID = "SELECT startDate, deadline, projectName, id, finished, clientId FROM project WHERE id = ?";
     private static final String FIND_ALL_PROJECTS = "SELECT * FROM project";
     private static final String FIND_ALL_PROJECTS_LIMITED = "SELECT * FROM project LIMIT ? OFFSET ?";
     private static final String UPDATE_PROJECT = "UPDATE project SET projectName = ?, startDate = ?, deadline = ?, finished = ? WHERE id = ?";
@@ -59,8 +59,11 @@ public class ProjectDaoImpl implements ProjectDao {
     @Override
     public Project findById(int id) throws DaoException {
         log.debug("findById()...");
+        ClientDao clientDao = new ClientDaoImpl(connection);
         Project project = new Project();
+        Client client;
         PreparedStatement preparedStatement = null;
+        int clientId;
         try {
             preparedStatement = connection.prepareStatement(FIND_PROJECT_BY_ID);
             log.debug("preparedStatement is null: {}", preparedStatement == null);
@@ -72,7 +75,11 @@ public class ProjectDaoImpl implements ProjectDao {
             project.setName(resultSet.getString("projectName"));
             project.setId(resultSet.getInt("id"));
             project.setFinished(resultSet.getBoolean("finished"));
-            log.debug("project in dao is null: {}", project == null);
+            if (resultSet.getInt("clientId") > 0) {
+                clientId = resultSet.getInt("clientId");
+                client = clientDao.findById(clientId);
+                project.setClient(client);
+            }
             return project;
         } catch (SQLException e) {
             throw new DaoException("SQL FIND_PROJECT_BY_ID error.", e);
@@ -89,7 +96,10 @@ public class ProjectDaoImpl implements ProjectDao {
 
     @Override
     public List<Project> findAll() throws DaoException {
+        ClientDao clientDao = new ClientDaoImpl(connection);
         List<Project> projects = new ArrayList<>();
+        Client client;
+        int clientId;
         Statement statement = null;
         try {
             statement = connection.createStatement();
@@ -101,6 +111,11 @@ public class ProjectDaoImpl implements ProjectDao {
                 project.setStartDate(new LocalDate(resultSet.getDate("startDate")));
                 project.setDeadline(new LocalDate(resultSet.getDate("deadline")));
                 project.setFinished(resultSet.getBoolean("finished"));
+                if (resultSet.getInt("clientId") > 0) {
+                    clientId = resultSet.getInt("clientId");
+                    client = clientDao.findById(clientId);
+                    project.setClient(client);
+                }
                 projects.add(project);
             }
         } catch (SQLException e) {
