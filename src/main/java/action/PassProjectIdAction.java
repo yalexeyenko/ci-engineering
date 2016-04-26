@@ -14,16 +14,26 @@ public class PassProjectIdAction implements Action {
 
     private ActionResult viewProject = new ActionResult("view-project");
     private ActionResult editMainProjectInfo = new ActionResult("edit-main-project-info");
+    private ActionResult createClient = new ActionResult("create-client");
 
     @Override
     public ActionResult execute(HttpServletRequest req, HttpServletResponse resp) {
+        log.debug("execute...");
         String projectId = req.getParameter("projectId");
         String passParam = req.getParameter("passProjectId");
+        log.debug("projectId: {}", projectId);
+        log.debug("passParam: {}", passParam);
 
+        log.debug("!!!!!!!!!!!!!!!projectId: {}", projectId);
         ProjectService projectService = new ProjectService();
         Project project = null;
         try {
-            project = projectService.findProjectById(Integer.valueOf(projectId));
+            Integer integer = Integer.valueOf(projectId);
+            log.debug("integer: {}", integer);
+            project = projectService.findProjectById(integer);
+            log.debug("after integer: {}", integer);
+            log.debug("project: {}", project);
+
         } catch (DaoException e) {
             try {
                 projectService.close();
@@ -42,6 +52,8 @@ public class PassProjectIdAction implements Action {
             return viewProject;
         } else if (passParam.equalsIgnoreCase("edit-main-project-info")) {
             return editMainProjectInfo;
+        } else if (passParam.equalsIgnoreCase("create-client")) {
+            return createClient;
         }
         return null;
     }
