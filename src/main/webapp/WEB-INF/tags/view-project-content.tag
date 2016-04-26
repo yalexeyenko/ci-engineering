@@ -2,6 +2,7 @@
 <%@tag description="viewProjectContent" pageEncoding="UTF-8" %>
 <c:url var="edit_main_project_info" value="/do/pass-projectId"/>
 <c:url var="create_client" value="/do/pass-projectId"/>
+<c:url var="view_client" value="/do/pass-projectId"/>
 <c:url var="css_path" value="${pageContext.request.contextPath}/css"/>
 
 <link rel="stylesheet" href="${css_path}/edit-project-content.css">
@@ -19,8 +20,19 @@
     ">Edit main project info</a>
     <h4>Client:
         <c:if test="${not empty project.client}">
-            <c:if test="${project.client.clientType eq 'LEGAL'}">${project.client.firstName}</c:if>
-            <c:if test="${project.client.clientType eq 'INDIVIDUAL'}">${project.client.firstName} ${project.client.lastName}</c:if>
+
+            <a href="
+                <c:url value="${view_client}">
+                    <c:param name="projectId" value="${project.id}"></c:param>
+                    <c:param name="passProjectId" value="view-client"></c:param>
+                </c:url>
+            ">
+                <c:if test="${project.client.clientType eq 'LEGAL'}">${project.client.firstName}</c:if>
+                <c:if test="${project.client.clientType eq 'INDIVIDUAL'}">${project.client.firstName} ${project.client.lastName}</c:if>
+            </a>
+
+            <%--<c:if test="${project.client.clientType eq 'LEGAL'}">${project.client.firstName}</c:if>--%>
+            <%--<c:if test="${project.client.clientType eq 'INDIVIDUAL'}">${project.client.firstName} ${project.client.lastName}</c:if>--%>
         </c:if>
         <c:if test="${empty project.client}">
             <a href="
