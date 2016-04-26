@@ -1,6 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@tag description="editProfileContent" pageEncoding="UTF-8" %>
-<c:url var="edit_main_project_info" value="/do/pass-projectId-to-edit-main-project-info"/>
+<c:url var="edit_main_project_info" value="/do/pass-projectId"/>
 <c:url var="css_path" value="${pageContext.request.contextPath}/css"/>
 
 <link rel="stylesheet" href="${css_path}/edit-project-content.css">
@@ -13,6 +13,7 @@
     <a id="edit-main-project-info" href="
             <c:url value="${edit_main_project_info}">
                 <c:param name="projectId" value="${project.id}"></c:param>
+                <c:param name="passProjectId" value="passProjectIdToEditMainProjectInfoAction"></c:param>
             </c:url>
     ">Edit main project info</a>
     <h4>Client:
@@ -20,7 +21,11 @@
             ${project.client.firstName} ${project.client.lastName}
         </c:if>
         <c:if test="${empty project.client}">
-            not specified
+            <%--<a href="--%>
+                <%--<c:url value="${pass_project_id_to_create_client}">--%>
+                    <%--<c:param name="projectId" value="${project.id}"></c:param>--%>
+                <%--</c:url>--%>
+                    <%--">View</a>--%>
         </c:if>
     </h4>
     <h4>Senior engineer:
