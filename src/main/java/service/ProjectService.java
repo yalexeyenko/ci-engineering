@@ -28,6 +28,7 @@ public class ProjectService implements AutoCloseable {
     }
 
     public Project findProjectById(int id) throws DaoException {
+        log.debug("findProjectById()...");
         return projectDao.findById(id);
     }
 
@@ -41,6 +42,10 @@ public class ProjectService implements AutoCloseable {
 
     public void updateProject(Project project) throws DaoException {
         projectDao.update(project);
+    }
+
+    public void updateProjectClient(Project project) throws DaoException {
+        projectDao.updateProjectClient(project);
     }
 
     public boolean deleteProjectById(int id) throws DaoException {

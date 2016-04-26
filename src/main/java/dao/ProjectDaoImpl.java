@@ -1,5 +1,6 @@
 package dao;
 
+import entity.Client;
 import entity.Project;
 import org.joda.time.LocalDate;
 import org.slf4j.Logger;
@@ -12,12 +13,13 @@ import java.util.List;
 public class ProjectDaoImpl implements ProjectDao {
     private static final Logger log = LoggerFactory.getLogger(ProjectDaoImpl.class);
 
-    private static final String INSERT_PROJECT = "INSERT INTO project (startDate, name, deadLine, finished) VALUES (?, ?, ?, ?) ";
-    private static final String FIND_PROJECT_BY_ID = "SELECT FROM project WHERE id = ?";
+    private static final String INSERT_PROJECT = "INSERT INTO project (startDate, projectName, deadLine, finished) VALUES (?, ?, ?, ?) ";
+    private static final String FIND_PROJECT_BY_ID = "SELECT startDate, deadline, projectName, id, finished FROM project WHERE id = ?";
     private static final String FIND_ALL_PROJECTS = "SELECT * FROM project";
     private static final String FIND_ALL_PROJECTS_LIMITED = "SELECT * FROM project LIMIT ? OFFSET ?";
-    private static final String UPDATE_PROJECT = "UPDATE project SET name = ?, startDate = ?, deadline = ?, finished = ? WHERE id = ?";
+    private static final String UPDATE_PROJECT = "UPDATE project SET projectName = ?, startDate = ?, deadline = ?, finished = ? WHERE id = ?";
     private static final String DELETE_PROJECT_BY_ID = "DELETE FROM project WHERE id = ?";
+    private static final String UPDATE_PROJECT_CLIENT = "UPDATE project SET clientId = ? WHERE id = ?";
 
     private final Connection connection;
 
@@ -56,18 +58,21 @@ public class ProjectDaoImpl implements ProjectDao {
 
     @Override
     public Project findById(int id) throws DaoException {
+        log.debug("findById()...");
         Project project = new Project();
         PreparedStatement preparedStatement = null;
         try {
             preparedStatement = connection.prepareStatement(FIND_PROJECT_BY_ID);
+            log.debug("preparedStatement is null: {}", preparedStatement == null);
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             resultSet.next();
             project.setStartDate(new LocalDate(resultSet.getDate("startDate")));
             project.setDeadline(new LocalDate(resultSet.getDate("deadline")));
-            project.setName(resultSet.getString("name"));
+            project.setName(resultSet.getString("projectName"));
             project.setId(resultSet.getInt("id"));
             project.setFinished(resultSet.getBoolean("finished"));
+            log.debug("project in dao is null: {}", project == null);
             return project;
         } catch (SQLException e) {
             throw new DaoException("SQL FIND_PROJECT_BY_ID error.", e);
@@ -92,7 +97,7 @@ public class ProjectDaoImpl implements ProjectDao {
             while (resultSet.next()) {
                 Project project = new Project();
                 project.setId(resultSet.getInt("id"));
-                project.setName(resultSet.getString("name"));
+                project.setName(resultSet.getString("projectName"));
                 project.setStartDate(new LocalDate(resultSet.getDate("startDate")));
                 project.setDeadline(new LocalDate(resultSet.getDate("deadline")));
                 project.setFinished(resultSet.getBoolean("finished"));
@@ -120,6 +125,7 @@ public class ProjectDaoImpl implements ProjectDao {
     @Override
     public void update(Project project) throws DaoException {
         PreparedStatement preparedStatement = null;
+        //noinspection Duplicates TODO
         try {
             preparedStatement = connection.prepareStatement(UPDATE_PROJECT);
             preparedStatement.setString(1, project.getName());
@@ -150,6 +156,28 @@ public class ProjectDaoImpl implements ProjectDao {
             return (preparedStatement.executeUpdate() != 0);
         } catch (SQLException e) {
             throw new DaoException("SQL DELETE_PROJECT_BY_ID error.", e);
+        } finally {
+            if (preparedStatement != null) {
+                try {
+                    preparedStatement.close();
+                } catch (SQLException e) {
+                    throw new DaoException("Failed to close PreparedStatement", e);
+                }
+            }
+        }
+    }
+
+
+    @Override
+    public void updateProjectClient(Project projectWithClient) throws DaoException {
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = connection.prepareStatement(UPDATE_PROJECT_CLIENT);
+            preparedStatement.setInt(1, projectWithClient.getClient().getId());
+            preparedStatement.setInt(2, projectWithClient.getId());
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new DaoException("SQL UPDATE_PROJECT_CLIENT error.", e);
         } finally {
             if (preparedStatement != null) {
                 try {
