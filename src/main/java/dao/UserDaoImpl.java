@@ -17,6 +17,7 @@ public class UserDaoImpl implements UserDao {
             "degree = ?, role = ? WHERE id = ?";
     private static final String DELETE_USER_BY_ID = "DELETE FROM staff WHERE id = ?";
     private static final String FIND_ALL = "SELECT * FROM staff";
+    private static final String FIND_ALL_SENIORS = "SELECT id, firstName, lastName, email, password, role, degree FROM staff WHERE role = ?";
     private static final String FIND_USER_BY_EMAIL_AND_PASSWORD = "SELECT id, firstName, lastName, email, password, role, degree FROM staff WHERE email= ? AND password= ?";
     private static final String FIND_ALL_LIMIT = "SELECT * FROM staff LIMIT ? OFFSET ?";
 
@@ -154,10 +155,10 @@ public class UserDaoImpl implements UserDao {
             ResultSet resultSet = statement.executeQuery(FIND_ALL);
             while (resultSet.next()) {
                 User user = new User();
-                user.setId(resultSet.getInt("id"));
                 user.setFirstName(resultSet.getString("firstName"));
-                user.setLastName(resultSet.getString("lastName"));
+                user.setId(resultSet.getInt("id"));
                 user.setEmail(resultSet.getString("email"));
+                user.setLastName(resultSet.getString("lastName"));
                 user.setPassword(resultSet.getString("password"));
                 if (resultSet.getString("degree") != null) {
                     user.setDegree(resultSet.getString("degree"));
@@ -228,5 +229,45 @@ public class UserDaoImpl implements UserDao {
                 }
             }
         }
+    }
+
+    @Override
+    public List<User> findAllSeniors() throws DaoException {
+        log.debug("findAllSeniors()...");
+        List<User> seniors = new ArrayList<>();
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = connection.prepareStatement(FIND_ALL_SENIORS);
+            log.debug("before resultSet");
+            preparedStatement.setString(1, "SENIOR");
+            ResultSet resultSet = preparedStatement.executeQuery();
+            log.debug("resultSet is null: {}", resultSet == null);
+            while (resultSet.next()) {
+                User senior = new User();
+                senior.setFirstName(resultSet.getString("firstName"));
+                senior.setId(resultSet.getInt("id"));
+                senior.setLastName(resultSet.getString("lastName"));
+                senior.setEmail(resultSet.getString("email"));
+                senior.setPassword(resultSet.getString("password"));
+                if (resultSet.getString("degree") != null) {
+                    senior.setDegree(resultSet.getString("degree"));
+                }
+                if (resultSet.getString("role") != null) {
+                    senior.setRole(User.Role.valueOf(resultSet.getString("role")));
+                }
+                seniors.add(senior);
+            }
+        } catch (SQLException e) {
+            throw new DaoException("SQL FIND_ALL_SENIORS error.", e);
+        } finally {
+            if (preparedStatement != null) {
+                try {
+                    preparedStatement.close();
+                } catch (SQLException e) {
+                    throw new DaoException("Failed to close PreparedStatement", e);
+                }
+            }
+        }
+        return seniors;
     }
 }
