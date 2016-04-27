@@ -2,6 +2,7 @@ package dao;
 
 import entity.Client;
 import entity.Project;
+import entity.User;
 import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,12 +15,13 @@ public class ProjectDaoImpl implements ProjectDao {
     private static final Logger log = LoggerFactory.getLogger(ProjectDaoImpl.class);
 
     private static final String INSERT_PROJECT = "INSERT INTO project (startDate, projectName, deadLine, finished) VALUES (?, ?, ?, ?) ";
-    private static final String FIND_PROJECT_BY_ID = "SELECT startDate, deadline, projectName, id, finished, clientId FROM project WHERE id = ?";
+    private static final String FIND_PROJECT_BY_ID = "SELECT startDate, deadline, projectName, id, finished, clientId, seniorId FROM project WHERE id = ?";
     private static final String FIND_ALL_PROJECTS = "SELECT * FROM project";
     private static final String FIND_ALL_PROJECTS_LIMITED = "SELECT * FROM project LIMIT ? OFFSET ?";
     private static final String UPDATE_PROJECT = "UPDATE project SET projectName = ?, startDate = ?, deadline = ?, finished = ? WHERE id = ?";
     private static final String DELETE_PROJECT_BY_ID = "DELETE FROM project WHERE id = ?";
     private static final String UPDATE_PROJECT_CLIENT = "UPDATE project SET clientId = ? WHERE id = ?";
+    private static final String UPDATE_PROJECT_SENIOR = "UPDATE project SET seniorId = ? WHERE id = ?";
 
     private final Connection connection;
 
@@ -60,10 +62,13 @@ public class ProjectDaoImpl implements ProjectDao {
     public Project findById(int id) throws DaoException {
         log.debug("findById()...");
         ClientDao clientDao = new ClientDaoImpl(connection);
+        UserDao userDao = new UserDaoImpl(connection);
         Project project = new Project();
         Client client;
+        User senior;
         PreparedStatement preparedStatement = null;
         int clientId;
+        int seniorId;
         try {
             preparedStatement = connection.prepareStatement(FIND_PROJECT_BY_ID);
             log.debug("preparedStatement is null: {}", preparedStatement == null);
@@ -79,6 +84,11 @@ public class ProjectDaoImpl implements ProjectDao {
                 clientId = resultSet.getInt("clientId");
                 client = clientDao.findById(clientId);
                 project.setClient(client);
+            }
+            if (resultSet.getInt("seniorId") > 0) {
+                seniorId = resultSet.getInt("seniorId");
+                senior = userDao.findById(seniorId);
+                project.setSenior(senior);
             }
             return project;
         } catch (SQLException e) {
@@ -97,9 +107,12 @@ public class ProjectDaoImpl implements ProjectDao {
     @Override
     public List<Project> findAll() throws DaoException {
         ClientDao clientDao = new ClientDaoImpl(connection);
+        UserDao userDao = new UserDaoImpl(connection);
         List<Project> projects = new ArrayList<>();
         Client client;
+        User senior;
         int clientId;
+        int seniorId;
         Statement statement = null;
         try {
             statement = connection.createStatement();
@@ -115,6 +128,11 @@ public class ProjectDaoImpl implements ProjectDao {
                     clientId = resultSet.getInt("clientId");
                     client = clientDao.findById(clientId);
                     project.setClient(client);
+                }
+                if(resultSet.getInt("seniorId") > 0) {
+                    seniorId = resultSet.getInt("seniorId");
+                    senior = userDao.findById(seniorId);
+                    project.setSenior(senior);
                 }
                 projects.add(project);
             }
@@ -186,6 +204,7 @@ public class ProjectDaoImpl implements ProjectDao {
     @Override
     public void updateProjectClient(Project projectWithClient) throws DaoException {
         PreparedStatement preparedStatement = null;
+        //noinspection Duplicates // TODO: 27.04.2016  
         try {
             preparedStatement = connection.prepareStatement(UPDATE_PROJECT_CLIENT);
             preparedStatement.setInt(1, projectWithClient.getClient().getId());
@@ -193,6 +212,27 @@ public class ProjectDaoImpl implements ProjectDao {
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new DaoException("SQL UPDATE_PROJECT_CLIENT error.", e);
+        } finally {
+            if (preparedStatement != null) {
+                try {
+                    preparedStatement.close();
+                } catch (SQLException e) {
+                    throw new DaoException("Failed to close PreparedStatement", e);
+                }
+            }
+        }
+    }
+
+    @Override
+    public void updateProjectSenior(Project projectWithSenior) throws DaoException {
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = connection.prepareStatement(UPDATE_PROJECT_SENIOR);
+            preparedStatement.setInt(1, projectWithSenior.getSenior().getId());
+            preparedStatement.setInt(2, projectWithSenior.getId());
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new DaoException("SQL UPDATE_PROJECT_SENIOR error.", e);
         } finally {
             if (preparedStatement != null) {
                 try {
