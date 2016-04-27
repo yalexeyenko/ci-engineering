@@ -48,6 +48,10 @@ public class ProjectService implements AutoCloseable {
         projectDao.updateProjectClient(project);
     }
 
+    public void updateProjectSenior(Project project) throws DaoException {
+        projectDao.updateProjectSenior(project);
+    }
+
     public boolean deleteProjectById(int id) throws DaoException {
         return projectDao.delete(id);
     }
