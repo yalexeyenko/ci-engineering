@@ -53,6 +53,10 @@ public class UserService implements AutoCloseable {
         userDao.update(user);
     }
 
+    public User findUserById(int id) throws DaoException {
+        return userDao.findById(id);
+    }
+
     public List<User> findAllUsers() throws DaoException {
         return userDao.findAll();
     }
