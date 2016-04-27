@@ -81,6 +81,7 @@ public class CreateClientAction implements Action {
         try {
             projectService.updateProjectClient(currentProject);
         } catch (DaoException e) {
+            log.debug("Failed to updateProjectClient()");
             try {
                 projectService.close();
             } catch (Exception ex) {
