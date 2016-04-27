@@ -29,52 +29,30 @@ public class ClientDaoImpl implements ClientDao {
 
     @Override
     public Client findById(int id) throws DaoException {
-        log.debug("dao findById...");
-        log.debug("id@@@@@@@@@@@@@@@@@@@@: {}", id);
+        log.debug("findById...");
+        log.debug("id: {}", id);
         Client client = new Client();
         PreparedStatement preparedStatement = null;
-        log.debug("id@@@@@@@@@@@@@@@@@@@@: {}", id);
         try {
-            log.debug("inside try");
-            log.debug("id@@@@@@@@@@@@@@@@@@@@: {}", id);
             preparedStatement = connection.prepareStatement(FIND_CLIENT_BY_ID);
             log.debug("preparedStatement is null: {}", preparedStatement == null);
-            log.debug("my id =" +id );
             preparedStatement.setInt(1, id);
-            log.debug("id@@@@@@@@@@@@@@@@@@@@: {}", id);
             ResultSet resultSet = preparedStatement.executeQuery();
             log.debug("resultSet is null: {}", resultSet == null);
             resultSet.next();
-            log.debug("id@@@@@@@@@@@@@@@@@@@@: {}", id);
             log.debug("resultSet.next()");
-            log.debug("1");
-            log.debug("1111 " + FIND_CLIENT_BY_ID);
-            log.debug("1111" + resultSet.getInt("id"));
-            log.debug("1111" + resultSet.getString("address"));
-            String address = resultSet.getString("address");
-            client.setAddress(address);
-            log.debug("2 "+address);
-            int id1 = resultSet.getInt("id");
-            client.setId(id1);
-            log.debug("3");
+            client.setAddress(resultSet.getString("address"));
+            client.setId(resultSet.getInt("id"));
             client.setBankAccountNumber(resultSet.getString("bankAccountNumber"));
-            log.debug("4");
             client.setCity(resultSet.getString("city"));
-            log.debug("5");
             client.setCountry(resultSet.getString("country"));
-            log.debug("6");
             client.setEmail(resultSet.getString("email"));
-            log.debug("7");
             client.setTelephone(resultSet.getString("telephone"));
-            log.debug("8");
             client.setFirstName(resultSet.getString("firstName"));
-            log.debug("9");
             client.setLastName(resultSet.getString("lastName"));
-            log.debug("10");
             client.setEinSsn(resultSet.getString("einSsn"));
-            log.debug("11");
             client.setClientType(Client.ClientType.valueOf(resultSet.getString("clientType")));
-            log.debug("client.lastName: {}", client.getLastName());
+            log.debug("client is null: {}", client == null);
             return client;
         } catch (SQLException e) {
             throw new DaoException("SQL FIND_CLIENT_BY_ID error.", e);
