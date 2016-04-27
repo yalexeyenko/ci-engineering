@@ -2,12 +2,15 @@ package action;
 
 import dao.DaoException;
 import entity.Project;
+import entity.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import service.ProjectService;
+import service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 public class PassProjectIdAction implements Action {
     private static final Logger log = LoggerFactory.getLogger(PassProjectIdAction.class);
@@ -17,6 +20,7 @@ public class PassProjectIdAction implements Action {
     private ActionResult createClient = new ActionResult("create-client");
     private ActionResult viewClient = new ActionResult("view-client");
     private ActionResult editClient = new ActionResult("edit-client");
+    private ActionResult specifySenior = new ActionResult("specify-senior");
 
     @Override
     public ActionResult execute(HttpServletRequest req, HttpServletResponse resp) {
@@ -27,6 +31,7 @@ public class PassProjectIdAction implements Action {
         log.debug("passParam: {}", passParam);
 
         log.debug("!!!!!!!!!!!!!!!projectId: {}", projectId);
+        UserService userService;
         ProjectService projectService = new ProjectService();
         Project project = null;
         try {
@@ -60,6 +65,21 @@ public class PassProjectIdAction implements Action {
             return viewClient;
         } else if (passParam.equalsIgnoreCase("edit-client")) {
             return editClient;
+        } else if (passParam.equalsIgnoreCase("specify-senior")) {
+            userService = new UserService();
+            List<User> seniors = null;
+            try {
+                seniors = userService.findAllSeniors();
+            } catch (DaoException e) {
+                log.debug("Failed to findAllSeniors()");
+                try {
+                    projectService.close();
+                } catch (Exception ex) {
+                    throw new ActionException("Failed to close service", ex);
+                }
+            }
+            req.setAttribute("seniors", seniors);
+            return specifySenior;
         }
         return null;
     }
