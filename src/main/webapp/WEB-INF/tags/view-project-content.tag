@@ -3,6 +3,7 @@
 <c:url var="edit_main_project_info" value="/do/pass-projectId"/>
 <c:url var="create_client" value="/do/pass-projectId"/>
 <c:url var="view_client" value="/do/pass-projectId"/>
+<c:url var="specify_senior" value="/do/pass-projectId"/>
 <c:url var="css_path" value="${pageContext.request.contextPath}/css"/>
 
 <link rel="stylesheet" href="${css_path}/edit-project-content.css">
@@ -45,10 +46,20 @@
     </h4>
     <h4>Senior engineer:
         <c:if test="${not empty project.senior}">
-            ${project.senior.firstName} ${project.senior.lastName}
+            <a href="
+                <c:url value="${specify_senior}">
+                    <c:param name="projectId" value="${project.id}"></c:param>
+                    <c:param name="passProjectId" value="specify-senior"></c:param>
+                </c:url>
+            ">${project.senior.firstName} ${project.senior.lastName}</a>
         </c:if>
         <c:if test="${empty project.senior}">
-            not specified
+            <a href="
+                <c:url value="${specify_senior}">
+                    <c:param name="projectId" value="${project.id}"></c:param>
+                    <c:param name="passProjectId" value="specify-senior"></c:param>
+                </c:url>
+            ">specify senior engineer</a>
         </c:if>
     </h4>
     <h4>Modules:
