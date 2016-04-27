@@ -46,6 +46,8 @@ public class ActionFactory {
         actions.put("GET/edit-client", new ShowPageAction("edit-client"));
         actions.put("POST/editClientAction", new EditClientAction());
 
+        actions.put("GET/specify-senior", new ShowPageAction("specify-senior"));
+        actions.put("POST/specifySeniorAction", new SpecifySeniorAction());
     }
 
     public Action getAction(String actionName) {
