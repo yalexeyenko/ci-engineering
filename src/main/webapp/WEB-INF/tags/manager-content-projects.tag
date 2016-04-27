@@ -3,6 +3,7 @@
 <c:url var="css_path" value="${pageContext.request.contextPath}/css"/>
 <c:url var="create_project_action" value="/do/create-project"/>
 <c:url var="view_project" value="/do/pass-projectId"/>
+<c:url var="main_page" value="/do/main-page"/>
 
 <link rel="stylesheet" href="${css_path}/manager-content-projects.css">
 
@@ -10,10 +11,7 @@
     manager content projects page
     <div id="navcontainer">
         <ul id="navlist">
-            <li id="active"><a href="#" id="current">Projects</a></li>
-            <li><a href="#">Item 2</a></li>
-            <li><a href="#">Item 3</a></li>
-            <li><a href="#">Item 4</a></li>
+            <li id="active"><a href="${main_page}">Home</a></li>
         </ul>
     </div>
     <a id="create-project" href="${create_project_action}">Create project</a>

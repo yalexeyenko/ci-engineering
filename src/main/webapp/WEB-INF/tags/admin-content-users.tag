@@ -1,17 +1,14 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@tag description="adminContentUsers" pageEncoding="UTF-8" %>
 <c:url var="css_path" value="${pageContext.request.contextPath}/css"/>
-
+<c:url var="main_page" value="/do/main-page"/>
 
 <link rel="stylesheet" href="${css_path}/admin-content-users.css">
 
 <main class="content">
     <div id="navcontainer">
         <ul id="navlist">
-            <li id="active"><a href="#" id="current">Users</a></li>
-            <li><a href="#">Item 2</a></li>
-            <li><a href="#">Item 3</a></li>
-            <li><a href="#">Item 4</a></li>
+            <li id="active"><a href="${main_page}">Home</a></li>
         </ul>
     </div>
     <div id="table-users">

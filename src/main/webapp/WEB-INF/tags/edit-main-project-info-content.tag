@@ -2,10 +2,16 @@
 <%@tag description="editProfileContent" pageEncoding="UTF-8" %>
 <c:url var="edit_main_project_info_post" value="/do/edit-main-project-info-post"/>
 <c:url var="css_path" value="${pageContext.request.contextPath}/css"/>
+<c:url var="main_page" value="/do/main-page"/>
 
 <link rel="stylesheet" href="${css_path}/edit-project-content.css">
 
 <main class="content">
+    <div id="navcontainer">
+        <ul id="navlist">
+            <li id="active"><a href="${main_page}">Home</a></li>
+        </ul>
+    </div>
     <form action="${edit_main_project_info_post}" method="post" name="edit-main-project-info"
           onSubmit="return validate_form(this);">
         <h3>Edit main project info: </h3>

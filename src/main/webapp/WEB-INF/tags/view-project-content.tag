@@ -5,10 +5,16 @@
 <c:url var="view_client" value="/do/pass-projectId"/>
 <c:url var="specify_senior" value="/do/pass-projectId"/>
 <c:url var="css_path" value="${pageContext.request.contextPath}/css"/>
+<c:url var="main_page" value="/do/main-page"/>
 
 <link rel="stylesheet" href="${css_path}/edit-project-content.css">
 
 <main class="content">
+    <div id="navcontainer">
+        <ul id="navlist">
+            <li id="active"><a href="${main_page}">Home</a></li>
+        </ul>
+    </div>
     <h3>Project name: ${project.name}</h3>
     <h4>Start date: ${project.startDate}</h4>
     <h4>Deadline: ${project.deadline}</h4>

@@ -1,11 +1,17 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@tag description="editProfileContent" pageEncoding="UTF-8" %>
 <c:url var="edit_profile_action" value="/do/editProfile"/>
+<c:url var="main_page" value="/do/main-page"/>
 <c:url var="css_path" value="${pageContext.request.contextPath}/css"/>
 
 <link rel="stylesheet" href="${css_path}/edit-profile-content.css">
 
 <main class="content">
+    <div id="navcontainer">
+        <ul id="navlist">
+            <li id="active"><a href="${main_page}">Home</a></li>
+        </ul>
+    </div>
     <form action="${edit_profile_action}" method="post" name="edit_profile" onSubmit="return validate_form(this);">
         <h3>Edit profile</h3>
         <c:if test="${not empty editProfileError}">

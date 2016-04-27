@@ -2,10 +2,16 @@
 <%@tag description="createClientContent" pageEncoding="UTF-8" %>
 <c:url var="edit_client_action" value="/do/editClientAction"/>
 <c:url var="css_path" value="${pageContext.request.contextPath}/css"/>
+<c:url var="main_page" value="/do/main-page"/>
 
 <link rel="stylesheet" href="${css_path}/create-client-content.css">
 
 <main class="content">
+    <div id="navcontainer">
+        <ul id="navlist">
+            <li id="active"><a href="${main_page}">Home</a></li>
+        </ul>
+    </div>
     <form action="${edit_client_action}" method="post" name="create_client" onSubmit="return validate_form(this);">
         <h3>Edit client: </h3>
         <div class="field-wrap">

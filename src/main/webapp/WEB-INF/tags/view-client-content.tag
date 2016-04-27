@@ -2,10 +2,16 @@
 <%@tag description="createClientContent" pageEncoding="UTF-8" %>
 <c:url var="edit_client" value="/do/pass-projectId"/>
 <c:url var="css_path" value="${pageContext.request.contextPath}/css"/>
+<c:url var="main_page" value="/do/main-page"/>
 
 <link rel="stylesheet" href="${css_path}/view-client-content.css">
 
 <main class="content">
+    <div id="navcontainer">
+        <ul id="navlist">
+            <li id="active"><a href="${main_page}">Home</a></li>
+        </ul>
+    </div>
     <h3>Client info</h3>
     <h4>Client name:
         <c:if test="${project.client.clientType eq 'LEGAL'}">${project.client.firstName}</c:if>
