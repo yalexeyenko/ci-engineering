@@ -11,7 +11,7 @@ import java.util.List;
 public class UserDaoImpl implements UserDao {
     private static final Logger log = LoggerFactory.getLogger(UserDaoImpl.class);
 
-    private static final String FIND_USER_BY_ID = "SELECT FROM staff WHERE id = ?";
+    private static final String FIND_USER_BY_ID = "SELECT firstName, id, lastName, email, password, degree, role FROM staff WHERE id = ?";
     private static final String INSERT_USER = "INSERT INTO staff (firstName, lastName, email, password) VALUES (?, ?, ?, ?)";
     private static final String UPDATE_USER = "UPDATE staff SET firstName = ?, lastName = ?, email = ?, password = ?, " +
             "degree = ?, role = ? WHERE id = ?";
@@ -68,19 +68,31 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User findById(int id) throws DaoException {
+        log.debug("findById()...");
+        log.debug("id: {}", id);
         User user = new User();
         PreparedStatement preparedStatement = null;
         try {
             preparedStatement = connection.prepareStatement(FIND_USER_BY_ID);
+            log.debug("preparedStatement is null: {}", preparedStatement == null);
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
+            log.debug("resultSet is null: {}", resultSet == null);
             resultSet.next();
+            log.debug("resultSet.next()");
+            log.debug(resultSet.getInt("id") + "");
             user.setId(resultSet.getInt("id"));
+            log.debug(resultSet.getString("firstName"));
             user.setFirstName(resultSet.getString("firstName"));
+            log.debug(resultSet.getString("lastName"));
             user.setLastName(resultSet.getString("lastName"));
+            log.debug(resultSet.getString("email"));
             user.setEmail(resultSet.getString("email"));
+            log.debug(resultSet.getString("password"));
             user.setPassword(resultSet.getString("password"));
+            log.debug(resultSet.getString("degree"));
             user.setDegree(resultSet.getString("degree"));
+            log.debug(User.Role.valueOf(resultSet.getString("role")).name());
             user.setRole(User.Role.valueOf(resultSet.getString("role")));
             return user;
         } catch (SQLException e) {
