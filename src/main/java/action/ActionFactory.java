@@ -12,9 +12,10 @@ public class ActionFactory {
         actions.put("GET/welcome", new ShowPageAction("welcome"));
 
         actions.put("GET/main-page", new StaffMainPageAction());
-        actions.put("GET/admin-content-action", new AdminContentAction());
-        actions.put("GET/admin-content-staff", new AdminContentStaffAction());
 
+        actions.put("GET/admin-content-action", new AdminContentAction());
+
+        actions.put("GET/admin-content-staff", new AdminContentStaffAction());
 
         actions.put("GET/manager-main", new ShowPageAction("manager-main"));
         actions.put("GET/manager-content-action", new ManagerContentAction());
