@@ -8,7 +8,6 @@
 <link rel="stylesheet" href="${css_path}/manager-content-projects.css">
 
 <main class="content">
-    manager content projects page
     <div id="navcontainer">
         <ul id="navlist">
             <li id="active"><a href="${main_page}">Home</a></li>

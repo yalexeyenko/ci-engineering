@@ -6,7 +6,6 @@
 <link rel="stylesheet" href="${css_path}/engineer-content-projects.css">
 
 <main class="content">
-    engineer content projects page
     <div id="navcontainer">
         <ul id="navlist">
             <li id="active"><a href="${main_page}">Home</a></li>
