@@ -14,16 +14,16 @@ import javax.servlet.http.HttpSession;
 import java.util.Map;
 import java.util.Set;
 
-public class EditProfileAction implements Action {
-    private static final Logger log = LoggerFactory.getLogger(EditProfileAction.class);
+public class EditMainProfileInfoAction implements Action {
+    private static final Logger log = LoggerFactory.getLogger(EditMainProfileInfoAction.class);
 
-    private Validator formValidator;
+    private Validator validator;
 
-    private ActionResult mainPage = new ActionResult("main-page", true);
-    private ActionResult editProfileAgain = new ActionResult("edit-profile");
+    private ActionResult editSuccess = new ActionResult("edit-profile");
+    private ActionResult editAgain = new ActionResult("edit-profile");
 
-    public EditProfileAction() {
-        formValidator = new Validator();
+    public EditMainProfileInfoAction() {
+        validator = new Validator();
     }
 
     @Override
@@ -33,35 +33,19 @@ public class EditProfileAction implements Action {
         String email = req.getParameter("email");
         String degree = req.getParameter("degree");
         String role = req.getParameter("role");
-        String currentPassword = req.getParameter("current_password");
-        String password = req.getParameter("password");
 
         Map<String, String[]> parameterMap = req.getParameterMap();
-        Set<Violation> violations = formValidator.validate(parameterMap);
+        Set<Violation> violations = validator.validateMainUserInfoInput(parameterMap);
 
         HttpSession session = req.getSession(false);
         User currentUser = (User) session.getAttribute("user");
         log.debug("currentUser is null: {}", currentUser == null);
-        if (!currentPassword.equals(currentUser.getPassword())) {
-            Violation violation = new Violation();
-            violation.setName("wrongPasswordViolation");
-            violation.setViolation("Password is wrong");
-            violations.add(violation);
-        }
-        if (currentPassword.equals(password)) {
-            Violation violation = new Violation();
-            violation.setName("duplicatePasswordViolation");
-            violation.setViolation("Password already exists");
-            violations.add(violation);
-        }
 
         if (!violations.isEmpty()) {
             for (Violation violation : violations) {
-                log.debug("violation.getName: {}", violation.getName());
-                log.debug("violation.getViolation: {}", violation.getViolation());
                 req.setAttribute(violation.getName(), violation.getViolation());
             }
-            return editProfileAgain;
+            return editAgain;
         }
 
         currentUser.setFirstName(firstName);
@@ -71,22 +55,21 @@ public class EditProfileAction implements Action {
         if (role != null) {
             currentUser.setRole(User.Role.valueOf(role));
         }
-        currentUser.setPassword(password);
 
         UserService userService = new UserService();
         try {
-            userService.updateUser(currentUser);
+            userService.updateMainProfileInfo(currentUser);
         } catch (DaoException e) {
             try {
                 userService.close();
             } catch (Exception ex) {
                 throw new ActionException("Failed to close service", ex);
             }
-            req.setAttribute("editProfileError", "Email already registered");
-            return editProfileAgain;
+            req.setAttribute("editMainProfileInfoError", "Email already registered");
+            return editAgain;
         }
         req.getSession().setAttribute("user", currentUser);
-        return mainPage;
-
+        req.setAttribute("editMainProfileInfoSuccess", "Changes have been saved successfully.");
+        return editSuccess;
     }
 }
