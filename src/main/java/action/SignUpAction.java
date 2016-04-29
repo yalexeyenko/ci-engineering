@@ -9,19 +9,20 @@ import validator.Violation;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
 public class SignUpAction implements Action {
     private static final Logger log = LoggerFactory.getLogger(SignUpAction.class);
 
-    private Validator formValidator;
+    private Validator validator;
 
     private ActionResult mainPage = new ActionResult("main-page", true);
     private ActionResult singUpAgain = new ActionResult("welcome");
 
     public SignUpAction() {
-        formValidator = new Validator();
+        validator = new Validator();
     }
 
     @Override
@@ -34,7 +35,12 @@ public class SignUpAction implements Action {
 
 
         Map<String, String[]> parameterMap = req.getParameterMap();
-        Set<Violation> violations = formValidator.validate(parameterMap);
+        Set<Violation> violations = validator.validateMainUserInfoInput(parameterMap);
+        Set<Violation> passwordViolations = validator.validatePassword(parameterMap);
+        Set<Violation> violationSum = new HashSet<>(violations);
+        violations.addAll(passwordViolations);
+
+
         log.debug("violations.size(): {}", violations.size());
         if (!violations.isEmpty()) {
             for (Violation violation : violations) {
