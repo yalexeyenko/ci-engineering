@@ -49,8 +49,16 @@ public class UserService implements AutoCloseable {
         }
     }
 
+    public void changePassword(User user) throws DaoException {
+        userDao.updatePassword(user);
+    }
+
     public void updateUser(User user) throws DaoException {
         userDao.update(user);
+    }
+
+    public void updateMainProfileInfo(User user) throws DaoException {
+        userDao.updateMainProfileInfo(user);
     }
 
     public User findUserById(int id) throws DaoException {
