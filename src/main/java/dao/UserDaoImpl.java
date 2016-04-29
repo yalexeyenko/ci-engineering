@@ -15,6 +15,9 @@ public class UserDaoImpl implements UserDao {
     private static final String INSERT_USER = "INSERT INTO staff (firstName, lastName, email, password) VALUES (?, ?, ?, ?)";
     private static final String UPDATE_USER = "UPDATE staff SET firstName = ?, lastName = ?, email = ?, password = ?, " +
             "degree = ?, role = ? WHERE id = ?";
+    private static final String UPDATE_MAIN_USER_INFO = "UPDATE staff SET firstName = ?, lastName = ?, email = ?, degree = ?, " +
+            "role = ? WHERE id = ?";
+    private static final String UPDATE_PASSWORD = "UPDATE staff SET password = ? WHERE id = ?";
     private static final String DELETE_USER_BY_ID = "DELETE FROM staff WHERE id = ?";
     private static final String FIND_ALL = "SELECT * FROM staff";
     private static final String FIND_ALL_SENIORS = "SELECT id, firstName, lastName, email, password, role, degree FROM staff WHERE role = ?";
@@ -127,6 +130,58 @@ public class UserDaoImpl implements UserDao {
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new DaoException("SQL UPDATE error.", e);
+        } finally {
+            if (preparedStatement != null) {
+                try {
+                    preparedStatement.close();
+                } catch (SQLException e) {
+                    throw new DaoException("Failed to close PreparedStatement", e);
+                }
+            }
+        }
+    }
+
+    @Override
+    public void updateMainProfileInfo(User user) throws DaoException {
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = connection.prepareStatement(UPDATE_MAIN_USER_INFO);
+            preparedStatement.setString(1, user.getFirstName());
+            preparedStatement.setString(2, user.getLastName());
+            preparedStatement.setString(3, user.getEmail());
+            preparedStatement.setString(4, user.getDegree());
+            if (user.getRole() == null) {
+                preparedStatement.setString(5, null);
+            } else {
+                preparedStatement.setString(5, user.getRole().name());
+            }
+            preparedStatement.setInt(6, user.getId());
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            log.debug("Failed to updateMainProfileInfo()");
+            throw new DaoException("SQL UPDATE_MAIN_USER_INFO error.", e);
+        } finally {
+            if (preparedStatement != null) {
+                try {
+                    preparedStatement.close();
+                } catch (SQLException e) {
+                    throw new DaoException("Failed to close PreparedStatement", e);
+                }
+            }
+        }
+    }
+
+    @Override
+    public void updatePassword(User user) throws DaoException {
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = connection.prepareStatement(UPDATE_PASSWORD);
+            preparedStatement.setString(1, user.getPassword());
+            preparedStatement.setInt(2, user.getId());
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            log.debug("Failed to updatePassword()");
+            throw new DaoException("SQL UPDATE_PASSWORD error.", e);
         } finally {
             if (preparedStatement != null) {
                 try {
