@@ -45,7 +45,7 @@
                 <div class="field-wrap">
                     <span>Repeat password: </span>
                     <input type="password" name="repeatPassword" placeholder="Repeat password*" id="confirm_password" required/>
-                    <c:if test="${not empty repeatPasswordViolation}">
+                    <c:if test="${not empty repeatPasswordViolation and empty passwordViolation}">
                         <span class="violation">${repeatPasswordViolation}</span>
                     </c:if>
                 </div>
