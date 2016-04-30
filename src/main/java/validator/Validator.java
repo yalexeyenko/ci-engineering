@@ -3,10 +3,10 @@ package validator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import org.joda.time.LocalDate;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class Validator {
     private static final Logger log = LoggerFactory.getLogger(Validator.class);
@@ -18,11 +18,14 @@ public class Validator {
         regexMap.put("lastName", "[A-Za-z0-9]{3,20}$");
         regexMap.put("degree", "[A-Za-z 0-9]{3,60}$");
         regexMap.put("role", "[A-Za-z]{3,20}$");
-        regexMap.put("email", "^[_A-Za-z0-9-\\\\+]+(\\\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\\\.[A-Za-z0-9]+)*(\\\\.[A-Za-z]{2,})$;");
+        regexMap.put("email", "^([\\w-]+(?:\\.[\\w-]+)*)@((?:[\\w-]+\\.)*\\w[\\w-]{0,66})\\.([a-z]{2,6}(?:\\.[a-z]{2})?)$");
 
         regexMap.put("password", "^[A-Za-z0-9!@#$%^&*()_]{6,20}$");
         regexMap.put("current-password", "^[A-Za-z0-9!@#$%^&*()_]{6,20}$");
         regexMap.put("repeatPassword", "^[A-Za-z0-9!@#$%^&*()_]{6,20}$");
+
+        regexMap.put("projectName", "[A-Za-z 0-9]{3,60}$");
+
     }
 
     public Validator() {
@@ -34,7 +37,12 @@ public class Validator {
         for (Map.Entry<String, String[]> entry : parameterMap.entrySet()) {
             String value = entry.getValue()[0];
             String key = entry.getKey();
-            String regex = regexMap.get(key);
+            String regex = null;
+            if (regexMap.containsKey(key)) {
+                regex = regexMap.get(key);
+            } else {
+                continue;
+            }
             log.debug("key: {}", key);
             log.debug("value: {}", value);
             log.debug("regex: {}", regex);
@@ -73,10 +81,65 @@ public class Validator {
         return violations;
     }
 
+    public Set<Violation> validateProjectCreation(Map<String, String[]> parameterMap) {
+        log.debug("validateProjectCreation()...");
+        Set<Violation> violations = new HashSet<>();
+        for (Map.Entry<String, String[]> entry : parameterMap.entrySet()) {
+            String key = entry.getKey();
+            String value = entry.getValue()[0];
+            String regex;
+            if (key.equals("projectName")) {
+                if (regexMap.containsKey(key)) {
+                    regex = regexMap.get(key);
+                    if (!value.matches(regex)) {
+                        addViolation(key, violations, "Please specify a valid project name.");
+                    }
+                }
+            } else if (key.equals("projectDeadline")) {
+                if (!validateDate(value)) {
+                    addViolation(key, violations, "Please specify a valid date.");
+                } else if (validateDate(value)) {
+                    if (!validateDateRange(value)) {
+                        addViolation(key, violations, "Verify your date.");
+                    }
+                }
+            }
+        }
+        return violations;
+    }
+
+    private boolean validateDateRange(String value) {
+        LocalDate recivedDate = new LocalDate(value);
+        LocalDate minDate = new LocalDate();
+        LocalDate maxDate = new LocalDate("2050-01-01");
+        if (recivedDate.isBefore(minDate) || recivedDate.isAfter(maxDate)) {
+            return false;
+        }
+        return true;
+    }
+
     public void addViolation(String key, Set<Violation> violations) {
         Violation violation = new Violation();
         violation.setName(key + "Violation");
         violation.setViolation("Please specify a valid " + key);
         violations.add(violation);
+    }
+
+    public void addViolation(String key, Set<Violation> violations, String violationString) {
+        Violation violation = new Violation();
+        violation.setName(key + "Violation");
+        violation.setViolation(violationString);
+        violations.add(violation);
+    }
+
+    public boolean validateDate(String dateString) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        sdf.setLenient(false);
+        try {
+            Date date = sdf.parse(dateString);
+            return true;
+        } catch (ParseException e) {
+            return false;
+        }
     }
 }
