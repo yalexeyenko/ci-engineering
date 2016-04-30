@@ -56,6 +56,7 @@ public class SignUpAction implements Action {
         user.setLastName(lastName);
         user.setEmail(email);
         user.setPassword(password);
+        user.setRole(User.Role.GUEST);
 
         UserService userService = new UserService();
         user = userService.createUser(user);
