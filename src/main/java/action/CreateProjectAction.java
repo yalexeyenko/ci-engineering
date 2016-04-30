@@ -19,7 +19,7 @@ public class CreateProjectAction implements Action {
 
     private Validator validator;
 
-    private ActionResult mainPage = new ActionResult("main-page", true);
+    private ActionResult created = new ActionResult("create-project");
     private ActionResult createProjectAgain = new ActionResult("create-project");
 
     public CreateProjectAction() {
@@ -64,7 +64,8 @@ public class CreateProjectAction implements Action {
         }
 
         req.setAttribute("project", currentProject);
-        return mainPage;
+        req.setAttribute("projectCreatedSuccess", "Project successfully created.");
+        return created;
 
     }
 }
