@@ -120,7 +120,8 @@ public class User extends BaseEntity {
         ADMIN,
         MANAGER,
         SENIOR,
-        ENGINEER
+        ENGINEER,
+        GUEST
     }
 
     @Override
