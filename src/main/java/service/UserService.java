@@ -57,11 +57,17 @@ public class UserService implements AutoCloseable {
         userDao.update(user);
     }
 
+    public void changeUserRole(User user) throws DaoException {
+        log.debug("changeUserRole()...");
+        userDao.updateRole(user);
+    }
+
     public void updateMainProfileInfo(User user) throws DaoException {
         userDao.updateMainProfileInfo(user);
     }
 
     public User findUserById(int id) throws DaoException {
+        log.debug("findUserById()...");
         return userDao.findById(id);
     }
 
