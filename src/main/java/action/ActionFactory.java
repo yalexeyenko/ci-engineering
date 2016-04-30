@@ -16,6 +16,9 @@ public class ActionFactory {
         actions.put("GET/admin-content-action", new AdminContentAction());
 
         actions.put("GET/admin-content-staff", new AdminContentStaffAction());
+        actions.put("GET/admin-view-user", new ShowPageAction("admin-view-user"));
+        actions.put("GET/pass-userId", new PassUserIdAction());
+        actions.put("POST/change-role", new ChangeRoleAction());
 
         actions.put("GET/manager-content-projects", new ManagerContentProjectsAction());
         actions.put("GET/manager-content-action", new ManagerContentAction());
