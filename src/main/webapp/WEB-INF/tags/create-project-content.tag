@@ -30,6 +30,9 @@
             </c:if>
         </div>
         <button class="create-project-button" type="submit"/>Create</button>
+        <c:if test="${not empty projectCreatedSuccess}">
+            <span class="created-message">${projectCreatedSuccess}</span>
+        </c:if>
     </form>
 </main>
 
