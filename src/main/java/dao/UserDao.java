@@ -9,4 +9,5 @@ public interface UserDao extends Dao<User> {
     List<User> findAllSeniors() throws DaoException;
     void updateMainProfileInfo(User user) throws DaoException;
     void updatePassword(User user) throws DaoException;
+    void updateRole(User user) throws DaoException;
 }
