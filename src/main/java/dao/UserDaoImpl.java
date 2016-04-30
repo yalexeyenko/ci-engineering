@@ -12,12 +12,13 @@ public class UserDaoImpl implements UserDao {
     private static final Logger log = LoggerFactory.getLogger(UserDaoImpl.class);
 
     private static final String FIND_USER_BY_ID = "SELECT firstName, id, lastName, email, password, degree, role FROM staff WHERE id = ?";
-    private static final String INSERT_USER = "INSERT INTO staff (firstName, lastName, email, password) VALUES (?, ?, ?, ?)";
+    private static final String INSERT_USER = "INSERT INTO staff (firstName, lastName, email, password, role) VALUES (?, ?, ?, ?, ?)";
     private static final String UPDATE_USER = "UPDATE staff SET firstName = ?, lastName = ?, email = ?, password = ?, " +
             "degree = ?, role = ? WHERE id = ?";
     private static final String UPDATE_MAIN_USER_INFO = "UPDATE staff SET firstName = ?, lastName = ?, email = ?, degree = ?, " +
             "role = ? WHERE id = ?";
     private static final String UPDATE_PASSWORD = "UPDATE staff SET password = ? WHERE id = ?";
+    private static final String UPDATE_USER_ROLE = "UPDATE staff SET role = ? WHERE id = ?";
     private static final String DELETE_USER_BY_ID = "DELETE FROM staff WHERE id = ?";
     private static final String FIND_ALL = "SELECT * FROM staff";
     private static final String FIND_ALL_SENIORS = "SELECT id, firstName, lastName, email, password, role, degree FROM staff WHERE role = ?";
@@ -46,6 +47,7 @@ public class UserDaoImpl implements UserDao {
             preparedStatement.setString(2, user.getLastName());
             preparedStatement.setString(3, user.getEmail());
             preparedStatement.setString(4, user.getPassword());
+            preparedStatement.setString(5, user.getRole().name());
             log.debug("before executeQuery");
             preparedStatement.executeUpdate();
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
@@ -82,20 +84,14 @@ public class UserDaoImpl implements UserDao {
             ResultSet resultSet = preparedStatement.executeQuery();
             log.debug("resultSet is null: {}", resultSet == null);
             resultSet.next();
-            log.debug("resultSet.next()");
-            log.debug(resultSet.getInt("id") + "");
             user.setId(resultSet.getInt("id"));
-            log.debug(resultSet.getString("firstName"));
             user.setFirstName(resultSet.getString("firstName"));
-            log.debug(resultSet.getString("lastName"));
             user.setLastName(resultSet.getString("lastName"));
-            log.debug(resultSet.getString("email"));
             user.setEmail(resultSet.getString("email"));
-            log.debug(resultSet.getString("password"));
             user.setPassword(resultSet.getString("password"));
-            log.debug(resultSet.getString("degree"));
-            user.setDegree(resultSet.getString("degree"));
-            log.debug(User.Role.valueOf(resultSet.getString("role")).name());
+            if (resultSet.getString("degree") != null) {
+                user.setDegree(resultSet.getString("degree"));
+            }
             user.setRole(User.Role.valueOf(resultSet.getString("role")));
             return user;
         } catch (SQLException e) {
@@ -182,6 +178,31 @@ public class UserDaoImpl implements UserDao {
         } catch (SQLException e) {
             log.debug("Failed to updatePassword()");
             throw new DaoException("SQL UPDATE_PASSWORD error.", e);
+        } finally {
+            if (preparedStatement != null) {
+                try {
+                    preparedStatement.close();
+                } catch (SQLException e) {
+                    throw new DaoException("Failed to close PreparedStatement", e);
+                }
+            }
+        }
+    }
+
+    @Override
+    public void updateRole(User user) throws DaoException {
+        log.debug("updateRole()...");
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = connection.prepareStatement(UPDATE_USER_ROLE);
+            log.debug("user.getRole().name(): {}", user.getRole().name());
+            log.debug("user.getInt: {}", user.getId());
+            preparedStatement.setString(1, user.getRole().name());
+            preparedStatement.setInt(2, user.getId());
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            log.debug("Failed to updateRole()");
+            throw new DaoException("SQL UPDATE_USER_ROLE error.", e);
         } finally {
             if (preparedStatement != null) {
                 try {
