@@ -42,6 +42,7 @@ public class PassProjectIdAction implements Action {
             log.debug("project: {}", project);
 
         } catch (DaoException e) {
+            log.debug("Failed to findProjectById()");
             try {
                 projectService.close();
             } catch (Exception ex) {
@@ -81,6 +82,6 @@ public class PassProjectIdAction implements Action {
             req.setAttribute("seniors", seniors);
             return specifySenior;
         }
-        return null;
+        return null;// todo error page
     }
 }
