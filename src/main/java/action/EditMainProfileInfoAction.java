@@ -60,6 +60,7 @@ public class EditMainProfileInfoAction implements Action {
         try {
             userService.updateMainProfileInfo(currentUser);
         } catch (DaoException e) {
+            log.debug("Failed to updateMainProfileInfo()");
             try {
                 userService.close();
             } catch (Exception ex) {
