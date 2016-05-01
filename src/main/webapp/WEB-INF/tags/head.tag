@@ -4,6 +4,6 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Welcome!</title>
+    <title>CI Engineering</title>
     <link rel="stylesheet" href="${css_path}/default.css">
 </head>
