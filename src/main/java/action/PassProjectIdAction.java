@@ -56,6 +56,11 @@ public class PassProjectIdAction implements Action {
         }
 
         req.setAttribute("project", project);
+        req.setAttribute("projectId", project.getId());
+        req.setAttribute("projectName", project.getName());
+        req.setAttribute("projectStartDate", project.getStartDate());
+        req.setAttribute("projectDeadline", project.getDeadline());
+        req.setAttribute("projectFinished", project.isFinished());
         if (passParam.equalsIgnoreCase("view-project")) {
             return viewProject;
         } else if (passParam.equalsIgnoreCase("edit-main-project-info")) {
