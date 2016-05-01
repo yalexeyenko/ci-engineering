@@ -87,13 +87,6 @@
                 </c:if>
             </c:if>
         </div>
-        <%--<c:url value="${change_password}">--%>
-            <%--<c:param name="userFirstName" value="${userFirstName}"></c:param>--%>
-            <%--<c:param name="userLastName" value="${userLastName}"></c:param>--%>
-            <%--<c:param name="userEmail" value="${userEmail}"></c:param>--%>
-            <%--<c:param name="userDegree" value="${userDegree}"></c:param>--%>
-            <%--<c:param name="userRole" value="${userRole}"></c:param>--%>
-        <%--</c:url>--%>
         <input type="hidden" name="userFirstName" value="${userFirstName}" value=""/>
         <input type="hidden" name="userLastName" value="${userLastName}" value=""/>
         <input type="hidden" name="userEmail" value="${userEmail}" value=""/>
