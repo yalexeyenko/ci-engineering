@@ -43,7 +43,7 @@ public class ActionFactory {
         actions.put("GET/pass-projectId", new PassProjectIdAction());
         actions.put("GET/view-project", new ShowPageAction("view-project"));
         actions.put("GET/edit-main-project-info", new ShowPageAction("edit-main-project-info"));
-        actions.put("POST/edit-main-project-info-post", new EditMainProjectInfoPostAction());
+        actions.put("POST/edit-main-project-info", new EditMainProjectInfoAction());
 
         actions.put("GET/create-client", new ShowPageAction("create-client"));
         actions.put("POST/createClientAction", new CreateClientAction());
