@@ -16,6 +16,7 @@ public class PassUserIdAction implements Action {
     private static final Logger log = LoggerFactory.getLogger(PassUserIdAction.class);
 
     private ActionResult adminViewUser = new ActionResult("admin-view-user");
+    private ActionResult editProfile = new ActionResult("edit-profile");
 
     @Override
     public ActionResult execute(HttpServletRequest req, HttpServletResponse resp) {
@@ -48,6 +49,18 @@ public class PassUserIdAction implements Action {
         req.setAttribute("adUser", user);
         if (passParam.equalsIgnoreCase("admin-view-user")) {
             return adminViewUser;
+        } else if (passParam.equalsIgnoreCase("edit-user")) {
+            req.setAttribute("userId", user.getId());
+            req.setAttribute("userFirstName", user.getFirstName());
+            req.setAttribute("userLastName", user.getLastName());
+            req.setAttribute("userEmail", user.getEmail());
+            if (user.getDegree() != null) {
+                req.setAttribute("userDegree", user.getDegree());
+            }
+            if (user.getRole() != null) {
+                req.setAttribute("userRole", user.getRole());
+            }
+            return editProfile;
         }
         return null;// todo error page
     }
