@@ -21,23 +21,23 @@
         </c:if>
         <div class="field-wrap">
             <span>First name: </span>
-            <input type="text" name="firstName" value="${user.firstName}" placeholder="First name*" required/>
-            <c:if test="${not empty firstNameViolation}">
-                <span class="violation">${firstNameViolation}</span>
+            <input type="text" name="userFirstName" value="${userFirstName}" placeholder="First name*" required/>
+            <c:if test="${not empty userFirstNameViolation}">
+                <span class="violation">${userFirstNameViolation}</span>
             </c:if>
         </div>
         <div class="field-wrap">
             <span>Last name: </span>
-            <input type="text" name="lastName" value="${user.lastName}" placeholder="Last name*" required/>
-            <c:if test="${not empty lastNameViolation}">
-                <span class="violation">${lastNameViolation}</span>
+            <input type="text" name="userLastName" value="${userLastName}" placeholder="Last name*" required/>
+            <c:if test="${not empty userLastNameViolation}">
+                <span class="violation">${userLastNameViolation}</span>
             </c:if>
         </div>
         <div class="field-wrap">
             <span>Email: </span>
-            <input type="text" name="email" value="${user.email}" placeholder="Enter email*" required/>
-            <c:if test="${not empty emailViolation}">
-                <span class="violation">${emailViolation}</span>
+            <input type="text" name="userEmail" value="${userEmail}" placeholder="Enter email*" required/>
+            <c:if test="${not empty userEmailViolation}">
+                <span class="violation">${userEmailViolation}</span>
             </c:if>
             <c:if test="${not empty editMainProfileInfoError}">
                 <span class="violation">${editMainProfileInfoError}</span>
@@ -45,12 +45,12 @@
         </div>
         <div class="field-wrap">
             <span>Degree: </span>
-            <input type="text" name="degree" value="${user.degree}" placeholder="Degree*" required/>
-            <c:if test="${not empty degreeViolation}">
-                <span class="violation">${degreeViolation}</span>
+            <input type="text" name="userDegree" value="${userDegree}" placeholder="Degree*" required/>
+            <c:if test="${not empty userDegreeViolation}">
+                <span class="violation">${userDegreeViolation}</span>
             </c:if>
         </div>
-        <button class="save-main-info" type="Save"/>Save changes</button>
+        <button class="save-main-info" type="save"/>Save changes</button>
         <c:if test="${not empty editMainProfileInfoSuccess}">
             <span class="success-edit">${editMainProfileInfoSuccess}</span>
         </c:if>
@@ -87,6 +87,18 @@
                 </c:if>
             </c:if>
         </div>
+        <%--<c:url value="${change_password}">--%>
+            <%--<c:param name="userFirstName" value="${userFirstName}"></c:param>--%>
+            <%--<c:param name="userLastName" value="${userLastName}"></c:param>--%>
+            <%--<c:param name="userEmail" value="${userEmail}"></c:param>--%>
+            <%--<c:param name="userDegree" value="${userDegree}"></c:param>--%>
+            <%--<c:param name="userRole" value="${userRole}"></c:param>--%>
+        <%--</c:url>--%>
+        <input type="hidden" name="userFirstName" value="${userFirstName}" value=""/>
+        <input type="hidden" name="userLastName" value="${userLastName}" value=""/>
+        <input type="hidden" name="userEmail" value="${userEmail}" value=""/>
+        <input type="hidden" name="userDegree" value="${userDegree}" value=""/>
+        <input type="hidden" name="userRole" value="${userRole}" value=""/>
         <button class="change-password" type="submit"/>Change password</button>
         <c:if test="${not empty changePasswordSuccess}">
             <span class="success-edit">${changePasswordSuccess}</span>

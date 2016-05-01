@@ -1,6 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@tag description="editProfileContent" pageEncoding="UTF-8" %>
-<c:url var="edit_main_project_info" value="/do/edit-main-project-info"/>
+<c:url var="edit_main_project_info" value="/do/edit-main-project-info-post"/>
 <c:url var="css_path" value="${pageContext.request.contextPath}/css"/>
 <c:url var="main_page" value="/do/main-page"/>
 
