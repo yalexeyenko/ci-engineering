@@ -31,6 +31,18 @@ public class ChangePasswordAction implements Action {
         log.debug("execute()...");
         String currentPassword = req.getParameter("current-password");
         String password = req.getParameter("password");
+
+        String firstName = req.getParameter("userFirstName");
+        String lastName = req.getParameter("userLastName");
+        String email = req.getParameter("userEmail");
+        String degree = req.getParameter("userDegree");
+        String role = req.getParameter("userRole");
+
+        log.debug(firstName);
+        log.debug(lastName);
+        log.debug(email);
+        log.debug(degree);
+        log.debug(role);
         log.debug(currentPassword);
         log.debug(password);
 
@@ -53,6 +65,14 @@ public class ChangePasswordAction implements Action {
                 log.debug("violation.getViolation: {}", violation.getViolation());
                 req.setAttribute(violation.getName(), violation.getViolation());
             }
+            req.setAttribute("userFirstName", firstName);
+            req.setAttribute("userLastName", lastName);
+            req.setAttribute("userEmail", email);
+            req.setAttribute("userDegree", degree);
+            if (currentUser.getRole() != null) {
+                req.setAttribute("userRole", role);
+            }
+            req.setAttribute("current-password", currentPassword);
             return editAgain;
         }
 
@@ -72,6 +92,15 @@ public class ChangePasswordAction implements Action {
         }
         req.getSession().setAttribute("user", currentUser);
         req.setAttribute("changePasswordSuccess", "Successfully changed password.");
+
+        req.setAttribute("userFirstName", firstName);
+        req.setAttribute("userLastName", lastName);
+        req.setAttribute("userEmail", email);
+        req.setAttribute("userDegree", degree);
+        if (currentUser.getRole() != null) {
+            req.setAttribute("userRole", role);
+        }
+        req.setAttribute("current-password", currentPassword);
         return editSuccess;
 
     }
