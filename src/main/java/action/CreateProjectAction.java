@@ -35,7 +35,7 @@ public class CreateProjectAction implements Action {
         log.debug("projectDeadline: {}", projectDeadline);
 
         Map<String, String[]> parameterMap = req.getParameterMap();
-        Set<Violation> violations = validator.validateProjectCreation(parameterMap);
+        Set<Violation> violations = validator.validateProjectInfo(parameterMap);
 
         log.debug("violations.size(): {}", violations.size());
         if (!violations.isEmpty()) {
@@ -43,6 +43,7 @@ public class CreateProjectAction implements Action {
                 req.setAttribute(violation.getName(), violation.getViolation());
             }
             req.setAttribute("unsavedName", projectName);
+            req.setAttribute("unsavedDeadline", projectDeadline);
             return createProjectAgain;
         }
 
