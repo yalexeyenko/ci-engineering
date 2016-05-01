@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.joda.time.LocalDate;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -81,10 +82,13 @@ public class Validator {
         return violations;
     }
 
-    public Set<Violation> validateProjectCreation(Map<String, String[]> parameterMap) {
-        log.debug("validateProjectCreation()...");
+    public Set<Violation> validateProjectInfo(Map<String, String[]> parameterMap) {
+        log.debug("validateProjectInfo()...");
         Set<Violation> violations = new HashSet<>();
         for (Map.Entry<String, String[]> entry : parameterMap.entrySet()) {
+            if (entry.getKey().equals("projectId") || entry.getKey().equals("projectFinished")) {
+                continue;
+            }
             String key = entry.getKey();
             String value = entry.getValue()[0];
             String regex;
@@ -95,7 +99,7 @@ public class Validator {
                         addViolation(key, violations, "Please specify a valid project name.");
                     }
                 }
-            } else if (key.equals("projectDeadline")) {
+            } else if (key.equals("projectDeadline") || key.equals("projectStartDate")) {
                 if (!validateDate(value)) {
                     addViolation(key, violations, "Please specify a valid date.");
                 } else if (validateDate(value)) {
@@ -119,10 +123,7 @@ public class Validator {
     }
 
     public void addViolation(String key, Set<Violation> violations) {
-        Violation violation = new Violation();
-        violation.setName(key + "Violation");
-        violation.setViolation("Please specify a valid " + key);
-        violations.add(violation);
+        addViolation(key, violations, "Please specify a valid " + key);
     }
 
     public void addViolation(String key, Set<Violation> violations, String violationString) {
