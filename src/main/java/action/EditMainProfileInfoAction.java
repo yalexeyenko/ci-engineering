@@ -28,14 +28,15 @@ public class EditMainProfileInfoAction implements Action {
 
     @Override
     public ActionResult execute(HttpServletRequest req, HttpServletResponse resp) {
-        String firstName = req.getParameter("firstName");
-        String lastName = req.getParameter("lastName");
-        String email = req.getParameter("email");
-        String degree = req.getParameter("degree");
-        String role = req.getParameter("role");
+        String firstName = req.getParameter("userFirstName");
+        String lastName = req.getParameter("userLastName");
+        String email = req.getParameter("userEmail");
+        String degree = req.getParameter("userDegree");
+        String role = req.getParameter("userRole");
 
         Map<String, String[]> parameterMap = req.getParameterMap();
         Set<Violation> violations = validator.validateMainUserInfoInput(parameterMap);
+        log.debug("violations.size(): {}", violations.size());
 
         HttpSession session = req.getSession(false);
         User currentUser = (User) session.getAttribute("user");
@@ -44,6 +45,13 @@ public class EditMainProfileInfoAction implements Action {
         if (!violations.isEmpty()) {
             for (Violation violation : violations) {
                 req.setAttribute(violation.getName(), violation.getViolation());
+            }
+            req.setAttribute("userFirstName", firstName);
+            req.setAttribute("userLastName", lastName);
+            req.setAttribute("userEmail", email);
+            req.setAttribute("userDegree", degree);
+            if (currentUser.getRole() != null) {
+                req.setAttribute("userRole", role);
             }
             return editAgain;
         }
@@ -71,6 +79,14 @@ public class EditMainProfileInfoAction implements Action {
         }
         req.getSession().setAttribute("user", currentUser);
         req.setAttribute("editMainProfileInfoSuccess", "Changes have been saved successfully.");
+
+        req.setAttribute("userFirstName", firstName);
+        req.setAttribute("userLastName", lastName);
+        req.setAttribute("userEmail", email);
+        req.setAttribute("userDegree", degree);
+        if (currentUser.getRole() != null) {
+            req.setAttribute("userRole", role);
+        }
         return editSuccess;
     }
 }
