@@ -37,9 +37,6 @@
                 <c:if test="${project.client.clientType eq 'LEGAL'}">${project.client.firstName}</c:if>
                 <c:if test="${project.client.clientType eq 'INDIVIDUAL'}">${project.client.firstName} ${project.client.lastName}</c:if>
             </a>
-
-            <%--<c:if test="${project.client.clientType eq 'LEGAL'}">${project.client.firstName}</c:if>--%>
-            <%--<c:if test="${project.client.clientType eq 'INDIVIDUAL'}">${project.client.firstName} ${project.client.lastName}</c:if>--%>
         </c:if>
         <c:if test="${empty project.client}">
             <a href="
