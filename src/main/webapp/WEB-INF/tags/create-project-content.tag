@@ -24,7 +24,7 @@
         </div>
         <div class="field-wrap">
             <span>Choose deadline: </span>
-            <input type="date" id="project-deadline" name="projectDeadline" min="2016-01-01" max="2050-01-01" required>
+            <input type="date" value="${unsavedDeadline}" id="project-deadline" name="projectDeadline" min="2016-01-01" max="2050-01-01" required>
             <c:if test="${not empty projectDeadlineViolation}">
                 <span class="violation">${projectDeadlineViolation}</span>
             </c:if>
@@ -35,6 +35,3 @@
         </c:if>
     </form>
 </main>
-
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-<script type="text/javascript" src="${js_path}/current-date.js"></script>
