@@ -15,11 +15,11 @@ public class Validator {
     private static Map<String, String> regexMap = new HashMap<>();
 
     static {
-        regexMap.put("firstName", "[A-Za-z0-9]{3,20}$");
-        regexMap.put("lastName", "[A-Za-z0-9]{3,20}$");
-        regexMap.put("degree", "[A-Za-z 0-9]{3,60}$");
-        regexMap.put("role", "[A-Za-z]{3,20}$");
-        regexMap.put("email", "^([\\w-]+(?:\\.[\\w-]+)*)@((?:[\\w-]+\\.)*\\w[\\w-]{0,66})\\.([a-z]{2,6}(?:\\.[a-z]{2})?)$");
+        regexMap.put("userFirstName", "[A-Za-z0-9]{3,20}$");
+        regexMap.put("userLastName", "[A-Za-z0-9]{3,20}$");
+        regexMap.put("userDegree", "[A-Za-z 0-9]{3,60}$");
+        regexMap.put("userRole", "[A-Za-z]{3,20}$");
+        regexMap.put("userEmail", "^([\\w-]+(?:\\.[\\w-]+)*)@((?:[\\w-]+\\.)*\\w[\\w-]{0,66})\\.([a-z]{2,6}(?:\\.[a-z]{2})?)$");
 
         regexMap.put("password", "^[A-Za-z0-9!@#$%^&*()_]{6,20}$");
         regexMap.put("current-password", "^[A-Za-z0-9!@#$%^&*()_]{6,20}$");
@@ -38,7 +38,7 @@ public class Validator {
         for (Map.Entry<String, String[]> entry : parameterMap.entrySet()) {
             String value = entry.getValue()[0];
             String key = entry.getKey();
-            String regex = null;
+            String regex;
             if (regexMap.containsKey(key)) {
                 regex = regexMap.get(key);
             } else {
@@ -96,6 +96,7 @@ public class Validator {
                 if (regexMap.containsKey(key)) {
                     regex = regexMap.get(key);
                     if (!value.matches(regex)) {
+                        log.debug(value + " matches " + regex + ": {}", value.matches(regex));
                         addViolation(key, violations, "Please specify a valid project name.");
                     }
                 }
