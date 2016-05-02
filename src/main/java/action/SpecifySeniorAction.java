@@ -26,74 +26,42 @@ public class SpecifySeniorAction implements Action {
         log.debug("seniorId: {}", seniorId);
         log.debug("projectId: {}", projectId);
 
-        ProjectService projectService = new ProjectService();
-        UserService userService = new UserService();
 
         Project project;
         User senior;
 
 
-        try {
+        try (ProjectService projectService = new ProjectService()) {
             log.debug("findProjectById()");
             project = projectService.findProjectById(Integer.valueOf(projectId));
-        } catch (DaoException e) {
+        } catch (Exception e) {
             log.debug("Failed to findProjectById()");
-            try {
-                projectService.close();
-            } catch (Exception ex) {
-                throw new ActionException("Failed to close service", ex);
-            }
-            req.setAttribute("specifySeniorError", "Verify your data. Cannot specify senior engineer.");
-            req.setAttribute("seniorId", seniorId);
-            req.setAttribute("projectId", projectId);
-            return specifySeniorAgain;
+            throw new ActionException("Failed to close service", e);
         }
-        try {
-            log.debug("findUserById()");
-            Integer seniorIdInt = Integer.valueOf(seniorId);
-            log.debug("seniorIdInt: {}", seniorIdInt);
-            senior = userService.findUserById(seniorIdInt);
-        } catch (DaoException e) {
+
+        try (UserService userService = new UserService()) {
+            senior = userService.findUserById(Integer.valueOf(seniorId));
+        } catch (Exception e) {
             log.debug("Failed to findUserById()");
-            try {
-                userService.close();
-            } catch (Exception ex) {
-                throw new ActionException("Failed to close service", ex);
-            }
-            req.setAttribute("specifySeniorError", "Verify your data. Cannot specify senior engineer.");
-            return specifySeniorAgain;
+            throw new ActionException("Failed to close service", e);
         }
+
         project.setSenior(senior);
-        try {
+
+        try (ProjectService projectService = new ProjectService()) {
             log.debug("updateProjectSenior()");
             projectService.updateProjectSenior(project);
-        } catch (DaoException e) {
-            log.debug("Failed to updateProjectSenior()");
-            try {
-                projectService.close();
-            } catch (Exception ex) {
-                throw new ActionException("Failed to close service", ex);
-            }
-            req.setAttribute("specifySeniorError", "Verify your data. Cannot specify senior engineer.");
-            return specifySeniorAgain;
-        }
-        userService = new UserService();
-        List<User> seniors = null;
-        try {
-            seniors = userService.findAllSeniors();
-        } catch (DaoException e) {
-            log.debug("Failed to findAllSeniors()");
-            try {
-                projectService.close();
-            } catch (Exception ex) {
-                throw new ActionException("Failed to close service", ex);
-            }
-        }
-        try {
-            projectService.close();
-            userService.close();
         } catch (Exception e) {
-            throw new ActionException("Failed to close service", e);
+            log.debug("Failed to updateProjectSenior()");
+                throw new ActionException("Failed to close service", e);
+        }
+
+        List<User> seniors;
+        try(UserService userService = new UserService()) {
+            seniors = userService.findAllSeniors();
+        } catch (Exception e) {
+            log.debug("Failed to findAllSeniors()");
+                throw new ActionException("Failed to close service", e);
         }
 
         if (project.getSenior() != null) {
