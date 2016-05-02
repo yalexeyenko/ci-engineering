@@ -26,19 +26,13 @@ public class PassUserIdAction implements Action {
         log.debug("userId: {}", userId);
         log.debug("passUserId: {}", passParam);
 
-        UserService userService = new UserService();
-        User user = null;
-        try {
-            Integer integer = Integer.valueOf(userId);
-            log.debug("integer: {}", integer);
-            user = userService.findUserById(integer);
-        } catch (DaoException e) {
+        User user;
+
+        try (UserService userService = new UserService();) {
+            user = userService.findUserById(Integer.valueOf(userId));
+        } catch (Exception e) {
             log.debug("Failed to findUserById()");
-            try {
-                userService.close();
-            } catch (Exception ex) {
-                throw new ActionException("Failed to close service", ex);
-            }
+                throw new ActionException("Failed to close service", e);
         }
 
         req.setAttribute("adUser", user);
@@ -57,12 +51,6 @@ public class PassUserIdAction implements Action {
             }
             return editProfile;
         }
-
-        try {
-            userService.close();
-        } catch (Exception ex) {
-            throw new ActionException("Failed to close service", ex);
-        }
-        return null;// todo error page
+        return null;// todo
     }
 }

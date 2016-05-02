@@ -30,23 +30,16 @@ public class PassProjectIdAction implements Action {
         log.debug("projectId: {}", projectId);
         log.debug("passParam: {}", passParam);
 
-        UserService userService = null;
-        ProjectService projectService = new ProjectService();
-        Project project = null;
-        try {
-            Integer integer = Integer.valueOf(projectId);
-            log.debug("integer: {}", integer);
-            project = projectService.findProjectById(integer);
-            log.debug("after integer: {}", integer);
-            log.debug("project: {}", project);
 
-        } catch (DaoException e) {
-            log.debug("Failed to findProjectById()");
-            try {
-                projectService.close();
-            } catch (Exception ex) {
-                throw new ActionException("Failed to close service", ex);
-            }
+        Project project;
+
+        try (ProjectService projectService = new ProjectService()) {
+            log.debug("projectService created");
+            project = projectService.findProjectById(Integer.valueOf(projectId));
+            log.debug("project: {}", project);
+        } catch (Exception e) {
+            log.debug("Failed to findProjectById");
+            throw new ActionException("Failed to findProjectById", e);
         }
 
         req.setAttribute("project", project);
@@ -55,6 +48,7 @@ public class PassProjectIdAction implements Action {
         req.setAttribute("projectStartDate", project.getStartDate());
         req.setAttribute("projectDeadline", project.getDeadline());
         req.setAttribute("projectFinished", project.isFinished());
+
         if (passParam.equalsIgnoreCase("view-project")) {
             return viewProject;
         } else if (passParam.equalsIgnoreCase("edit-main-project-info")) {
@@ -81,17 +75,13 @@ public class PassProjectIdAction implements Action {
             req.setAttribute("countriesMap", getCountries());
             return editClient;
         } else if (passParam.equalsIgnoreCase("specify-senior")) {
-            userService = new UserService();
-            List<User> seniors = null;
-            try {
+            List<User> seniors;
+            try (UserService userService = new UserService();) {
+                log.debug("userService created");
                 seniors = userService.findAllSeniors();
-            } catch (DaoException e) {
-                log.debug("Failed to findAllSeniors()");
-                try {
-                    projectService.close();
-                } catch (Exception ex) {
-                    throw new ActionException("Failed to close service", ex);
-                }
+            } catch (Exception e) {
+                log.debug("Failed to findAllSeniors");
+                throw new ActionException("Failed to findAllSeniors", e);
             }
             if (project.getSenior() != null) {
                 req.setAttribute("projectSenior", project.getSenior());
@@ -102,13 +92,7 @@ public class PassProjectIdAction implements Action {
             req.setAttribute("seniors", seniors);
             return specifySenior;
         }
-        try {
-            userService.close();
-            projectService.close();
-        } catch (Exception ex) {
-            throw new ActionException("Failed to close service", ex);
-        }
-        return null;// todo error page
+        return null;// todo
     }
 
 
