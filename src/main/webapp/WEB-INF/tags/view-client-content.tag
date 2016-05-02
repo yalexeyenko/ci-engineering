@@ -2,6 +2,7 @@
 <%@tag description="createClientContent" pageEncoding="UTF-8" %>
 <c:url var="edit_client" value="/do/pass-projectId"/>
 <c:url var="css_path" value="${pageContext.request.contextPath}/css"/>
+<c:url var="view_project" value="/do/pass-projectId"/>
 <c:url var="main_page" value="/do/main-page"/>
 
 <link rel="stylesheet" href="${css_path}/view-client-content.css">
@@ -10,6 +11,16 @@
     <div id="navcontainer">
         <ul id="navlist">
             <li id="active"><a href="${main_page}">Home</a></li>
+            <li><a href="
+                    <c:url value="${view_project}">
+                        <c:param name="projectId" value="${projectId}"></c:param>
+                        <c:param name="projectName" value="${projectName}"></c:param>
+                        <c:param name="projectDeadline" value="${projectDeadline}"></c:param>
+                        <c:param name="projectFinished" value="${projectFinished}"></c:param>
+                        <c:param name="passProjectId" value="view-project"></c:param>
+                    </c:url>
+                ">View project</a>
+            </li>
         </ul>
     </div>
     <h3>Client info</h3>
