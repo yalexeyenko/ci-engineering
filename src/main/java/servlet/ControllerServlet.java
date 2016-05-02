@@ -20,6 +20,7 @@ public class ControllerServlet extends javax.servlet.http.HttpServlet {
 
     @Override
     public void init() throws ServletException {
+        log.debug("init()...");
         actionFactory = new ActionFactory();
     }
 
@@ -32,20 +33,22 @@ public class ControllerServlet extends javax.servlet.http.HttpServlet {
         Action action = actionFactory.getAction(actionName);
 
         if (action == null) {
-            log.debug("action is null");
+            log.debug("action == null");
             resp.sendError(HttpServletResponse.SC_NOT_FOUND, "Not found");
             return;
         }
 
         ActionResult result = action.execute(req, resp);
-        log.debug("result.getView(): {}", result.getView());
+
 
         if (result.isRedirect()) {
             String location = req.getContextPath() + "/do/" + result.getView();
+            log.debug("redirect:");
             log.debug("location: {}", location);
             resp.sendRedirect(location);
         } else {
             String path = "/WEB-INF/jsp/" + result.getView() + ".jsp";
+            log.debug("forward():");
             log.debug("location: {}", path);
             req.getRequestDispatcher(path).forward(req, resp);
         }
