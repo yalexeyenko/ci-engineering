@@ -2,11 +2,14 @@ package dao;
 
 import connection.DBConnectionPool;
 import entity.BaseEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 
 public class JdbcDaoFactory extends DaoFactory {
+    private static final Logger log = LoggerFactory.getLogger(JdbcDaoFactory.class);
     private final Connection connection;
 
     public JdbcDaoFactory() {
@@ -29,9 +32,11 @@ public class JdbcDaoFactory extends DaoFactory {
 
     @Override
     public void close() throws DaoException {
+        log.debug("close()...");
         if (connection != null) {
             try {
                 connection.close();
+                log.debug("connection.isClosed(): {}", connection.isClosed());
             } catch (SQLException e) {
                 throw new DaoException("Failed to close factory", e);
             }
