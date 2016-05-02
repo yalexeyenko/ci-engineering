@@ -40,11 +40,6 @@ public class PassUserIdAction implements Action {
                 throw new ActionException("Failed to close service", ex);
             }
         }
-        try {
-            userService.close();
-        } catch (Exception ex) {
-            throw new ActionException("Failed to close service", ex);
-        }
 
         req.setAttribute("adUser", user);
         if (passParam.equalsIgnoreCase("admin-view-user")) {
@@ -61,6 +56,12 @@ public class PassUserIdAction implements Action {
                 req.setAttribute("userRole", user.getRole());
             }
             return editProfile;
+        }
+
+        try {
+            userService.close();
+        } catch (Exception ex) {
+            throw new ActionException("Failed to close service", ex);
         }
         return null;// todo error page
     }

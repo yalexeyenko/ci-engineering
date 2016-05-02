@@ -111,6 +111,12 @@ public class EditClientAction implements Action {
         req.setAttribute("countriesMap", getCountries());
         req.setAttribute("clientId", clientId);
         req.setAttribute("clientEdited", "Changes have been saved successfully.");
+
+        try {
+            clientService.close();
+        } catch (Exception ex) {
+            throw new ActionException("Failed to close service", ex);
+        }
         return editClientSuccess;
     }
 

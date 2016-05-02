@@ -87,6 +87,12 @@ public class EditMainProfileInfoAction implements Action {
         if (currentUser.getRole() != null) {
             req.setAttribute("userRole", role);
         }
+
+        try {
+            userService.close();
+        } catch (Exception ex) {
+            throw new ActionException("Failed to close service", ex);
+        }
         return editSuccess;
     }
 }

@@ -74,6 +74,12 @@ public class EditMainProjectInfoAction implements Action {
         req.setAttribute("projectDeadline", projectDeadline);
         req.setAttribute("projectFinished", projectFinished);
         log.debug("projectFinished: {}", projectFinished);
+
+        try {
+            projectService.close();
+        } catch (Exception ex) {
+            throw new ActionException("Failed to close service", ex);
+        }
         return editedSuccessfully;
     }
 

@@ -37,7 +37,6 @@ public class SignUpAction implements Action {
         Map<String, String[]> parameterMap = req.getParameterMap();
         Set<Violation> violations = validator.validateMainUserInfoInput(parameterMap);
         Set<Violation> passwordViolations = validator.validatePassword(parameterMap);
-        Set<Violation> violationSum = new HashSet<>(violations);
         violations.addAll(passwordViolations);
 
 

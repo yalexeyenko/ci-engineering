@@ -79,6 +79,12 @@ public class ChangeRoleAction implements Action {
 
         req.setAttribute("changeRoleSuccess", "Role has been changed successfully.");
         req.setAttribute("adUser", user);
+
+        try {
+            userService.close();
+        } catch (Exception ex) {
+            throw new ActionException("Failed to close service", ex);
+        }
         return changeSuccess;
     }
 }

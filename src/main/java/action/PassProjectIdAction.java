@@ -30,7 +30,7 @@ public class PassProjectIdAction implements Action {
         log.debug("projectId: {}", projectId);
         log.debug("passParam: {}", passParam);
 
-        UserService userService;
+        UserService userService = null;
         ProjectService projectService = new ProjectService();
         Project project = null;
         try {
@@ -47,11 +47,6 @@ public class PassProjectIdAction implements Action {
             } catch (Exception ex) {
                 throw new ActionException("Failed to close service", ex);
             }
-        }
-        try {
-            projectService.close();
-        } catch (Exception ex) {
-            throw new ActionException("Failed to close service", ex);
         }
 
         req.setAttribute("project", project);
@@ -106,6 +101,12 @@ public class PassProjectIdAction implements Action {
             }
             req.setAttribute("seniors", seniors);
             return specifySenior;
+        }
+        try {
+            userService.close();
+            projectService.close();
+        } catch (Exception ex) {
+            throw new ActionException("Failed to close service", ex);
         }
         return null;// todo error page
     }

@@ -89,6 +89,13 @@ public class SpecifySeniorAction implements Action {
                 throw new ActionException("Failed to close service", ex);
             }
         }
+        try {
+            projectService.close();
+            userService.close();
+        } catch (Exception e) {
+            throw new ActionException("Failed to close service", e);
+        }
+
         if (project.getSenior() != null) {
             req.setAttribute("projectSenior", project.getSenior());
             req.setAttribute("seniorFirstName", project.getSenior().getFirstName());

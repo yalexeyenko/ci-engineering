@@ -125,6 +125,13 @@ public class CreateClientAction implements Action {
         req.setAttribute("project", currentProject);
         req.setAttribute("countriesMap", getCountries());
         req.setAttribute("clientCreated", "Client was successfully created.");
+
+        try {
+            projectService.close();
+            clientService.close();
+        } catch (Exception ex) {
+            throw new ActionException("Failed to close service", ex);
+        }
         return createClientSuccess;
     }
 

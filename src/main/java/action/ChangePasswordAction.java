@@ -101,6 +101,12 @@ public class ChangePasswordAction implements Action {
             req.setAttribute("userRole", role);
         }
         req.setAttribute("current-password", currentPassword);
+
+        try {
+            userService.close();
+        } catch (Exception ex) {
+            throw new ActionException("Failed to close service", ex);
+        }
         return editSuccess;
 
     }

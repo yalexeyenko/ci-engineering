@@ -64,6 +64,12 @@ public class CreateProjectAction implements Action {
             return createProjectAgain;
         }
 
+        try {
+            projectService.close();
+        } catch (Exception ex) {
+            throw new ActionException("Failed to close service", ex);
+        }
+
         req.setAttribute("project", currentProject);
         req.setAttribute("projectCreatedSuccess", "Project successfully created.");
         return created;
