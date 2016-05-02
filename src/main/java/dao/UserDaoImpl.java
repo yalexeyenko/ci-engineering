@@ -28,6 +28,7 @@ public class UserDaoImpl implements UserDao {
     private final Connection connection;
 
     public UserDaoImpl(Connection connection) {
+        log.debug("connection: {}", connection);
         this.connection = connection;
     }
 
@@ -280,18 +281,15 @@ public class UserDaoImpl implements UserDao {
         log.debug("findUserByEmailAndPassword()...");
         log.debug("email: {}", email);
         log.debug("password: {}", password);
-        log.debug("findUserByEmailAndPassword()...");
         User user = new User();
         PreparedStatement preparedStatement = null;
         try {
-            log.debug("preparedStatement == null: {}", preparedStatement == null);
-            log.debug("connection == null: {}", connection == null);
             preparedStatement = connection.prepareStatement(FIND_USER_BY_EMAIL_AND_PASSWORD);
+            log.debug("preparedStatement: {}", preparedStatement);
             preparedStatement.setString(1, email);
             preparedStatement.setString(2, password);
-            log.debug("After preparedStatement");
             ResultSet resultSet = preparedStatement.executeQuery();
-            log.debug("resultSet == null: {}", resultSet == null);
+            log.debug("resultSet: {}", resultSet);
             resultSet.next();
             user.setId(resultSet.getInt(1));
             user.setFirstName(resultSet.getString(2));
@@ -304,7 +302,7 @@ public class UserDaoImpl implements UserDao {
             if (resultSet.getString(6) != null) {
                 user.setRole(User.Role.valueOf(resultSet.getString((6))));
             }
-            log.debug("user == null: {}", user == null);
+            log.debug("user: {}", user);
             return user;
         } catch (SQLException e) {
             throw new DaoException("SQL FIND_USER_BY_EMAIL_AND_PASSWORD error.", e);
