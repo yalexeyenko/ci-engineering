@@ -31,7 +31,6 @@ public class EditMainProjectInfoAction implements Action {
         log.debug("execute...");
         String projectId = req.getParameter("projectId");
         String projectName = req.getParameter("projectName");
-        LocalDate projectStartDate = new LocalDate(req.getParameter("projectStartDate"));
         LocalDate projectDeadline = new LocalDate(req.getParameter("projectDeadline"));
         boolean projectFinished = Boolean.parseBoolean(req.getParameter("projectFinished"));
 
@@ -44,7 +43,6 @@ public class EditMainProjectInfoAction implements Action {
             }
             req.setAttribute("projectId", projectId);
             req.setAttribute("projectName", projectName);
-            req.setAttribute("projectStartDate", projectStartDate);
             req.setAttribute("projectDeadline", projectDeadline);
             req.setAttribute("projectFinished", projectFinished);
             log.debug("projectFinished: {}", projectFinished);
@@ -54,7 +52,6 @@ public class EditMainProjectInfoAction implements Action {
         Project project = new Project();
         project.setId(Integer.valueOf(projectId));
         project.setName(projectName);
-        project.setStartDate(projectStartDate);
         project.setDeadline(projectDeadline);
         project.setFinished(projectFinished);
 
@@ -74,7 +71,6 @@ public class EditMainProjectInfoAction implements Action {
         req.setAttribute("changesSavedSuccessfully", "Changes successfully saved.");
         req.setAttribute("projectId", projectId);
         req.setAttribute("projectName", projectName);
-        req.setAttribute("projectStartDate", projectStartDate);
         req.setAttribute("projectDeadline", projectDeadline);
         req.setAttribute("projectFinished", projectFinished);
         log.debug("projectFinished: {}", projectFinished);
