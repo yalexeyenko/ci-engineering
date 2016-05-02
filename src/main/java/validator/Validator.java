@@ -27,6 +27,17 @@ public class Validator {
 
         regexMap.put("projectName", "[A-Za-z 0-9]{3,60}$");
 
+        regexMap.put("nameFirstName", "[A-Za-z 0-9]{3,60}$");
+        regexMap.put("fullNameLastName", "[A-Za-z 0-9]{3,60}$");
+        regexMap.put("clientEmail", "^([\\w-]+(?:\\.[\\w-]+)*)@((?:[\\w-]+\\.)*\\w[\\w-]{0,66})\\.([a-z]{2,6}(?:\\.[a-z]{2})?)$");
+        regexMap.put("clientCountry", "[A-Z]{2}$");
+        regexMap.put("clientCity", "[A-Za-z ]{3,60}$");
+        regexMap.put("clientAddress", "[A-Za-z 0-9]{3,60}$");
+        regexMap.put("clientTelephone", "^(\\+\\d{1,2}\\s)?\\(?\\d{3}\\)?[\\s.-]\\d{3}[\\s.-]\\d{4}$");
+        regexMap.put("clientBankAccountNumber", "KZ[0-9]{18}");
+        regexMap.put("clientEinSsn", "^\\d{3}-\\d{2}-\\d{4}$");
+        regexMap.put("clientType", "[A-Za-z]{3,20}$");
+
     }
 
     public Validator() {
@@ -108,6 +119,31 @@ public class Validator {
                         addViolation(key, violations, "Verify your date.");
                     }
                 }
+            }
+        }
+        return violations;
+    }
+
+    public Set<Violation> validateClientInfo(Map<String, String[]> parameterMap) {
+        log.debug("validateClientInfo()...");
+        Set<Violation> violations = new HashSet<>();
+        for (Map.Entry<String, String[]> entry : parameterMap.entrySet()) {
+            if (entry.getKey().equals("projectId") || entry.getKey().equals("clientId")) {
+                continue;
+            }
+            String value = entry.getValue()[0];
+            String key = entry.getKey();
+            String regex;
+            if (regexMap.containsKey(key)) {
+                regex = regexMap.get(key);
+            } else {
+                continue;
+            }
+            log.debug("key: {}", key);
+            log.debug("value: {}", value);
+            log.debug("regex: {}", regex);
+            if (!value.matches(regex)) {
+                addViolation(key, violations);
             }
         }
         return violations;
