@@ -10,12 +10,13 @@ import service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 public class SpecifySeniorAction implements Action {
     private static final Logger log = LoggerFactory.getLogger(SpecifySeniorAction.class);
 
     private ActionResult specifySeniorAgain = new ActionResult("specify-senior");
-    private ActionResult viewProject = new ActionResult("view-project");
+    private ActionResult specifySeniorSuccess = new ActionResult("specify-senior");
 
     @Override
     public ActionResult execute(HttpServletRequest req, HttpServletResponse resp) {
@@ -43,6 +44,8 @@ public class SpecifySeniorAction implements Action {
                 throw new ActionException("Failed to close service", ex);
             }
             req.setAttribute("specifySeniorError", "Verify your data. Cannot specify senior engineer.");
+            req.setAttribute("seniorId", seniorId);
+            req.setAttribute("projectId", projectId);
             return specifySeniorAgain;
         }
         try {
@@ -74,7 +77,28 @@ public class SpecifySeniorAction implements Action {
             req.setAttribute("specifySeniorError", "Verify your data. Cannot specify senior engineer.");
             return specifySeniorAgain;
         }
-        req.setAttribute("project", project);
-        return viewProject;
+        userService = new UserService();
+        List<User> seniors = null;
+        try {
+            seniors = userService.findAllSeniors();
+        } catch (DaoException e) {
+            log.debug("Failed to findAllSeniors()");
+            try {
+                projectService.close();
+            } catch (Exception ex) {
+                throw new ActionException("Failed to close service", ex);
+            }
+        }
+        if (project.getSenior() != null) {
+            req.setAttribute("projectSenior", project.getSenior());
+            req.setAttribute("seniorFirstName", project.getSenior().getFirstName());
+            req.setAttribute("seniorLastName", project.getSenior().getLastName());
+            req.setAttribute("seniorId", project.getSenior().getId());
+            req.setAttribute("projectId", projectId);
+            req.setAttribute("project", project);
+            req.setAttribute("specifySeniorSuccess", "Changes were successfully saved.");
+        }
+        req.setAttribute("seniors", seniors);
+        return specifySeniorSuccess;
     }
 }
