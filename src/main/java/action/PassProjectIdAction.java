@@ -10,7 +10,7 @@ import service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
+import java.util.*;
 
 public class PassProjectIdAction implements Action {
     private static final Logger log = LoggerFactory.getLogger(PassProjectIdAction.class);
@@ -30,7 +30,6 @@ public class PassProjectIdAction implements Action {
         log.debug("projectId: {}", projectId);
         log.debug("passParam: {}", passParam);
 
-        log.debug("!!!!!!!!!!!!!!!projectId: {}", projectId);
         UserService userService;
         ProjectService projectService = new ProjectService();
         Project project = null;
@@ -66,10 +65,25 @@ public class PassProjectIdAction implements Action {
         } else if (passParam.equalsIgnoreCase("edit-main-project-info")) {
             return editMainProjectInfo;
         } else if (passParam.equalsIgnoreCase("create-client")) {
+            req.setAttribute("countriesMap", getCountries());
             return createClient;
         } else if (passParam.equalsIgnoreCase("view-client")) {
+            req.setAttribute("countriesMap", getCountries());
             return viewClient;
         } else if (passParam.equalsIgnoreCase("edit-client")) {
+            req.setAttribute("nameFirstName", project.getClient().getFirstName());
+            req.setAttribute("fullNameLastName", project.getClient().getLastName());
+            req.setAttribute("clientEmail", project.getClient().getEmail());
+            req.setAttribute("clientCountry", project.getClient().getCountry());
+            req.setAttribute("clientCity", project.getClient().getCity());
+            req.setAttribute("clientAddress", project.getClient().getAddress());
+            req.setAttribute("clientTelephone", project.getClient().getTelephone());
+            req.setAttribute("clientBankAccountNumber", project.getClient().getBankAccountNumber());
+            req.setAttribute("clientEinSsn", project.getClient().getEinSsn());
+            req.setAttribute("clientType", project.getClient().getClientType());
+            req.setAttribute("clientId", project.getClient().getId());
+            req.setAttribute("projectId", project.getId());
+            req.setAttribute("countriesMap", getCountries());
             return editClient;
         } else if (passParam.equalsIgnoreCase("specify-senior")) {
             userService = new UserService();
@@ -84,9 +98,26 @@ public class PassProjectIdAction implements Action {
                     throw new ActionException("Failed to close service", ex);
                 }
             }
+            if (project.getSenior() != null) {
+                req.setAttribute("projectSenior", project.getSenior());
+                req.setAttribute("seniorFirstName", project.getSenior().getFirstName());
+                req.setAttribute("seniorLastName", project.getSenior().getLastName());
+                req.setAttribute("seniorId", project.getSenior().getId());
+            }
             req.setAttribute("seniors", seniors);
             return specifySenior;
         }
         return null;// todo error page
+    }
+
+
+    private Map<String, String> getCountries() {
+        String[] locales = Locale.getISOCountries();
+        Map<String, String> countriesMap = new TreeMap<>();
+        for (String countryCode : locales) {
+            Locale obj = new Locale("", countryCode);
+            countriesMap.put(obj.getCountry(), obj.getDisplayCountry(Locale.US));
+        }
+        return countriesMap;
     }
 }
