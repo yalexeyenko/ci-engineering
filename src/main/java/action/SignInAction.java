@@ -16,8 +16,11 @@ public class SignInAction implements Action {
 
     @Override
     public ActionResult execute(HttpServletRequest req, HttpServletResponse resp) {
+        log.debug("execute()...");
         String email = req.getParameter("email_in");
         String password = req.getParameter("password_in");
+        log.debug("email: {}", email);
+        log.debug("password: {}", password);
 
         User user = new User();
         user.setEmail(email);
@@ -25,7 +28,7 @@ public class SignInAction implements Action {
 
         UserService userService = new UserService();
         user = userService.findUserByCredentials(email, password);
-        log.debug("user == null: {}", user == null);
+        log.debug("user: {}", user);
         try {
             userService.close();
         } catch (Exception e) {
@@ -34,7 +37,7 @@ public class SignInAction implements Action {
 
         if (user != null) {
             req.getSession().setAttribute("user", user);
-                return mainPage;
+            return mainPage;
         } else {
             req.setAttribute("signInError", "Email or password is wrong");
             return loginAgain;
