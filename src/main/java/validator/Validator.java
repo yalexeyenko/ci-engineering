@@ -15,9 +15,9 @@ public class Validator {
     private static Map<String, String> regexMap = new HashMap<>();
 
     static {
-        regexMap.put("userFirstName", "[A-Za-z0-9]{3,20}$");
-        regexMap.put("userLastName", "[A-Za-z0-9]{3,20}$");
-        regexMap.put("userDegree", "[A-Za-z 0-9]{3,60}$");
+        regexMap.put("userFirstName", "[A-Za-zА-Яа-я0-9]{3,20}$");
+        regexMap.put("userLastName", "[A-Za-zА-Яа-я0-9]{3,20}$");
+        regexMap.put("userDegree", "[A-Za-zА-Яа-я 0-9]{3,60}$");
         regexMap.put("userRole", "[A-Za-z]{3,20}$");
         regexMap.put("userEmail", "^([\\w-]+(?:\\.[\\w-]+)*)@((?:[\\w-]+\\.)*\\w[\\w-]{0,66})\\.([a-z]{2,6}(?:\\.[a-z]{2})?)$");
 
@@ -27,12 +27,12 @@ public class Validator {
 
         regexMap.put("projectName", "[A-Za-z 0-9]{3,60}$");
 
-        regexMap.put("nameFirstName", "[A-Za-z 0-9]{3,60}$");
-        regexMap.put("fullNameLastName", "[A-Za-z 0-9]{3,60}$");
+        regexMap.put("nameFirstName", "[A-Za-zА-Яа-я 0-9]{3,60}$");
+        regexMap.put("fullNameLastName", "[A-Za-zА-Яа-я 0-9]{3,60}$");
         regexMap.put("clientEmail", "^([\\w-]+(?:\\.[\\w-]+)*)@((?:[\\w-]+\\.)*\\w[\\w-]{0,66})\\.([a-z]{2,6}(?:\\.[a-z]{2})?)$");
-        regexMap.put("clientCountry", "[A-Z]{2}$");
-        regexMap.put("clientCity", "[A-Za-z ]{3,60}$");
-        regexMap.put("clientAddress", "[A-Za-z 0-9]{3,60}$");
+        regexMap.put("clientCountry", "[A-Za-zА-Яа-я]{2}$");
+        regexMap.put("clientCity", "[A-Za-zА-Яа-я ]{3,60}$");
+        regexMap.put("clientAddress", "[A-Za-zА-Яа-я 0-9]{3,60}$");
         regexMap.put("clientTelephone", "^(\\+\\d{1,2}\\s)?\\(?\\d{3}\\)?[\\s.-]\\d{3}[\\s.-]\\d{4}$");
         regexMap.put("clientBankAccountNumber", "KZ[0-9]{18}");
         regexMap.put("clientEinSsn", "^\\d{3}-\\d{2}-\\d{4}$");
