@@ -18,7 +18,7 @@ public class ProjectDaoImpl implements ProjectDao {
     private static final String FIND_PROJECT_BY_ID = "SELECT startDate, deadline, projectName, id, finished, clientId, seniorId FROM project WHERE id = ?";
     private static final String FIND_ALL_PROJECTS = "SELECT * FROM project";
     private static final String FIND_ALL_PROJECTS_LIMITED = "SELECT * FROM project LIMIT ? OFFSET ?";
-    private static final String UPDATE_PROJECT = "UPDATE project SET projectName = ?, startDate = ?, deadline = ?, finished = ? WHERE id = ?";
+    private static final String UPDATE_PROJECT = "UPDATE project SET projectName = ?, deadline = ?, finished = ? WHERE id = ?";
     private static final String DELETE_PROJECT_BY_ID = "DELETE FROM project WHERE id = ?";
     private static final String UPDATE_PROJECT_CLIENT = "UPDATE project SET clientId = ? WHERE id = ?";
     private static final String UPDATE_PROJECT_SENIOR = "UPDATE project SET seniorId = ? WHERE id = ?";
@@ -162,10 +162,9 @@ public class ProjectDaoImpl implements ProjectDao {
         try {
             preparedStatement = connection.prepareStatement(UPDATE_PROJECT);
             preparedStatement.setString(1, project.getName());
-            preparedStatement.setDate(2, new java.sql.Date(project.getStartDate().toDate().getTime()));
-            preparedStatement.setDate(3, new java.sql.Date(project.getDeadline().toDate().getTime()));
-            preparedStatement.setBoolean(4, project.isFinished());
-            preparedStatement.setInt(5, project.getId());
+            preparedStatement.setDate(2, new java.sql.Date(project.getDeadline().toDate().getTime()));
+            preparedStatement.setBoolean(3, project.isFinished());
+            preparedStatement.setInt(4, project.getId());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new DaoException("SQL UPDATE_PROJECT error.", e);
