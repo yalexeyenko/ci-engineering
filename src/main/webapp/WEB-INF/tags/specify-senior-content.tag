@@ -15,11 +15,14 @@
     <form action="${specify_senior_action}" method="post" name="create_client" onSubmit="return validate_form(this);">
         <h3>Specify Senior Engineer: </h3>
         <select name="projectSenior" size="1">
+            <c:if test="${empty seniorId}">
+                <option disabled selected>Select Senior Engineer...</option>
+            </c:if>
+            <c:if test="${not empty seniorId}">
+                <option value="${seniorId}">${seniorFirstName} ${seniorLastName}</option>
+            </c:if>
             <c:forEach items="${seniors}" var="senior">
-                <c:if test="${senior eq project.senior}">
-                    <option value="${senior.id}" selected>${senior.firstName} ${senior.lastName}</option>
-                </c:if>
-                <c:if test="${senior ne project.senior}">
+                <c:if test="${seniorId ne senior.id}">
                     <option value="${senior.id}">${senior.firstName} ${senior.lastName}</option>
                 </c:if>
             </c:forEach>
@@ -27,5 +30,8 @@
         <input type="hidden" name="projectId" value="${project.id}"/>
         <button class="specify-senior-button" type="submit"/>
         Save</button>
+        <c:if test="${not empty specifySeniorSuccess}">
+            <span class="violation">${specifySeniorSuccess}</span>
+        </c:if>
     </form>
 </main>
