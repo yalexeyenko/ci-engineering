@@ -1,9 +1,14 @@
 package action;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.HashMap;
 import java.util.Map;
 
 public class ActionFactory {
+    private static final Logger log = LoggerFactory.getLogger(ActionFactory.class);
+
     private Map<String, Action> actions;
 
     public ActionFactory() {
@@ -57,6 +62,7 @@ public class ActionFactory {
     }
 
     public Action getAction(String actionName) {
+        log.debug("getAction()...:{}", actionName);
         return actions.get(actionName);
     }
 }
