@@ -2,6 +2,7 @@
 <%@tag description="createClientContent" pageEncoding="UTF-8" %>
 <c:url var="create_client_action" value="/do/createClientAction"/>
 <c:url var="view_project" value="/do/pass-projectId"/>
+<c:url var="create_client" value="/do/pass-projectId"/>
 <c:url var="css_path" value="${pageContext.request.contextPath}/css"/>
 <c:url var="main_page" value="/do/main-page"/>
 
@@ -19,7 +20,14 @@
                         <c:param name="projectFinished" value="${projectFinished}"></c:param>
                         <c:param name="passProjectId" value="view-project"></c:param>
                     </c:url>
-                ">View project</a>
+                ">Project</a>
+            </li>
+            <li><a href="
+                    <c:url value="${create_client}">
+                        <c:param name="projectId" value="${project.id}"></c:param>
+                        <c:param name="passProjectId" value="create-client"></c:param>
+                    </c:url>
+                ">Create client</a>
             </li>
         </ul>
     </div>

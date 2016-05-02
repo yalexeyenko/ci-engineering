@@ -3,6 +3,7 @@
 <c:url var="edit_client" value="/do/pass-projectId"/>
 <c:url var="css_path" value="${pageContext.request.contextPath}/css"/>
 <c:url var="view_project" value="/do/pass-projectId"/>
+<c:url var="view_client" value="/do/pass-projectId"/>
 <c:url var="main_page" value="/do/main-page"/>
 
 <link rel="stylesheet" href="${css_path}/view-client-content.css">
@@ -19,7 +20,14 @@
                         <c:param name="projectFinished" value="${projectFinished}"></c:param>
                         <c:param name="passProjectId" value="view-project"></c:param>
                     </c:url>
-                ">View project</a>
+                ">Project</a>
+            </li>
+            <li><a href="
+                    <c:url value="${view_client}">
+                        <c:param name="projectId" value="${projectId}"></c:param>
+                        <c:param name="passProjectId" value="view-client"></c:param>
+                    </c:url>
+                ">Client</a>
             </li>
         </ul>
     </div>

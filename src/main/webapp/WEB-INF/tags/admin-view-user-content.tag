@@ -1,16 +1,24 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@tag description="editProfileContent" pageEncoding="UTF-8" %>
-<c:url var="css_path" value="${pageContext.request.contextPath}/css"/>
+<c:url var="view_user" value="/do/pass-userId"/>
 <c:url var="main_page" value="/do/main-page"/>
 <c:url var="change_role" value="/do/change-role"/>
 <c:url var="delete_user" value="/do/delete-user"/>
+<c:url var="css_path" value="${pageContext.request.contextPath}/css"/>
 
-<link rel="stylesheet" href="${css_path}/edit-profile-content.css">
+<link rel="stylesheet" href="${css_path}/admin-view-user-content.css">
 
 <main class="content">
     <div id="navcontainer">
         <ul id="navlist">
             <li id="active"><a href="${main_page}">Home</a></li>
+            <li><a href="
+                    <c:url value="${view_user}">
+                        <c:param name="userId" value="${adUser.id}"></c:param>
+                        <c:param name="passUserId" value="admin-view-user"></c:param>
+                    </c:url>
+                ">View User</a>
+            </li>
         </ul>
     </div>
     <h4>${adUser.firstName} ${adUser.lastName}</h4>

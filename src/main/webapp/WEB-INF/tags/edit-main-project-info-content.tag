@@ -4,6 +4,7 @@
 <c:url var="css_path" value="${pageContext.request.contextPath}/css"/>
 <c:url var="view_project" value="/do/pass-projectId"/>
 <c:url var="main_page" value="/do/main-page"/>
+<c:url var="edit_main_project_info" value="/do/pass-projectId"/>
 
 <link rel="stylesheet" href="${css_path}/edit-project-content.css">
 
@@ -19,7 +20,15 @@
                         <%--<c:param name="projectFinished" value="${projectFinished}"></c:param>--%>
                         <c:param name="passProjectId" value="view-project"></c:param>
                     </c:url>
-                ">View project</a>
+                ">Project</a>
+            </li>
+            <li>
+                <a id="edit-main-project-info" href="
+            <c:url value="${edit_main_project_info}">
+                <c:param name="projectId" value="${projectId}"></c:param>
+                <c:param name="passProjectId" value="edit-main-project-info"></c:param>
+            </c:url>
+    ">Edit project</a>
             </li>
         </ul>
     </div>
