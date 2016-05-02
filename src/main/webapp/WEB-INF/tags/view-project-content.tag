@@ -15,13 +15,13 @@
             <li id="active"><a href="${main_page}">Home</a></li>
         </ul>
     </div>
-    <h3>Project name: ${project.name}</h3>
-    <h4>Start date: ${project.startDate}</h4>
-    <h4>Deadline: ${project.deadline}</h4>
-    <h4>Finished: ${project.finished}</h4>
+    <h3>Project name: ${projectName}</h3>
+    <h4>Start date: ${projectStartDate}</h4>
+    <h4>Deadline: ${projectDeadline}</h4>
+    <h4>Finished: ${projectFinished}</h4>
     <a id="edit-main-project-info" href="
             <c:url value="${edit_main_project_info}">
-                <c:param name="projectId" value="${project.id}"></c:param>
+                <c:param name="projectId" value="${projectId}"></c:param>
                 <c:param name="passProjectId" value="edit-main-project-info"></c:param>
             </c:url>
     ">Edit main project info</a>

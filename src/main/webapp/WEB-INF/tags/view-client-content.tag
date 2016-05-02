@@ -19,7 +19,7 @@
     </h4>
     <h4>Client type: ${project.client.clientType}</h4>
     <h4>Email: ${project.client.email}</h4>
-    <h4>Country: ${project.client.country}</h4>
+    <h4>Country: ${countriesMap[project.client.country]}</h4>
     <h4>City: ${project.client.city}</h4>
     <h4>Address: ${project.client.address}</h4>
     <h4>Telephone: ${project.client.telephone}</h4>
