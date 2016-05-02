@@ -42,6 +42,7 @@ public class UserService implements AutoCloseable {
     }
 
     public User findUserByCredentials(String email, String password) {
+        log.debug("findUserByCredentials()...");
         try {
             return userDao.findUserByEmailAndPassword(email, password);
         } catch (DaoException e) {
@@ -102,6 +103,7 @@ public class UserService implements AutoCloseable {
 
     @Override
     public void close() throws Exception {
+        log.debug("close()...");
         if (jdbcDaoFactory != null) {
             jdbcDaoFactory.close();
         }
