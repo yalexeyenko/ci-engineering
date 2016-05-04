@@ -36,6 +36,10 @@ public class ProjectService implements AutoCloseable {
         return projectDao.findAll();
     }
 
+    public List<Project> findAllPersonalProjects(int managerId) throws DaoException {
+        return projectDao.findAllPersonalProjects(managerId);
+    }
+
     public List<Project> findAllProjectsLimited(int start, int count) throws DaoException {
         return projectDao.findAll(start, count);
     }
