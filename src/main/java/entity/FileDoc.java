@@ -3,40 +3,21 @@ package entity;
 import org.joda.time.LocalDate;
 
 import java.io.FileInputStream;
+import java.io.InputStream;
 
 
 public class FileDoc extends NamedEntity {
-    private FileInputStream fileDocOrigin;
-    private FileInputStream fileDocPDF;
     private String description;
-    private User author;
     private LocalDate lastModified;
     private Status status;
+    private Project project;
+    private User user;
+    private Module module;
+    InputStream fileContent;
 
     public FileDoc() {
         lastModified = new LocalDate();
-    }
-
-    public FileInputStream getFileDocOrigin() {
-        return fileDocOrigin;
-    }
-
-    public void setFileDocOrigin(FileInputStream fileDocOrigin) {
-        if (fileDocOrigin == null) {
-            throw new NullPointerException("Attempt to set null to fileDocOrigin");
-        }
-        this.fileDocOrigin = fileDocOrigin;
-    }
-
-    public FileInputStream getFileDocPDF() {
-        return fileDocPDF;
-    }
-
-    public void setFileDocPDF(FileInputStream fileDocPDF) {
-        if (fileDocPDF == null) {
-            throw new NullPointerException("Attempt to set null to fileDocPDF");
-        }
-        this.fileDocPDF = fileDocPDF;
+        status = Status.DEFAULT;
     }
 
     public String getDescription() {
@@ -50,19 +31,12 @@ public class FileDoc extends NamedEntity {
         this.description = description;
     }
 
-    public User getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(User author) {
-        if (author == null) {
-            throw new NullPointerException("Attempt to set null to author");
-        }
-        this.author = author;
-    }
-
     public LocalDate getLastModified() {
         return lastModified;
+    }
+
+    public void setLastModified(LocalDate lastModified) {
+        this.lastModified = lastModified;
     }
 
     public Status getStatus() {
@@ -73,6 +47,38 @@ public class FileDoc extends NamedEntity {
         this.status = status;
     }
 
+    public Module getModule() {
+        return module;
+    }
+
+    public void setModule(Module module) {
+        this.module = module;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Project getProject() {
+        return project;
+    }
+
+    public void setProject(Project project) {
+        this.project = project;
+    }
+
+    public InputStream getFileContent() {
+        return fileContent;
+    }
+
+    public void setFileContent(InputStream fileContent) {
+        this.fileContent = fileContent;
+    }
+
     @Override
     public String toString() {
         return "FileDoc{" +
@@ -81,9 +87,10 @@ public class FileDoc extends NamedEntity {
                 '}';
     }
 
-    private enum Status {
-        check,
-        approved,
-        rework
+    public enum Status {
+        ONCHECK,
+        APPROVED,
+        REWORK,
+        DEFAULT
     }
 }
