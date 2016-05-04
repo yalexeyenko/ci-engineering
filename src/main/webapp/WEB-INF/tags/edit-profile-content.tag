@@ -71,19 +71,14 @@
                 <c:if test="${not empty passwordViolation}">
                     <span class="violation">${passwordViolation}</span>
                 </c:if>
-                <c:if test="${empty passwordViolation}">
-                    <c:if test="${not empty duplicatePasswordViolation}">
-                        <span class="violation">${duplicatePasswordViolation}</span>
-                    </c:if>
-                </c:if>
             </c:if>
         </div>
         <div class="field-wrap">
             <span>Repeat password: </span>
             <input type="password" name="repeatPassword" placeholder="Repeat password*" required/>
             <c:if test="${empty passwordViolation}">
-                <c:if test="${not empty repeatPasswordViolation}">
-                    <span class="violation">${repeatPasswordViolation}</span>
+                <c:if test="${not empty mismatchViolation}">
+                    <span class="violation">${mismatchViolation}</span>
                 </c:if>
             </c:if>
         </div>

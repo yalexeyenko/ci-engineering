@@ -12,24 +12,24 @@
                 <div class="top-row">
                     <div class="field-wrap">
                         <span>First name: </span>
-                        <input type="text" name="firstName" value="${param.firstName}" placeholder="First name*" required/>
-                        <c:if test="${not empty firstNameViolation}">
-                            <span class="violation">${firstNameViolation}</span>
+                        <input type="text" name="userFirstName" value="${userFirstName}" placeholder="First name*" required/>
+                        <c:if test="${not empty userFirstNameViolation}">
+                            <span class="violation">${userFirstNameViolation}</span>
                         </c:if>
                     </div>
                     <div class="field-wrap">
                         <span>Last name: </span>
-                        <input type="text" name="lastName"  value="${param.lastName}" placeholder="Last name*" required/>
-                        <c:if test="${not empty lastNameViolation}">
-                            <span class="violation">${lastNameViolation}</span>
+                        <input type="text" name="userLastName"  value="${userLastName}" placeholder="Last name*" required/>
+                        <c:if test="${not empty userLastNameViolation}">
+                            <span class="violation">${userLastNameViolation}</span>
                         </c:if>
                     </div>
                 </div>
                 <div class="field-wrap">
                     <span>Email: </span>
-                    <input type="text" name="email"  value="${param.email}" placeholder="Enter your email*" required/>
-                    <c:if test="${not empty emailViolation}">
-                        <span class="violation">${emailViolation}</span>
+                    <input type="text" name="userEmail"  value="${userEmail}" placeholder="Enter your email*" required/>
+                    <c:if test="${not empty userEmailViolation}">
+                        <span class="violation">${userEmailViolation}</span>
                     </c:if>
                     <c:if test="${not empty signUpError}">
                         <span class="violation">${signUpError}</span>
@@ -45,8 +45,8 @@
                 <div class="field-wrap">
                     <span>Repeat password: </span>
                     <input type="password" name="repeatPassword" placeholder="Repeat password*" id="confirm_password" required/>
-                    <c:if test="${not empty repeatPasswordViolation and empty passwordViolation}">
-                        <span class="violation">${repeatPasswordViolation}</span>
+                    <c:if test="${not empty mismatchViolation and empty passwordViolation}">
+                        <span class="violation">${mismatchViolation}</span>
                     </c:if>
                 </div>
                 <button class="create" type="submit" class="button-block"/>Create account</button>
