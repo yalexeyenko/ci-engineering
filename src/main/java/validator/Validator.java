@@ -53,6 +53,7 @@ public class Validator {
             String value = entry.getValue()[0];
             String key = entry.getKey();
             String regex;
+            if (key.equals("password") || key.equals("repeatPassword")) continue;
             if (regexMap.containsKey(key)) {
                 regex = regexMap.get(key);
             } else {
@@ -62,36 +63,29 @@ public class Validator {
             log.debug("value: {}", value);
             log.debug("regex: {}", regex);
             if (!value.matches(regex)) {
-                addViolation(key, violations);
+                if (key.equals("userFirstName")) {
+                    addViolation(key, violations, "Specify valid first name.");
+                } else if (key.equals("userLastName")) {
+                    addViolation(key, violations, "Specify valid last name.");
+                } else if (key.equals("userEmail")) {
+                    addViolation(key, violations, "Specify valid email.");
+                }
             }
         }
         return violations;
     }
 
-    public Set<Violation> validatePassword(Map<String, String[]> parameterMap) {
+    public Set<Violation> validatePassword(String password, String repeatPassword) {
         log.debug("validatePassword()...");
         Set<Violation> violations = new HashSet<>();
-        for (Map.Entry<String, String[]> entry : parameterMap.entrySet()) {
-            String value = entry.getValue()[0];
-            String key = entry.getKey();
-            String regex = regexMap.get(key);
-            log.debug("key: {}", key);
-            log.debug("value: {}", value);
-            log.debug("regex: {}", regex);
-            if (key.equals("repeatPassword")) {
-                log.debug("password: {}", parameterMap.get("password")[0]);
-                log.debug("repeatPassword: {}", value);
-                if (!(value.equals(parameterMap.get("password")[0]))) {
-                    Violation violation = new Violation();
-                    violation.setName(key + "Violation");
-                    violation.setViolation("Password mismatch");
-                    violations.add(violation);
-                }
-                continue;
-            }
-            if (!value.matches(regex)) {
-                addViolation(key, violations);
-            }
+        if (!password.matches(regexMap.get("password"))) {
+            addViolation("password", violations, "Invalid password.");
+        }
+        if (!repeatPassword.matches(regexMap.get("repeatPassword"))) {
+            addViolation("repeatPassword", violations, "Specify valid password.");
+        }
+        if (!password.equals(repeatPassword)) {
+            addViolation("mismatch", violations, "Password mismatch.");
         }
         return violations;
     }
@@ -146,7 +140,27 @@ public class Validator {
             log.debug("value: {}", value);
             log.debug("regex: {}", regex);
             if (!value.matches(regex)) {
-                addViolation(key, violations);
+                if (key.equals("nameFirstName")) {
+                    addViolation(key, violations, "Specify valid first name.");
+                } else if (key.equals("fullNameLastName")) {
+                    addViolation(key, violations, "Specify valid last name.");
+                } else if (key.equals("clientEmail")) {
+                    addViolation(key, violations, "Specify valid email.");
+                } else if (key.equals("clientCountry")) {
+                    addViolation(key, violations, "Specify valid country.");
+                } else if (key.equals("clientCity")) {
+                    addViolation(key, violations, "Specify valid city.");
+                } else if (key.equals("clientAddress")) {
+                    addViolation(key, violations, "Specify valid address.");
+                } else if (key.equals("clientTelephone")) {
+                    addViolation(key, violations, "Specify valid telephone.");
+                } else if (key.equals("clientBankAccountNumber")) {
+                    addViolation(key, violations, "Specify valid bank account number.");
+                } else if (key.equals("clientEinSsn")) {
+                    addViolation(key, violations, "Specify valid EIN/SSN.");
+                } else if (key.equals("clientType")) {
+                    addViolation(key, violations, "Specify valid client type.");
+                }
             }
         }
         return violations;
