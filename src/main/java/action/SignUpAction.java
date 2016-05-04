@@ -70,7 +70,7 @@ public class SignUpAction implements Action {
 
         if (user != null) {
             log.debug("user != null. userMain.getView(): {}", mainPage.getView());
-            req.getSession().setAttribute("user", user);
+            req.getSession(false).setAttribute("user", user);
             log.debug("session user.getFirstName(): {}", user.getFirstName());
             return mainPage;
         } else {
