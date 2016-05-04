@@ -36,7 +36,7 @@ public class SignInAction implements Action {
         }
 
         if (user != null) {
-            req.getSession().setAttribute("user", user);
+            req.getSession(false).setAttribute("user", user);
             return mainPage;
         } else {
             req.setAttribute("signInError", "Email or password is wrong");
