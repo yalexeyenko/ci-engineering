@@ -17,6 +17,7 @@ public class PassProjectIdAction implements Action {
 
     private ActionResult viewProject = new ActionResult("view-project");
     private ActionResult editMainProjectInfo = new ActionResult("edit-main-project-info");
+    private ActionResult addFile = new ActionResult("add-file");
     private ActionResult createClient = new ActionResult("create-client");
     private ActionResult viewClient = new ActionResult("view-client");
     private ActionResult editClient = new ActionResult("edit-client");
@@ -53,6 +54,8 @@ public class PassProjectIdAction implements Action {
             return viewProject;
         } else if (passParam.equalsIgnoreCase("edit-main-project-info")) {
             return editMainProjectInfo;
+        } else if (passParam.equalsIgnoreCase("add-file")) {
+            return addFile;
         } else if (passParam.equalsIgnoreCase("create-client")) {
             req.setAttribute("countriesMap", getCountries());
             return createClient;
