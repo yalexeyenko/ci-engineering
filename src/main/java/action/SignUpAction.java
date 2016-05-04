@@ -28,15 +28,21 @@ public class SignUpAction implements Action {
     @Override
     public ActionResult execute(HttpServletRequest req, HttpServletResponse resp) {
         log.debug("execute()...");
-        String firstName = req.getParameter("firstName");
-        String lastName = req.getParameter("lastName");
-        String email = req.getParameter("email");
+        String firstName = req.getParameter("userFirstName");
+        String lastName = req.getParameter("userLastName");
+        String email = req.getParameter("userEmail");
         String password = req.getParameter("password");
+        String repeatPassword = req.getParameter("repeatPassword");
 
 
+        log.debug("firstName: {}", firstName);
+        log.debug("lastName: {}", lastName);
+        log.debug("email: {}", email);
+        log.debug("password: {}", password);
+        log.debug("repeatPassword: {}" ,repeatPassword);
         Map<String, String[]> parameterMap = req.getParameterMap();
         Set<Violation> violations = validator.validateMainUserInfoInput(parameterMap);
-        Set<Violation> passwordViolations = validator.validatePassword(parameterMap);
+        Set<Violation> passwordViolations = validator.validatePassword(password, repeatPassword);
         violations.addAll(passwordViolations);
 
 
@@ -47,6 +53,9 @@ public class SignUpAction implements Action {
                 log.debug("violation.getViolation(): {}", violation.getViolation());
                 req.setAttribute(violation.getName(), violation.getViolation());
             }
+            req.setAttribute("userFirstName", firstName);
+            req.setAttribute("userLastName", lastName);
+            req.setAttribute("userEmail", email);
             return singUpAgain;
         }
 
