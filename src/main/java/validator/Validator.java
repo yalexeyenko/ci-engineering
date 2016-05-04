@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 
 import org.joda.time.LocalDate;
 
+import javax.servlet.http.Part;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -37,6 +38,8 @@ public class Validator {
         regexMap.put("clientBankAccountNumber", "KZ[0-9]{18}");
         regexMap.put("clientEinSsn", "^\\d{3}-\\d{2}-\\d{4}$");
         regexMap.put("clientType", "[A-Za-z]{3,20}$");
+
+        regexMap.put("description", "[A-Za-zА-Яа-я 0-9]{3,60}$");
 
     }
 
@@ -145,6 +148,20 @@ public class Validator {
             if (!value.matches(regex)) {
                 addViolation(key, violations);
             }
+        }
+        return violations;
+    }
+
+    public Set<Violation> validateFileUpload(String description, Part filePart) {
+        log.debug("validateClientInfo()...");
+        log.debug("description: {}", description);
+        log.debug("filePart.getSize(): {}", filePart.getSize());
+        Set<Violation> violations = new HashSet<>();
+        if (!description.matches(regexMap.get("description"))) {
+            addViolation("description", violations, "Please specify a valid description.");
+        }
+        if (filePart.getSize() > 4194304L) {
+            addViolation("filePartSize", violations, "File must be less than 4MB.");
         }
         return violations;
     }
