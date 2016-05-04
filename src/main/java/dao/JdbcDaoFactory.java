@@ -25,6 +25,8 @@ public class JdbcDaoFactory extends DaoFactory {
                 return (Dao<T>) new ClientDaoImpl(connection);
             case "Project":
                 return (Dao<T>) new ProjectDaoImpl(connection);
+            case "FileDoc":
+                return (Dao<T>) new FileDocDaoImpl(connection);
             default:
                 return null;
         }
