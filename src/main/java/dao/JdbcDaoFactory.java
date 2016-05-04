@@ -14,6 +14,7 @@ public class JdbcDaoFactory extends DaoFactory {
 
     public JdbcDaoFactory() {
         connection = DBConnectionPool.getConnection();
+        log.debug("GET CONNECTION: {}", connection);
     }
 
     @Override
@@ -34,11 +35,10 @@ public class JdbcDaoFactory extends DaoFactory {
 
     @Override
     public void close() throws DaoException {
-        log.debug("close()...");
         if (connection != null) {
             try {
                 connection.close();
-                log.debug("connection.isClosed(): {}", connection.isClosed());
+                log.debug("CONNECTION CLOSED: {}", connection.isClosed());
             } catch (SQLException e) {
                 throw new DaoException("Failed to close factory", e);
             }

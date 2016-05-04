@@ -28,7 +28,6 @@ public class FileDocDaoImpl implements FileDocDao {
     private final Connection connection;
 
     public FileDocDaoImpl(Connection connection) {
-        log.debug("connection: {}", connection);
         this.connection = connection;
     }
 
