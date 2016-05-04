@@ -4,7 +4,6 @@
 <c:url var="css_path" value="${pageContext.request.contextPath}/css"/>
 <c:url var="view_project" value="/do/pass-projectId"/>
 <c:url var="main_page" value="/do/main-page"/>
-<c:url var="edit_main_project_info" value="/do/pass-projectId"/>
 
 <link rel="stylesheet" href="${css_path}/edit-project-content.css">
 
