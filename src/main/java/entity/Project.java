@@ -13,6 +13,7 @@ public class Project extends NamedEntity {
     private FileDoc techTask;
     private List<Module> modules;
     private User senior;
+    private User manager;
 
     public Project() {
         finished = false;
@@ -103,5 +104,13 @@ public class Project extends NamedEntity {
                 ", startDate=" + startDate +
                 ", deadline=" + deadline +
                 '}';
+    }
+
+    public User getManager() {
+        return manager;
+    }
+
+    public void setManager(User manager) {
+        this.manager = manager;
     }
 }
