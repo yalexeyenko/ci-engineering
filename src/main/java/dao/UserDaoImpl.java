@@ -28,7 +28,6 @@ public class UserDaoImpl implements UserDao {
     private final Connection connection;
 
     public UserDaoImpl(Connection connection) {
-        log.debug("connection: {}", connection);
         this.connection = connection;
     }
 
