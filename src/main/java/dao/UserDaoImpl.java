@@ -73,6 +73,36 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
+    public void update(User user) throws DaoException {
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = connection.prepareStatement(UPDATE_USER);
+            preparedStatement.setString(1, user.getFirstName());
+            preparedStatement.setString(2, user.getLastName());
+            preparedStatement.setString(3, user.getEmail());
+            preparedStatement.setString(4, user.getPassword());
+            preparedStatement.setString(5, user.getDegree());
+            if (user.getRole() == null) {
+                preparedStatement.setString(6, null);
+            } else {
+                preparedStatement.setString(6, user.getRole().name());
+            }
+            preparedStatement.setInt(7, user.getId());
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new DaoException("SQL UPDATE error.", e);
+        } finally {
+            if (preparedStatement != null) {
+                try {
+                    preparedStatement.close();
+                } catch (SQLException e) {
+                    throw new DaoException("Failed to close PreparedStatement", e);
+                }
+            }
+        }
+    }
+
+    @Override
     public User findById(int id) throws DaoException {
         log.debug("findById()...");
         log.debug("id: {}", id);
@@ -97,36 +127,6 @@ public class UserDaoImpl implements UserDao {
             return user;
         } catch (SQLException e) {
             throw new DaoException("SQL FIND_USER_BY_ID error.", e);
-        } finally {
-            if (preparedStatement != null) {
-                try {
-                    preparedStatement.close();
-                } catch (SQLException e) {
-                    throw new DaoException("Failed to close PreparedStatement", e);
-                }
-            }
-        }
-    }
-
-    @Override
-    public void update(User user) throws DaoException {
-        PreparedStatement preparedStatement = null;
-        try {
-            preparedStatement = connection.prepareStatement(UPDATE_USER);
-            preparedStatement.setString(1, user.getFirstName());
-            preparedStatement.setString(2, user.getLastName());
-            preparedStatement.setString(3, user.getEmail());
-            preparedStatement.setString(4, user.getPassword());
-            preparedStatement.setString(5, user.getDegree());
-            if (user.getRole() == null) {
-                preparedStatement.setString(6, null);
-            } else {
-                preparedStatement.setString(6, user.getRole().name());
-            }
-            preparedStatement.setInt(7, user.getId());
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            throw new DaoException("SQL UPDATE error.", e);
         } finally {
             if (preparedStatement != null) {
                 try {
