@@ -2,10 +2,12 @@ package action;
 
 import dao.DaoException;
 import entity.Project;
+import entity.User;
 import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import service.ProjectService;
+import service.UserService;
 import validator.Validator;
 import validator.Violation;
 
@@ -50,7 +52,14 @@ public class CreateProjectAction implements Action {
         Project currentProject = new Project();
         currentProject.setName(projectName);
         currentProject.setDeadline(new LocalDate(projectDeadline));
-
+        User manager = null;
+        try (UserService userService = new UserService()) {
+            log.debug("managerId: {}", ((User) req.getSession().getAttribute("user")).getId());
+            manager = userService.findUserById(((User) req.getSession().getAttribute("user")).getId());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        currentProject.setManager(manager);
         ProjectService projectService = new ProjectService();
         try {
             currentProject = projectService.createNewProject(currentProject);
