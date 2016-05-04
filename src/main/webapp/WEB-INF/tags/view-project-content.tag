@@ -1,6 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@tag description="viewProjectContent" pageEncoding="UTF-8" %>
 <c:url var="edit_main_project_info" value="/do/pass-projectId"/>
+<c:url var="add_file" value="/do/pass-projectId"/>
 <c:url var="create_client" value="/do/pass-projectId"/>
 <c:url var="view_client" value="/do/pass-projectId"/>
 <c:url var="specify_senior" value="/do/pass-projectId"/>
@@ -30,12 +31,22 @@
     <h4>Start date: ${projectStartDate}</h4>
     <h4>Deadline: ${projectDeadline}</h4>
     <h4>Finished: ${projectFinished}</h4>
-    <a id="edit-main-project-info" href="
+    <div class="field-wrap">
+        <a id="edit-main-project-info" href="
             <c:url value="${edit_main_project_info}">
                 <c:param name="projectId" value="${projectId}"></c:param>
                 <c:param name="passProjectId" value="edit-main-project-info"></c:param>
             </c:url>
-    ">Edit main project info</a>
+    ">Edit project</a>
+    </div>
+    <div class="field-wrap">
+        <a id="add-file" href="
+            <c:url value="${add_file}">
+                <c:param name="projectId" value="${projectId}"></c:param>
+                <c:param name="passProjectId" value="add-file"></c:param>
+            </c:url>
+    ">Add file</a>
+    </div>
     <h4>Client:
         <c:if test="${not empty project.client}">
 
