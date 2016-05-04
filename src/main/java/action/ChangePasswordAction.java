@@ -31,6 +31,7 @@ public class ChangePasswordAction implements Action {
         log.debug("execute()...");
         String currentPassword = req.getParameter("current-password");
         String password = req.getParameter("password");
+        String repeatPassword = req.getParameter("repeatPassword");
 
         String firstName = req.getParameter("userFirstName");
         String lastName = req.getParameter("userLastName");
@@ -46,8 +47,7 @@ public class ChangePasswordAction implements Action {
         log.debug(currentPassword);
         log.debug(password);
 
-        Map<String, String[]> parameterMap = req.getParameterMap();
-        Set<Violation> violations = validator.validatePassword(parameterMap);
+        Set<Violation> violations = validator.validatePassword(password, repeatPassword);
 
         HttpSession session = req.getSession(false);
         User currentUser = (User) session.getAttribute("user");
