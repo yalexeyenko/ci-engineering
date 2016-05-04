@@ -2,6 +2,7 @@ package action;
 
 import dao.DaoException;
 import entity.Project;
+import entity.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import service.ProjectService;
@@ -19,22 +20,16 @@ public class ManagerContentProjectsAction implements Action {
     public ActionResult execute(HttpServletRequest req, HttpServletResponse resp) {
         log.debug("execute...");
         List<Project> projects;
-        ProjectService projectService = new ProjectService();
 
-        try {
-            projects = projectService.findAllProjects();
-        } catch (DaoException e) {
-            throw new ActionException("Failed to get all projects", e);
-        }
-
-        try {
-            projectService.close();
+        try (ProjectService projectService = new ProjectService()) {
+            log.debug("findAllPersonalProjects()");
+            projects = projectService.findAllPersonalProjects(((User) req.getSession().getAttribute("user")).getId());
         } catch (Exception e) {
-            throw new ActionException("Failed to close service", e);
+            log.debug("Failed to findAllPersonalProjects()");
+            throw new ActionException("Failed to close findAllPersonalProjects", e);
         }
 
-        req.setAttribute("" +
-                "projects",  projects);
+        req.setAttribute("projects",  projects);
         return managerContentProjectsPage;
     }
 }
