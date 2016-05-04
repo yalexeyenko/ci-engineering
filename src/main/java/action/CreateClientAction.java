@@ -90,6 +90,7 @@ public class CreateClientAction implements Action {
             log.debug("Failed to findProjectById()");
             try {
                 projectService.close();
+                clientService.close();
             } catch (Exception ex) {
                 throw new ActionException("Failed to close service", ex);
             }
@@ -104,6 +105,7 @@ public class CreateClientAction implements Action {
             log.debug("Failed to updateProjectClient()");
             try {
                 projectService.close();
+                clientService.close();
             } catch (Exception ex) {
                 throw new ActionException("Failed to close service", ex);
             }
