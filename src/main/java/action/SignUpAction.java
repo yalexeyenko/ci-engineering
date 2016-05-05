@@ -43,9 +43,9 @@ public class SignUpAction implements Action {
         Set<Violation> violations = validator.validateMainUserInfoInput(parameterMap);
         Set<Violation> passwordViolations = validator.validatePassword(password, repeatPassword);
         violations.addAll(passwordViolations);
-
-
         log.debug("violations.size(): {}", violations.size());
+
+
         if (!violations.isEmpty()) {
             for (Violation violation : violations) {
                 log.debug("violation.getName(): {}", violation.getName());
@@ -65,16 +65,13 @@ public class SignUpAction implements Action {
         user.setPassword(password);
         user.setRole(User.Role.REGISTERED);
 
-        UserService userService = new UserService();
-        user = userService.createUser(user);
-
-        log.debug("user == null: {}", user == null);
-
-        try {
-            userService.close();
-        } catch (Exception e) {
-            throw new ActionException("Failed to close service", e);
+        try (UserService userService = new UserService()) {
+            user = userService.createUser(user);
+        }catch (Exception e) {
+            throw new ActionException("Failed to createUser()", e);
         }
+
+        log.debug("user: {}", user);
 
         if (user != null) {
             log.debug("user != null. userMain.getView(): {}", mainPage.getView());

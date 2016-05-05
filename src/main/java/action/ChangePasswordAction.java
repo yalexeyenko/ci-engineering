@@ -1,6 +1,5 @@
 package action;
 
-import dao.DaoException;
 import entity.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,7 +10,6 @@ import validator.Violation;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.util.Map;
 import java.util.Set;
 
 public class ChangePasswordAction implements Action {
@@ -19,8 +17,7 @@ public class ChangePasswordAction implements Action {
 
     private Validator validator;
 
-    private ActionResult editSuccess = new ActionResult("edit-profile");
-    private ActionResult editAgain = new ActionResult("edit-profile");
+    private ActionResult pageReturn = new ActionResult("edit-profile");
 
     public ChangePasswordAction() {
         validator = new Validator();
@@ -39,19 +36,19 @@ public class ChangePasswordAction implements Action {
         String degree = req.getParameter("userDegree");
         String role = req.getParameter("userRole");
 
-        log.debug(firstName);
-        log.debug(lastName);
-        log.debug(email);
-        log.debug(degree);
-        log.debug(role);
-        log.debug(currentPassword);
-        log.debug(password);
+        log.debug("firstName: {}", firstName);
+        log.debug("lastName: {}", lastName);
+        log.debug("email: {}", email);
+        log.debug("degree: {}", degree);
+        log.debug("role: {}", role);
+        log.debug("currentPassword: {}", currentPassword);
+        log.debug("password: {}", password);
 
         Set<Violation> violations = validator.validatePassword(password, repeatPassword);
 
         HttpSession session = req.getSession(false);
         User currentUser = (User) session.getAttribute("user");
-        log.debug("currentUser is null: {}", currentUser == null);
+        log.debug("currentUser: {}", currentUser);
         if (!currentPassword.equals(currentUser.getPassword())) {
             Violation violation = new Violation();
             violation.setName("wrongPasswordViolation");
@@ -73,26 +70,18 @@ public class ChangePasswordAction implements Action {
                 req.setAttribute("userRole", role);
             }
             req.setAttribute("current-password", currentPassword);
-            return editAgain;
+            return pageReturn;
         }
 
         currentUser.setPassword(password);
 
-        UserService userService = new UserService();
-        try {
+        try (UserService userService = new UserService()) {
             userService.changePassword(currentUser);
-        } catch (DaoException e) {
-            try {
-                userService.close();
-            } catch (Exception ex) {
-                throw new ActionException("Failed to close service", ex);
-            }
-            req.setAttribute("changePasswordError", "Failed to change password. Verify your data.");
-            return editAgain;
+        } catch (Exception e) {
+            throw new ActionException("Failed to changePassword()");
         }
         req.getSession().setAttribute("user", currentUser);
         req.setAttribute("changePasswordSuccess", "Successfully changed password.");
-
         req.setAttribute("userFirstName", firstName);
         req.setAttribute("userLastName", lastName);
         req.setAttribute("userEmail", email);
@@ -101,13 +90,6 @@ public class ChangePasswordAction implements Action {
             req.setAttribute("userRole", role);
         }
         req.setAttribute("current-password", currentPassword);
-
-        try {
-            userService.close();
-        } catch (Exception ex) {
-            throw new ActionException("Failed to close service", ex);
-        }
-        return editSuccess;
-
+        return pageReturn;
     }
 }

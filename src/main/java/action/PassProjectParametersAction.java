@@ -1,6 +1,5 @@
 package action;
 
-import dao.DaoException;
 import entity.Project;
 import entity.User;
 import org.slf4j.Logger;
@@ -10,10 +9,13 @@ import service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.*;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.TreeMap;
 
-public class PassProjectIdAction implements Action {
-    private static final Logger log = LoggerFactory.getLogger(PassProjectIdAction.class);
+public class PassProjectParametersAction implements Action {
+    private static final Logger log = LoggerFactory.getLogger(PassProjectParametersAction.class);
 
     private ActionResult viewProject = new ActionResult("view-project");
     private ActionResult editMainProjectInfo = new ActionResult("edit-main-project-info");
@@ -39,7 +41,6 @@ public class PassProjectIdAction implements Action {
             project = projectService.findProjectById(Integer.valueOf(projectId));
             log.debug("project: {}", project);
         } catch (Exception e) {
-            log.debug("Failed to findProjectById");
             throw new ActionException("Failed to findProjectById", e);
         }
 
@@ -83,7 +84,6 @@ public class PassProjectIdAction implements Action {
                 log.debug("userService created");
                 seniors = userService.findAllSeniors();
             } catch (Exception e) {
-                log.debug("Failed to findAllSeniors");
                 throw new ActionException("Failed to findAllSeniors", e);
             }
             if (project.getSenior() != null) {
@@ -94,10 +94,10 @@ public class PassProjectIdAction implements Action {
             }
             req.setAttribute("seniors", seniors);
             return specifySenior;
+        } else {
+            throw new ActionException("Failed to pass project parameters.");
         }
-        return null;// todo
     }
-
 
     private Map<String, String> getCountries() {
         String[] locales = Locale.getISOCountries();

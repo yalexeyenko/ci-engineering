@@ -1,6 +1,5 @@
 package action;
 
-import dao.DaoException;
 import entity.Client;
 import entity.Project;
 import org.slf4j.Logger;
@@ -19,8 +18,7 @@ public class CreateClientAction implements Action {
 
     private Validator validator;
 
-    private ActionResult createClientAgain = new ActionResult("create-client");
-    private ActionResult createClientSuccess = new ActionResult("create-client");
+    private ActionResult pageReturn = new ActionResult("create-client");
 
     public CreateClientAction() {
         validator = new Validator();
@@ -43,8 +41,8 @@ public class CreateClientAction implements Action {
 
         Map<String, String[]> parameterMap = req.getParameterMap();
         Set<Violation> violations = validator.validateClientInfo(parameterMap);
-
         log.debug("violations.size(): {}", violations.size());
+
         if (!violations.isEmpty()) {
             for (Violation violation : violations) {
                 req.setAttribute(violation.getName(), violation.getViolation());
@@ -57,12 +55,12 @@ public class CreateClientAction implements Action {
             req.setAttribute("clientAddress", clientAddress);
             req.setAttribute("clientTelephone", clientTelephone);
             req.setAttribute("clientBankAccountNumber", clientBankAccountNumber);
-            req.setAttribute("clientEinSsn",clientEinSsn );
+            req.setAttribute("clientEinSsn", clientEinSsn);
             req.setAttribute("clientType", clientType);
             log.debug("clientType: {}", clientType);
             req.setAttribute("projectId", projectId);
             req.setAttribute("countriesMap", getCountries());
-            return createClientAgain;
+            return pageReturn;
         }
 
         Client currentClient = new Client();
@@ -79,38 +77,24 @@ public class CreateClientAction implements Action {
         currentClient.setEinSsn(clientEinSsn);
         currentClient.setClientType(Client.ClientType.valueOf(clientType));
 
+        try (ClientService clientService = new ClientService()) {
+            currentClient = clientService.createClient(currentClient);
+        } catch (Exception e) {
+            throw new ActionException("Failed to close createClient()", e);
+        }
 
-        ProjectService projectService = new ProjectService();
-        ClientService clientService = new ClientService();
-
-        currentClient = clientService.createClient(currentClient);
-        try {
+        try (ProjectService projectService = new ProjectService()) {
             currentProject = projectService.findProjectById(Integer.valueOf(projectId));
-        } catch (DaoException e) {
-            log.debug("Failed to findProjectById()");
-            try {
-                projectService.close();
-                clientService.close();
-            } catch (Exception ex) {
-                throw new ActionException("Failed to close service", ex);
-            }
-            req.setAttribute("createClientError", "Verify your data. Cannot create client");
-            return createClientAgain;
+        } catch (Exception e) {
+            throw new ActionException("Failed to close findProjectById()", e);
         }
 
         currentProject.setClient(currentClient);
-        try {
+
+        try (ProjectService projectService = new ProjectService()) {
             projectService.updateProjectClient(currentProject);
-        } catch (DaoException e) {
-            log.debug("Failed to updateProjectClient()");
-            try {
-                projectService.close();
-                clientService.close();
-            } catch (Exception ex) {
-                throw new ActionException("Failed to close service", ex);
-            }
-            req.setAttribute("addClientError", "Verify your data. Cannot add client to project.");
-            return createClientAgain;
+        } catch (Exception e) {
+            throw new ActionException("Failed to close updateProjectClient()", e);
         }
 
         req.setAttribute("nameFirstName", nameFirstName);
@@ -121,20 +105,14 @@ public class CreateClientAction implements Action {
         req.setAttribute("clientAddress", clientAddress);
         req.setAttribute("clientTelephone", clientTelephone);
         req.setAttribute("clientBankAccountNumber", clientBankAccountNumber);
-        req.setAttribute("clientEinSsn",clientEinSsn );
+        req.setAttribute("clientEinSsn", clientEinSsn);
         req.setAttribute("clientType", clientType);
         req.setAttribute("projectId", projectId);
         req.setAttribute("project", currentProject);
         req.setAttribute("countriesMap", getCountries());
         req.setAttribute("clientCreated", "Client was successfully created.");
 
-        try {
-            projectService.close();
-            clientService.close();
-        } catch (Exception ex) {
-            throw new ActionException("Failed to close service", ex);
-        }
-        return createClientSuccess;
+        return pageReturn;
     }
 
     private Map<String, String> getCountries() {

@@ -7,8 +7,8 @@ import javax.servlet.http.HttpServletResponse;
 
 public class StaffMainPageAction implements Action {
     private ActionResult userMain = new ActionResult("user-main", true);
-    private ActionResult adminContentAction = new ActionResult("admin-content-action", true);
-    private ActionResult managerMain = new ActionResult("manager-content-action", true);
+    private ActionResult adminMain = new ActionResult("admin-content-staff", true);
+    private ActionResult managerMain = new ActionResult("manager-content-projects", true);
     private ActionResult seniorMain = new ActionResult("senior-main", true);
     private ActionResult engineerMain = new ActionResult("engineer-main", true);
 
@@ -18,7 +18,7 @@ public class StaffMainPageAction implements Action {
         if ((user != null) && (user.getRole() != null)) {
             switch (user.getRole().name()) {
                 case "ADMIN":
-                    return adminContentAction;
+                    return adminMain;
                 case "ENGINEER":
                     return engineerMain;
                 case "MANAGER":

@@ -17,7 +17,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashSet;
 import java.util.Set;
 
 public class UploadFileAction implements Action {
@@ -25,8 +24,7 @@ public class UploadFileAction implements Action {
 
     private Validator validator;
 
-    private ActionResult uploadAgain = new ActionResult("add-file");
-    private ActionResult uploadSuccess = new ActionResult("add-file");
+    private ActionResult returnPage = new ActionResult("add-file");
 
     public UploadFileAction() {
         validator = new Validator();
@@ -36,7 +34,6 @@ public class UploadFileAction implements Action {
     public ActionResult execute(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         String description = req.getParameter("description");
         Part filePart = req.getPart("file");
-        String fileName = filePart.getSubmittedFileName();
         InputStream fileContent = filePart.getInputStream();
         String staffId = req.getParameter("staffId");
         String projectId = req.getParameter("projectId");
@@ -57,23 +54,19 @@ public class UploadFileAction implements Action {
             }
             req.setAttribute("projectId", projectId);
             req.setAttribute("description", description);
-            return uploadAgain;
+            return returnPage;
         }
-
 
         try (UserService userService = new UserService()) {
             log.debug("findUserById()");
             user = userService.findUserById(Integer.valueOf(staffId));
         } catch (Exception e) {
-            log.debug("Failed to findUserById()");
             throw new ActionException("Failed to close findUserById", e);
         }
-        //noinspection Duplicates todo
         try (ProjectService projectService = new ProjectService()) {
             log.debug("findProjectById()");
             project = projectService.findProjectById(Integer.valueOf(projectId));
         } catch (Exception e) {
-            log.debug("Failed to findProjectById()");
             throw new ActionException("Failed to close findProjectById", e);
         }
 
@@ -92,7 +85,6 @@ public class UploadFileAction implements Action {
             log.debug("createFileDoc()");
             fileDoc = fileDocService.createFileDoc(fileDoc);
         } catch (Exception e) {
-            log.debug("Failed to createFileDoc()");
             throw new ActionException("Failed to createFileDoc", e);
         }
 
@@ -100,7 +92,6 @@ public class UploadFileAction implements Action {
         req.setAttribute("projectId", projectId);
         req.setAttribute("fileDocDescription", description);
         req.setAttribute("uploadFileSuccess", "File successfully created.");
-        return uploadSuccess;
-
+        return returnPage;
     }
 }

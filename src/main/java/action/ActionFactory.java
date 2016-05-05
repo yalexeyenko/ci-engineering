@@ -18,15 +18,13 @@ public class ActionFactory {
 
         actions.put("GET/main-page", new StaffMainPageAction());//all but UNREGISTERED
 
-        actions.put("GET/admin-content-action", new AdminContentAction());//ADMIN
         actions.put("GET/admin-content-staff", new AdminContentStaffAction());//ADMIN
         actions.put("GET/admin-view-user", new ShowPageAction("admin-view-user"));//ADMIN
         actions.put("POST/change-role", new ChangeRoleAction());//ADMIN
 
-        actions.put("GET/pass-userId", new PassUserIdAction());//all but UNREGISTERED
+        actions.put("GET/pass-userId", new PassUserParametersAction());//all but UNREGISTERED
 
         actions.put("GET/manager-content-projects", new ManagerContentProjectsAction());//MANAGER
-        actions.put("GET/manager-content-action", new ManagerContentAction());//MANAGER
         actions.put("GET/manager-main", new ShowPageAction("manager-main"));//MANAGER
 
         actions.put("GET/user-main", new ShowPageAction("user-main"));//REGISTERED
@@ -46,7 +44,7 @@ public class ActionFactory {
         actions.put("POST/createProject", new CreateProjectAction());//MANAGER
         actions.put("POST/upload", new UploadFileAction());//MANAGER
 
-        actions.put("GET/pass-projectId", new PassProjectIdAction());//MANAGER
+        actions.put("GET/pass-projectId", new PassProjectParametersAction());//MANAGER
         actions.put("GET/view-project", new ShowPageAction("view-project"));//MANAGER
         actions.put("GET/edit-main-project-info", new ShowPageAction("edit-main-project-info"));//MANAGER
         actions.put("GET/add-file", new ShowPageAction("add-file"));//MANAGER

@@ -26,14 +26,12 @@ public class SignInAction implements Action {
         user.setEmail(email);
         user.setPassword(password);
 
-        UserService userService = new UserService();
-        user = userService.findUserByCredentials(email, password);
-        log.debug("user: {}", user);
-        try {
-            userService.close();
+        try (UserService userService = new UserService()) {
+            user = userService.findUserByCredentials(email, password);
         } catch (Exception e) {
-            throw new ActionException("Failed to close service", e);
+            throw new ActionException("Failed to findUserByCredentials()", e);
         }
+        log.debug("user: {}", user);
         if (user != null) {
             req.getSession(false).setAttribute("user", user);
             return mainPage;

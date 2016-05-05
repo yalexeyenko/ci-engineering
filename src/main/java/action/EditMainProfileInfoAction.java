@@ -19,8 +19,7 @@ public class EditMainProfileInfoAction implements Action {
 
     private Validator validator;
 
-    private ActionResult editSuccess = new ActionResult("edit-profile");
-    private ActionResult editAgain = new ActionResult("edit-profile");
+    private ActionResult pageReturn = new ActionResult("edit-profile");
 
     public EditMainProfileInfoAction() {
         validator = new Validator();
@@ -40,7 +39,7 @@ public class EditMainProfileInfoAction implements Action {
 
         HttpSession session = req.getSession(false);
         User currentUser = (User) session.getAttribute("user");
-        log.debug("currentUser is null: {}", currentUser == null);
+        log.debug("currentUser: {}", currentUser);
 
         if (!violations.isEmpty()) {
             for (Violation violation : violations) {
@@ -53,7 +52,7 @@ public class EditMainProfileInfoAction implements Action {
             if (currentUser.getRole() != null) {
                 req.setAttribute("userRole", role);
             }
-            return editAgain;
+            return pageReturn;
         }
 
         currentUser.setFirstName(firstName);
@@ -64,22 +63,13 @@ public class EditMainProfileInfoAction implements Action {
             currentUser.setRole(User.Role.valueOf(role));
         }
 
-        UserService userService = new UserService();
-        try {
+        try (UserService userService = new UserService()) {
             userService.updateMainProfileInfo(currentUser);
-        } catch (DaoException e) {
-            log.debug("Failed to updateMainProfileInfo()");
-            try {
-                userService.close();
-            } catch (Exception ex) {
-                throw new ActionException("Failed to close service", ex);
-            }
-            req.setAttribute("editMainProfileInfoError", "Email already registered");
-            return editAgain;
+        } catch (Exception e) {
+                throw new ActionException("Failed to close updateMainProfileInfo()", e);
         }
         req.getSession().setAttribute("user", currentUser);
         req.setAttribute("editMainProfileInfoSuccess", "Changes have been saved successfully.");
-
         req.setAttribute("userFirstName", firstName);
         req.setAttribute("userLastName", lastName);
         req.setAttribute("userEmail", email);
@@ -88,11 +78,6 @@ public class EditMainProfileInfoAction implements Action {
             req.setAttribute("userRole", role);
         }
 
-        try {
-            userService.close();
-        } catch (Exception ex) {
-            throw new ActionException("Failed to close service", ex);
-        }
-        return editSuccess;
+        return pageReturn;
     }
 }

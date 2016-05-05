@@ -1,6 +1,5 @@
 package action;
 
-import dao.DaoException;
 import entity.Project;
 import org.joda.time.LocalDate;
 import org.slf4j.Logger;
@@ -19,8 +18,7 @@ public class EditMainProjectInfoAction implements Action {
 
     private Validator validator;
 
-    private ActionResult editedSuccessfully = new ActionResult("edit-main-project-info");
-    private ActionResult editMainProjectInfoAgain = new ActionResult("edit-main-project-info");
+    private ActionResult pageReturn = new ActionResult("edit-main-project-info");
 
     public EditMainProjectInfoAction() {
         validator = new Validator();
@@ -46,7 +44,7 @@ public class EditMainProjectInfoAction implements Action {
             req.setAttribute("projectDeadline", projectDeadline);
             req.setAttribute("projectFinished", projectFinished);
             log.debug("projectFinished: {}", projectFinished);
-            return editMainProjectInfoAgain;
+            return pageReturn;
         }
 
         Project project = new Project();
@@ -55,17 +53,10 @@ public class EditMainProjectInfoAction implements Action {
         project.setDeadline(projectDeadline);
         project.setFinished(projectFinished);
 
-        ProjectService projectService = new ProjectService();
-        try {
+        try (ProjectService projectService = new ProjectService()) {
             projectService.updateProject(project);
-        } catch (DaoException e) {
-            try {
-                projectService.close();
-            } catch (Exception ex) {
-                throw new ActionException("Failed to close service", ex);
-            }
-            req.setAttribute("editMainProjectInfoError", "Verify your data. Cannot update project main info.");
-            return editMainProjectInfoAgain;
+        } catch (Exception e) {
+            throw new ActionException("Failed to updateProject()", e);
         }
         req.setAttribute("project", project);
         req.setAttribute("changesSavedSuccessfully", "Changes successfully saved.");
@@ -75,12 +66,6 @@ public class EditMainProjectInfoAction implements Action {
         req.setAttribute("projectFinished", projectFinished);
         log.debug("projectFinished: {}", projectFinished);
 
-        try {
-            projectService.close();
-        } catch (Exception ex) {
-            throw new ActionException("Failed to close service", ex);
-        }
-        return editedSuccessfully;
+        return pageReturn;
     }
-
 }

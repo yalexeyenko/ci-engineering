@@ -1,6 +1,5 @@
 package action;
 
-import dao.DaoException;
 import entity.Project;
 import entity.User;
 import org.slf4j.Logger;

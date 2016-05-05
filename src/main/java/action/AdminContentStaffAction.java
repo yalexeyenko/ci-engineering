@@ -12,26 +12,18 @@ import java.util.List;
 
 public class AdminContentStaffAction implements Action {
     private static final Logger log = LoggerFactory.getLogger(AdminContentStaffAction.class);
-
     private ActionResult adminContentStaffPage = new ActionResult("admin-main");
 
     @Override
     public ActionResult execute(HttpServletRequest req, HttpServletResponse resp) {
         log.debug("execute...");
         List<User> users;
-        UserService userService = new UserService();
 
-        try {
+        try (UserService userService = new UserService()) {
             users = userService.findAllUsers();
             log.debug("users.size(): {}", users.size());
-        } catch (DaoException e) {
-            throw new ActionException("Failed to get all users", e);
-        }
-
-        try {
-            userService.close();
         } catch (Exception e) {
-            throw new ActionException("Failed to close service", e);
+            throw new ActionException("Failed to findAllUsers()", e);
         }
 
         req.setAttribute("users",  users);

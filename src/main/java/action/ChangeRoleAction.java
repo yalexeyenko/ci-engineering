@@ -1,6 +1,5 @@
 package action;
 
-import dao.DaoException;
 import entity.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,8 +17,7 @@ public class ChangeRoleAction implements Action {
 
     private Validator validator;
 
-    private ActionResult changeSuccess = new ActionResult("admin-view-user");
-    private ActionResult changeAgain = new ActionResult("admin-view-user");
+    private ActionResult pageReturn = new ActionResult("admin-view-user");
 
     public ChangeRoleAction() {
         validator = new Validator();
@@ -40,23 +38,15 @@ public class ChangeRoleAction implements Action {
             for (Violation violation : violations) {
                 req.setAttribute(violation.getName(), violation.getViolation());
             }
-            return changeAgain;
+            return pageReturn;
         }
 
-        UserService userService = new UserService();
         User user;
 
-        try {
+        try (UserService userService = new UserService()) {
             user = userService.findUserById(Integer.valueOf(userId));
-        } catch (DaoException e) {
-            log.debug("Failed to findUserById()");
-            try {
-                userService.close();
-            } catch (Exception ex) {
-                throw new ActionException("Failed to close service", ex);
-            }
-            req.setAttribute("changeRoleError", "Failed to change role. Verify your data.");
-            return changeAgain;
+        } catch (Exception e) {
+                throw new ActionException("Failed to findUserById", e);
         }
         log.debug("user.getRole(): {}", user.getRole());
         if (userRole != null) {
@@ -64,27 +54,14 @@ public class ChangeRoleAction implements Action {
         }
         log.debug("user.getRole(): {}", user.getRole());
 
-        try {
+        try (UserService userService = new UserService()) {
             userService.changeUserRole(user);
-        } catch (DaoException e) {
-            log.debug("Failed to changeUserRole()");
-            try {
-                userService.close();
-            } catch (Exception ex) {
-                throw new ActionException("Failed to close service", ex);
-            }
-            req.setAttribute("changeRoleError", "Failed to change role. Verify your data.");
-            return changeAgain;
+        } catch (Exception e) {
+                throw new ActionException("Failed to close changeUserRole", e);
         }
 
         req.setAttribute("changeRoleSuccess", "Role has been changed successfully.");
         req.setAttribute("adUser", user);
-
-        try {
-            userService.close();
-        } catch (Exception ex) {
-            throw new ActionException("Failed to close service", ex);
-        }
-        return changeSuccess;
+        return pageReturn;
     }
 }

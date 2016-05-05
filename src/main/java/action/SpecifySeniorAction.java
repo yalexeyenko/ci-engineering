@@ -1,6 +1,5 @@
 package action;
 
-import dao.DaoException;
 import entity.Project;
 import entity.User;
 import org.slf4j.Logger;
@@ -15,7 +14,6 @@ import java.util.List;
 public class SpecifySeniorAction implements Action {
     private static final Logger log = LoggerFactory.getLogger(SpecifySeniorAction.class);
 
-    private ActionResult specifySeniorAgain = new ActionResult("specify-senior");
     private ActionResult specifySeniorSuccess = new ActionResult("specify-senior");
 
     @Override
@@ -35,33 +33,28 @@ public class SpecifySeniorAction implements Action {
             log.debug("findProjectById()");
             project = projectService.findProjectById(Integer.valueOf(projectId));
         } catch (Exception e) {
-            log.debug("Failed to findProjectById()");
             throw new ActionException("Failed to close service", e);
         }
 
         try (UserService userService = new UserService()) {
             senior = userService.findUserById(Integer.valueOf(seniorId));
         } catch (Exception e) {
-            log.debug("Failed to findUserById()");
             throw new ActionException("Failed to close service", e);
         }
 
         project.setSenior(senior);
 
         try (ProjectService projectService = new ProjectService()) {
-            log.debug("updateProjectSenior()");
             projectService.updateProjectSenior(project);
         } catch (Exception e) {
-            log.debug("Failed to updateProjectSenior()");
-                throw new ActionException("Failed to close service", e);
+            throw new ActionException("Failed to close service", e);
         }
 
         List<User> seniors;
-        try(UserService userService = new UserService()) {
+        try (UserService userService = new UserService()) {
             seniors = userService.findAllSeniors();
         } catch (Exception e) {
-            log.debug("Failed to findAllSeniors()");
-                throw new ActionException("Failed to close service", e);
+            throw new ActionException("Failed to close service", e);
         }
 
         if (project.getSenior() != null) {

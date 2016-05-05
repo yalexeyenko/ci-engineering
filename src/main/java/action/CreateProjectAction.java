@@ -7,6 +7,7 @@ import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import service.ProjectService;
+import service.ServiceException;
 import service.UserService;
 import validator.Validator;
 import validator.Violation;
@@ -21,8 +22,7 @@ public class CreateProjectAction implements Action {
 
     private Validator validator;
 
-    private ActionResult created = new ActionResult("create-project");
-    private ActionResult createProjectAgain = new ActionResult("create-project");
+    private ActionResult pageReturn = new ActionResult("create-project");
 
     public CreateProjectAction() {
         validator = new Validator();
@@ -46,42 +46,33 @@ public class CreateProjectAction implements Action {
             }
             req.setAttribute("unsavedName", projectName);
             req.setAttribute("unsavedDeadline", projectDeadline);
-            return createProjectAgain;
+            return pageReturn;
         }
 
         Project currentProject = new Project();
+        User manager = null;
+
         currentProject.setName(projectName);
         currentProject.setDeadline(new LocalDate(projectDeadline));
-        User manager = null;
+
         try (UserService userService = new UserService()) {
             log.debug("managerId: {}", ((User) req.getSession().getAttribute("user")).getId());
             manager = userService.findUserById(((User) req.getSession().getAttribute("user")).getId());
         } catch (Exception e) {
-            e.printStackTrace();
-        }
-        currentProject.setManager(manager);
-        ProjectService projectService = new ProjectService();
-        try {
-            currentProject = projectService.createNewProject(currentProject);
-        } catch (DaoException e) {
-            try {
-                projectService.close();
-            } catch (Exception ex) {
-                throw new ActionException("Failed to close service", ex);
-            }
-            req.setAttribute("createProjectError", "Verify data. Cannot create project");
-            return createProjectAgain;
+            throw new ActionException("Failed to findUserById", e);
         }
 
-        try {
-            projectService.close();
-        } catch (Exception ex) {
-            throw new ActionException("Failed to close service", ex);
+        currentProject.setManager(manager);
+
+        try (ProjectService projectService = new ProjectService()) {
+            currentProject = projectService.createNewProject(currentProject);
+        } catch (Exception e) {
+                throw new ActionException("Failed to createNewProject()", e);
         }
 
         req.setAttribute("project", currentProject);
         req.setAttribute("projectCreatedSuccess", "Project successfully created.");
-        return created;
+        return pageReturn;
 
     }
 }

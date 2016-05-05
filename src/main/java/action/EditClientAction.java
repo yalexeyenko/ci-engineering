@@ -2,11 +2,9 @@ package action;
 
 import dao.DaoException;
 import entity.Client;
-import entity.Project;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import service.ClientService;
-import service.ProjectService;
 import validator.Validator;
 import validator.Violation;
 
@@ -22,8 +20,7 @@ public class EditClientAction implements Action {
 
     private Validator validator;
 
-    private ActionResult editClientAgain = new ActionResult("edit-client");
-    private ActionResult editClientSuccess = new ActionResult("edit-client");
+    private ActionResult pageReturn = new ActionResult("edit-client");
 
     public EditClientAction() {
         validator = new Validator();
@@ -47,8 +44,8 @@ public class EditClientAction implements Action {
 
         Map<String, String[]> parameterMap = req.getParameterMap();
         Set<Violation> violations = validator.validateClientInfo(parameterMap);
-
         log.debug("violations.size(): {}", violations.size());
+
         if (!violations.isEmpty()) {
             for (Violation violation : violations) {
                 req.setAttribute(violation.getName(), violation.getViolation());
@@ -66,7 +63,7 @@ public class EditClientAction implements Action {
             req.setAttribute("projectId", projectId);
             req.setAttribute("clientId", clientId);
             req.setAttribute("countriesMap", getCountries());
-            return editClientAgain;
+            return pageReturn;
         }
 
         Client client = new Client();
@@ -82,19 +79,10 @@ public class EditClientAction implements Action {
         client.setClientType(Client.ClientType.valueOf(clientType));
         client.setId(Integer.valueOf(clientId));
 
-        ClientService clientService = new ClientService();
-
-        try {
+        try (ClientService clientService = new ClientService()) {
             clientService.updateClient(client);
-        } catch (DaoException e) {
-            log.debug("Failed to updateClient()");
-            try {
-                clientService.close();
-            } catch (Exception ex) {
-                throw new ActionException("Failed to close service", ex);
-            }
-            req.setAttribute("editClientInfoError", "Verify your data. Cannot edit client.");
-            return editClientAgain;
+        } catch (Exception e) {
+                throw new ActionException("Failed to updateClient()", e);
         }
 
         req.setAttribute("nameFirstName", nameFirstName);
@@ -112,12 +100,7 @@ public class EditClientAction implements Action {
         req.setAttribute("clientId", clientId);
         req.setAttribute("clientEdited", "Changes have been saved successfully.");
 
-        try {
-            clientService.close();
-        } catch (Exception ex) {
-            throw new ActionException("Failed to close service", ex);
-        }
-        return editClientSuccess;
+        return pageReturn;
     }
 
     private Map<String, String> getCountries() {
