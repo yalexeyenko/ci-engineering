@@ -34,7 +34,6 @@ public class SignInAction implements Action {
         } catch (Exception e) {
             throw new ActionException("Failed to close service", e);
         }
-
         if (user != null) {
             req.getSession(false).setAttribute("user", user);
             return mainPage;
