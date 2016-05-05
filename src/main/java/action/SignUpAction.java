@@ -9,7 +9,6 @@ import validator.Violation;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -64,7 +63,7 @@ public class SignUpAction implements Action {
         user.setLastName(lastName);
         user.setEmail(email);
         user.setPassword(password);
-        user.setRole(User.Role.GUEST);
+        user.setRole(User.Role.REGISTERED);
 
         UserService userService = new UserService();
         user = userService.createUser(user);
