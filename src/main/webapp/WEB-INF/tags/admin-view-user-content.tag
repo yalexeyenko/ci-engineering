@@ -23,6 +23,10 @@
     </div>
     <h4>${adUser.firstName} ${adUser.lastName}</h4>
     <h4>Email: ${adUser.email}</h4>
+    <h4>Degree:
+        <c:if test="${not empty adUser.degree}">${adUser.degree}</c:if>
+        <c:if test="${empty adUser.degree}">not specified</c:if>
+    </h4>
 
     <form action="${change_role}" method="post" name="change-user-role" onSubmit="return validate_form(this);">
         <select name="role" size="1">
@@ -42,13 +46,4 @@
         </c:if>
     </form>
 
-    <h4>Degree:
-        <c:if test="${not empty adUser.degree}">${adUser.degree}</c:if>
-        <c:if test="${empty adUser.degree}">not specified</c:if>
-    </h4>
-
-    <form action="${delete_user}" method="post" name="delete-user" onSubmit="return validate_form(this);">
-        <input type="hidden" name="userId" value="${adUser.id}"/>
-        <button class="delete-user-button" type="submit"/>Delete user</button>
-    </form>
 </main>
