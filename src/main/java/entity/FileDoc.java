@@ -12,7 +12,6 @@ public class FileDoc extends NamedEntity {
     private Status status;
     private Project project;
     private User user;
-    private Module module;
     InputStream fileContent;
 
     public FileDoc() {
@@ -45,14 +44,6 @@ public class FileDoc extends NamedEntity {
 
     public void setStatus(Status status) {
         this.status = status;
-    }
-
-    public Module getModule() {
-        return module;
-    }
-
-    public void setModule(Module module) {
-        this.module = module;
     }
 
     public User getUser() {
