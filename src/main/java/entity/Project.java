@@ -11,13 +11,11 @@ public class Project extends NamedEntity {
     private LocalDate deadline;
     private boolean finished;
     private FileDoc techTask;
-    private List<Module> modules;
     private User senior;
     private User manager;
 
     public Project() {
         finished = false;
-        modules = new ArrayList<>();
         startDate = new LocalDate();
     }
 
@@ -68,22 +66,6 @@ public class Project extends NamedEntity {
             throw new NullPointerException("Attempt to set null to techTask");
         }
         this.techTask = techTask;
-    }
-
-    public List<Module> getModules() {
-        return modules;
-    }
-
-    public boolean addModule(Module module) {
-        return this.modules.add(module);
-    }
-
-    public boolean removeModule(Module module) {
-        return this.modules.remove(module);
-    }
-
-    public void clearModules() {
-        this.modules.clear();
     }
 
     public User getSenior() {
