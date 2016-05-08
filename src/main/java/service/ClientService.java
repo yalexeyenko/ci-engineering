@@ -30,24 +30,20 @@ public class ClientService implements AutoCloseable {
         }
     }
 
-    public void updateClient(Client client) throws DaoException {
+    public void updateClient(Client client) {
         clientDao.update(client);
     }
 
-    public Client findClientById(int id) throws DaoException {
+    public Client findClientById(int id) {
         return clientDao.findById(id);
     }
 
-    public boolean deleteClientById(int id) throws DaoException {
+    public boolean deleteClientById(int id) {
         return clientDao.delete(id);
     }
 
-    public List<Client> findAllClients() throws DaoException {
+    public List<Client> findAllClients() {
         return clientDao.findAll();
-    }
-
-    public List<Client> findAllClientsLimited(int start, int count) throws DaoException {
-        return clientDao.findAll(start, count);
     }
 
     @Override
