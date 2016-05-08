@@ -87,9 +87,4 @@
             ">specify senior engineer</a>
         </c:if>
     </h4>
-    <h4>Modules:
-        <c:if test="${empty project.modules}">
-            no modules
-        </c:if>
-    </h4>
 </main>
