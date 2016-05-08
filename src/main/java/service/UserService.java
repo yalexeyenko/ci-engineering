@@ -1,8 +1,6 @@
 package service;
 
 import dao.*;
-import entity.Image;
-import entity.TechSkill;
 import entity.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,14 +12,10 @@ public class UserService implements AutoCloseable {
 
     private DaoFactory jdbcDaoFactory;
     private UserDao userDao;
-    private Dao<Image> imageDao;
-    private Dao<TechSkill> techSkillDao;
 
     public UserService() {
         jdbcDaoFactory = DaoFactory.newInstance(DaoFactory.JDBC);
         userDao = (UserDao) jdbcDaoFactory.createDao(User.class);
-        imageDao = jdbcDaoFactory.createDao(Image.class);
-        techSkillDao = jdbcDaoFactory.createDao(TechSkill.class);
     }
 
     public User createUser(User user) {
@@ -50,53 +44,33 @@ public class UserService implements AutoCloseable {
         }
     }
 
-    public void changePassword(User user) throws DaoException {
+    public void changePassword(User user){
         userDao.updatePassword(user);
     }
 
-    public void updateUser(User user) throws DaoException {
+    public void updateUser(User user){
         userDao.update(user);
     }
 
-    public void changeUserRole(User user) throws DaoException {
+    public void changeUserRole(User user){
         log.debug("changeUserRole()...");
         userDao.updateRole(user);
     }
 
-    public void updateMainProfileInfo(User user) throws DaoException {
+    public void updateMainProfileInfo(User user){
         userDao.updateMainProfileInfo(user);
     }
 
-    public User findUserById(int id) throws DaoException {
+    public User findUserById(int id) {
         log.debug("findUserById()...");
         return userDao.findById(id);
     }
 
-    public List<User> findAllUsers() throws DaoException {
+    public List<User> findAllUsers() {
         return userDao.findAll();
     }
 
-    public User addImage(Image image, User user) throws DaoException {
-        Image img = imageDao.insert(image);
-        user.setImage(img);
-        userDao.update(user);
-        return user;
-    }
-
-    public User changeImage(Image image, User user) throws DaoException {
-        return addImage(image, user);
-    }
-
-    public Image getImage(User user) throws DaoException {
-        return imageDao.findById(user.getImage().getId());
-    }
-
-    public boolean removeImage(User user) throws DaoException {
-        return imageDao.delete(user.getImage().getId());
-    }
-
-
-    public List<User> findAllSeniors() throws DaoException {
+    public List<User> findAllSeniors() {
         log.debug("findAllSeniors()...");
         return userDao.findAllSeniors();
     }
