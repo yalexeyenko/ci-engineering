@@ -1,6 +1,5 @@
 package service;
 
-import dao.DaoException;
 import dao.DaoFactory;
 import dao.ProjectDao;
 import entity.Project;
@@ -20,43 +19,39 @@ public class ProjectService implements AutoCloseable {
         projectDao = (ProjectDao) jdbcDaoFactory.createDao(Project.class);
     }
 
-    public Project createNewProject(Project project) throws DaoException {
+    public Project createNewProject(Project project) {
         log.debug("createNewProject()...");
         log.debug("project is null: {}", project == null);
         log.debug("projectDao is null: {}", projectDao == null);
         return projectDao.insert(project);
     }
 
-    public Project findProjectById(int id) throws DaoException {
+    public Project findProjectById(int id) {
         log.debug("findProjectById()...");
         return projectDao.findById(id);
     }
 
-    public List<Project> findAllProjects() throws DaoException {
+    public List<Project> findAllProjects() {
         return projectDao.findAll();
     }
 
-    public List<Project> findAllPersonalProjects(int managerId) throws DaoException {
+    public List<Project> findAllPersonalProjects(int managerId) {
         return projectDao.findAllPersonalProjects(managerId);
     }
 
-    public List<Project> findAllProjectsLimited(int start, int count) throws DaoException {
-        return projectDao.findAll(start, count);
-    }
-
-    public void updateProject(Project project) throws DaoException {
+    public void updateProject(Project project) {
         projectDao.update(project);
     }
 
-    public void updateProjectClient(Project project) throws DaoException {
+    public void updateProjectClient(Project project) {
         projectDao.updateProjectClient(project);
     }
 
-    public void updateProjectSenior(Project project) throws DaoException {
+    public void updateProjectSenior(Project project) {
         projectDao.updateProjectSenior(project);
     }
 
-    public boolean deleteProjectById(int id) throws DaoException {
+    public boolean deleteProjectById(int id) {
         return projectDao.delete(id);
     }
 
