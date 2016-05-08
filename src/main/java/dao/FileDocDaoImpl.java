@@ -128,7 +128,9 @@ public class FileDocDaoImpl implements FileDocDao {
                 fileDoc.setStatus(FileDoc.Status.valueOf(resultSet.getString("status")));
                 fileDoc.setUser(userDao.findById(resultSet.getInt("staffId")));
                 fileDoc.setFileContent(resultSet.getBinaryStream("fileContent"));
-                fileDoc.setName(resultSet.getString("fileName"));
+                if (resultSet.getString("fileName") != null) {
+                    fileDoc.setName(resultSet.getString("fileName"));
+                }
                 fileDoc.setProject(project);
                 fileDocs.add(fileDoc);
             }
