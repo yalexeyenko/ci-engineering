@@ -7,6 +7,7 @@
 <c:url var="main_page" value="/do/main-page"/>
 <c:url var="edit_main_project_info" value="/do/pass-projectId"/>
 <c:url var="upload_file" value="/upload"/>
+<c:url var="view_files" value="/do/view-project-files"/>
 
 <link rel="stylesheet" href="${css_path}/edit-project-content.css">
 
@@ -20,6 +21,13 @@
                         <c:param name="passProjectId" value="view-project"></c:param>
                     </c:url>
                 ">Project</a>
+            </li>
+            <li>
+                <a id="view-files" href="
+            <c:url value="${view_files}">
+                <c:param name="projectId" value="${projectId}"></c:param>
+            </c:url>
+    ">View files</a>
             </li>
             <li>
                 <a id="add-file" href="
