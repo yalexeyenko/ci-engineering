@@ -32,8 +32,9 @@ public class UploadFileAction implements Action {
 
     @Override
     public ActionResult execute(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-        String description = req.getParameter("description");
         Part filePart = req.getPart("file");
+        String description = req.getParameter("description");
+        String fileName = filePart.getSubmittedFileName();
         InputStream fileContent = filePart.getInputStream();
         String staffId = req.getParameter("staffId");
         String projectId = req.getParameter("projectId");
@@ -43,6 +44,7 @@ public class UploadFileAction implements Action {
         Project project;
         fileDoc.setDescription(description);
         fileDoc.setFileContent(fileContent);
+        fileDoc.setName(fileName);
 
         Set<Violation> violations = validator.validateFileUpload(description, filePart);
         log.debug("violations.size(): {}", violations.size());
@@ -77,7 +79,6 @@ public class UploadFileAction implements Action {
         log.debug("fileDoc.getDescription(): {}",fileDoc.getDescription());
         log.debug("fileDoc.getLastModified(): {}",fileDoc.getLastModified());
         log.debug("fileDoc.getStatus(: {}",fileDoc.getStatus());
-        log.debug("fileDoc.getModule(): {}",fileDoc.getModule());
         log.debug("fileDoc.getProject(): {}",fileDoc.getProject());
         log.debug("fileDoc.getFileContent(): {}",fileDoc.getFileContent());
 
