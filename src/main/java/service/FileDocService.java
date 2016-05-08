@@ -39,6 +39,10 @@ public class FileDocService implements AutoCloseable  {
         return fileDocDao.delete(id);
     }
 
+    public List<FileDoc> findAllFileDocsByProjectId(int projectId) {
+        return fileDocDao.findAllFileDocsByProjectId(projectId);
+    }
+
     @Override
     public void close() throws Exception {
         log.debug("close()...");
