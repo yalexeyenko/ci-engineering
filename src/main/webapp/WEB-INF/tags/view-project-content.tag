@@ -1,13 +1,13 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@tag description="viewProjectContent" pageEncoding="UTF-8" %>
 <c:url var="edit_main_project_info" value="/do/pass-projectId"/>
-<c:url var="add_file" value="/do/pass-projectId"/>
 <c:url var="create_client" value="/do/pass-projectId"/>
 <c:url var="view_client" value="/do/pass-projectId"/>
 <c:url var="specify_senior" value="/do/pass-projectId"/>
 <c:url var="css_path" value="${pageContext.request.contextPath}/css"/>
 <c:url var="view_project" value="/do/pass-projectId"/>
 <c:url var="main_page" value="/do/main-page"/>
+<c:url var="view_files" value="/do/view-project-files"/>
 
 <link rel="stylesheet" href="${css_path}/edit-project-content.css">
 
@@ -18,9 +18,6 @@
             <li><a href="
                     <c:url value="${view_project}">
                         <c:param name="projectId" value="${projectId}"></c:param>
-                        <%--<c:param name="projectName" value="${projectName}"></c:param>--%>
-                        <%--<c:param name="projectDeadline" value="${projectDeadline}"></c:param>--%>
-                        <%--<c:param name="projectFinished" value="${projectFinished}"></c:param>--%>
                         <c:param name="passProjectId" value="view-project"></c:param>
                     </c:url>
                 ">Project</a>
@@ -39,17 +36,17 @@
             </c:url>
     ">Edit project</a>
     </div>
+    <%--View files--%>
     <div class="field-wrap">
-        <a id="add-file" href="
-            <c:url value="${add_file}">
+        <a id="view-files" href="
+            <c:url value="${view_files}">
                 <c:param name="projectId" value="${projectId}"></c:param>
-                <c:param name="passProjectId" value="add-file"></c:param>
             </c:url>
-    ">Add file</a>
+    ">View files</a>
     </div>
+
     <h4>Client:
         <c:if test="${not empty project.client}">
-
             <a href="
                 <c:url value="${view_client}">
                     <c:param name="projectId" value="${project.id}"></c:param>
