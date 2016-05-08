@@ -7,10 +7,8 @@ public class User extends BaseEntity {
     private String lastName;
     private String email;
     private String password;
-    private Image image;
     private Role role;
     private String degree;
-    private List<TechSkill> techSkills;
     private List<Role> roleValues;
 
     public User() {
@@ -49,17 +47,6 @@ public class User extends BaseEntity {
         this.email = email;
     }
 
-    public Image getImage() {
-        return image;
-    }
-
-    public void setImage(Image image) {
-        if (image == null) {
-            throw new NullPointerException("Attempt to set null to image");
-        }
-        this.image = image;
-    }
-
     public Role getRole() {
         return role;
     }
@@ -77,31 +64,6 @@ public class User extends BaseEntity {
             throw new NullPointerException("Attempt to set null to degree");
         }
         this.degree = degree;
-    }
-
-    public List<TechSkill> getTechSkills() {
-        if (techSkills == null) {
-            throw new NullPointerException("Trying to getTechSkills() from a null techSkills");
-        }
-        return this.techSkills;
-    }
-
-    public boolean addTechSkill(TechSkill techSkill) {
-        if (techSkills == null) {
-            techSkills = new ArrayList<>();
-        }
-        return this.techSkills.add(techSkill);
-    }
-
-    public boolean removeTechSkill(TechSkill techSkill) {
-        if (techSkills == null) {
-            throw new NullPointerException("Trying to removeTechSkill() from a null techSkills");
-        }
-        return this.techSkills.remove(techSkill);
-    }
-
-    public void clearTechSkills() {
-        this.techSkills.clear();
     }
 
     public String getPassword() {
