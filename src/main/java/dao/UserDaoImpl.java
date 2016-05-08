@@ -23,7 +23,6 @@ public class UserDaoImpl implements UserDao {
     private static final String FIND_ALL = "SELECT * FROM staff";
     private static final String FIND_ALL_SENIORS = "SELECT id, firstName, lastName, email, password, role, degree FROM staff WHERE role = ?";
     private static final String FIND_USER_BY_EMAIL_AND_PASSWORD = "SELECT id, firstName, lastName, email, password, role, degree FROM staff WHERE email= ? AND password= ?";
-    private static final String FIND_ALL_LIMIT = "SELECT * FROM staff LIMIT ? OFFSET ?";
 
     private final Connection connection;
 
@@ -32,7 +31,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public User insert(User user) throws DaoException {
+    public User insert(User user) {
         log.debug("insert()...");
         log.debug("user.getFirstName(): {}", user.getFirstName());
         log.debug("user.getLastName(): {}", user.getLastName());
@@ -58,7 +57,6 @@ public class UserDaoImpl implements UserDao {
             user.setId(resultSet.getInt(1));
             return user;
         } catch (SQLException e) {
-            log.debug("!!!");
             throw new DaoException("SQL INSERT_USER error.", e);
         } finally {
             if (preparedStatement != null) {
@@ -72,7 +70,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public void update(User user) throws DaoException {
+    public void update(User user) {
         PreparedStatement preparedStatement = null;
         try {
             preparedStatement = connection.prepareStatement(UPDATE_USER);
@@ -102,7 +100,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public User findById(int id) throws DaoException {
+    public User findById(int id) {
         log.debug("findById()...");
         log.debug("id: {}", id);
         User user = new User();
@@ -138,7 +136,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public void updateMainProfileInfo(User user) throws DaoException {
+    public void updateMainProfileInfo(User user) {
         PreparedStatement preparedStatement = null;
         try {
             preparedStatement = connection.prepareStatement(UPDATE_MAIN_USER_INFO);
@@ -154,7 +152,6 @@ public class UserDaoImpl implements UserDao {
             preparedStatement.setInt(6, user.getId());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            log.debug("Failed to updateMainProfileInfo()");
             throw new DaoException("SQL UPDATE_MAIN_USER_INFO error.", e);
         } finally {
             if (preparedStatement != null) {
@@ -168,7 +165,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public void updatePassword(User user) throws DaoException {
+    public void updatePassword(User user) {
         PreparedStatement preparedStatement = null;
         try {
             preparedStatement = connection.prepareStatement(UPDATE_PASSWORD);
@@ -176,7 +173,6 @@ public class UserDaoImpl implements UserDao {
             preparedStatement.setInt(2, user.getId());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            log.debug("Failed to updatePassword()");
             throw new DaoException("SQL UPDATE_PASSWORD error.", e);
         } finally {
             if (preparedStatement != null) {
@@ -190,7 +186,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public void updateRole(User user) throws DaoException {
+    public void updateRole(User user) {
         log.debug("updateRole()...");
         PreparedStatement preparedStatement = null;
         try {
@@ -201,7 +197,6 @@ public class UserDaoImpl implements UserDao {
             preparedStatement.setInt(2, user.getId());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            log.debug("Failed to updateRole()");
             throw new DaoException("SQL UPDATE_USER_ROLE error.", e);
         } finally {
             if (preparedStatement != null) {
@@ -215,7 +210,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public boolean delete(int id) throws DaoException {
+    public boolean delete(int id) {
         PreparedStatement preparedStatement = null;
         try {
             preparedStatement = connection.prepareStatement(DELETE_USER_BY_ID);
@@ -235,7 +230,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public List<User> findAll() throws DaoException {
+    public List<User> findAll() {
         List<User> users = new ArrayList<>();
         Statement statement = null;
         try {
@@ -271,12 +266,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public List<User> findAll(int start, int count) throws DaoException {
-        return null;
-    }
-
-    @Override
-    public User findUserByEmailAndPassword(String email, String password) throws DaoException {
+    public User findUserByEmailAndPassword(String email, String password) {
         log.debug("findUserByEmailAndPassword()...");
         log.debug("email: {}", email);
         log.debug("password: {}", password);
@@ -317,7 +307,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public List<User> findAllSeniors() throws DaoException {
+    public List<User> findAllSeniors() {
         log.debug("findAllSeniors()...");
         List<User> seniors = new ArrayList<>();
         PreparedStatement preparedStatement = null;
