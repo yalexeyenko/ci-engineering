@@ -1,5 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@tag description="createClientContent" pageEncoding="UTF-8" %>
+<%@tag description="create_client" pageEncoding="UTF-8" %>
 <c:url var="create_client_action" value="/do/createClientAction"/>
 <c:url var="view_project" value="/do/pass-projectId"/>
 <c:url var="create_client" value="/do/pass-projectId"/>
