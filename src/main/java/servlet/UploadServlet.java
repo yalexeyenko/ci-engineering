@@ -29,6 +29,7 @@ public class UploadServlet extends HttpServlet {
         actionFactory = new ActionFactory();
     }
 
+    @SuppressWarnings("Duplicates")// todo duplicate code underline
     @Override
     public void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         log.debug("service()...");
