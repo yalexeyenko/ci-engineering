@@ -19,7 +19,6 @@ public class ClientDaoImpl implements ClientDao {
             "bankAccountNumber, einSsn, firstName, lastName, clientType FROM client WHERE id = ?";
     private static final String DELETE_BY_ID = "DELETE FROM client WHERE id = ?";
     private static final String FIND_ALL = "SELECT * FROM client";
-    private static final String FIND_ALL_LIMIT = "SELECT * FROM client LIMIT ? OFFSET ?";
 
     private final Connection connection;
 
@@ -28,7 +27,7 @@ public class ClientDaoImpl implements ClientDao {
     }
 
     @Override
-    public Client findById(int id) throws DaoException {
+    public Client findById(int id) {
         log.debug("findById...");
         log.debug("id: {}", id);
         Client client = new Client();
@@ -69,7 +68,7 @@ public class ClientDaoImpl implements ClientDao {
     }
 
     @Override
-    public Client insert(Client client) throws DaoException {
+    public Client insert(Client client) {
         log.debug("insert...");
         PreparedStatement preparedStatement = null;
         try {
@@ -103,7 +102,7 @@ public class ClientDaoImpl implements ClientDao {
     }
 
     @Override
-    public void update(Client client) throws DaoException {
+    public void update(Client client) {
         PreparedStatement preparedStatement = null;
         try {
             preparedStatement = connection.prepareStatement(UPDATE_CLIENT);
@@ -133,7 +132,7 @@ public class ClientDaoImpl implements ClientDao {
     }
 
     @Override
-    public boolean delete(int id) throws DaoException {
+    public boolean delete(int id) {
         PreparedStatement preparedStatement = null;
         try {
             preparedStatement = connection.prepareStatement(DELETE_BY_ID);
@@ -153,7 +152,7 @@ public class ClientDaoImpl implements ClientDao {
     }
 
     @Override
-    public List<Client> findAll() throws DaoException {
+    public List<Client> findAll() {
         List<Client> clients = new ArrayList<>();
         Statement statement = null;
         try {
@@ -186,10 +185,5 @@ public class ClientDaoImpl implements ClientDao {
             }
         }
         return clients;
-    }
-
-    @Override
-    public List<Client> findAll(int start, int count) throws DaoException {
-        return null;
     }
 }
