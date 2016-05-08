@@ -18,7 +18,6 @@ public class ProjectDaoImpl implements ProjectDao {
     private static final String FIND_PROJECT_BY_ID = "SELECT startDate, deadline, projectName, id, finished, clientId, seniorId, staffId FROM project WHERE id = ?";
     private static final String FIND_ALL_PROJECTS = "SELECT * FROM project";
     private static final String FIND_ALL_PERSONAL_PROJECTS = "SELECT startDate, deadline, projectName, id, finished, clientId, seniorId, staffId FROM project WHERE staffId = ?";
-    private static final String FIND_ALL_PROJECTS_LIMITED = "SELECT * FROM project LIMIT ? OFFSET ?";
     private static final String UPDATE_PROJECT = "UPDATE project SET projectName = ?, deadline = ?, finished = ? WHERE id = ?";
     private static final String DELETE_PROJECT_BY_ID = "DELETE FROM project WHERE id = ?";
     private static final String UPDATE_PROJECT_CLIENT = "UPDATE project SET clientId = ? WHERE id = ?";
@@ -31,7 +30,7 @@ public class ProjectDaoImpl implements ProjectDao {
     }
 
     @Override
-    public Project insert(Project project) throws DaoException {
+    public Project insert(Project project) {
         log.debug("insert()...");
         PreparedStatement preparedStatement = null;
         try {
@@ -61,7 +60,7 @@ public class ProjectDaoImpl implements ProjectDao {
     }
 
     @Override
-    public Project findById(int id) throws DaoException {
+    public Project findById(int id) {
         log.debug("findById()...");
         ClientDao clientDao = new ClientDaoImpl(connection);
         UserDao userDao = new UserDaoImpl(connection);
@@ -114,7 +113,7 @@ public class ProjectDaoImpl implements ProjectDao {
     }
 
     @Override
-    public List<Project> findAll() throws DaoException {
+    public List<Project> findAll() {
         ClientDao clientDao = new ClientDaoImpl(connection);
         UserDao userDao = new UserDaoImpl(connection);
         List<Project> projects = new ArrayList<>();
@@ -167,14 +166,8 @@ public class ProjectDaoImpl implements ProjectDao {
     }
 
     @Override
-    public List<Project> findAll(int start, int count) throws DaoException {
-        return null;
-    }
-
-    @Override
-    public void update(Project project) throws DaoException {
+    public void update(Project project) {
         PreparedStatement preparedStatement = null;
-        //noinspection Duplicates TODO
         try {
             preparedStatement = connection.prepareStatement(UPDATE_PROJECT);
             preparedStatement.setString(1, project.getName());
@@ -196,7 +189,7 @@ public class ProjectDaoImpl implements ProjectDao {
     }
 
     @Override
-    public boolean delete(int id) throws DaoException {
+    public boolean delete(int id) {
         PreparedStatement preparedStatement = null;
         try {
             preparedStatement = connection.prepareStatement(DELETE_PROJECT_BY_ID);
@@ -217,9 +210,8 @@ public class ProjectDaoImpl implements ProjectDao {
 
 
     @Override
-    public void updateProjectClient(Project projectWithClient) throws DaoException {
+    public void updateProjectClient(Project projectWithClient) {
         PreparedStatement preparedStatement = null;
-        //noinspection Duplicates // TODO: 27.04.2016  
         try {
             preparedStatement = connection.prepareStatement(UPDATE_PROJECT_CLIENT);
             preparedStatement.setInt(1, projectWithClient.getClient().getId());
@@ -239,7 +231,7 @@ public class ProjectDaoImpl implements ProjectDao {
     }
 
     @Override
-    public void updateProjectSenior(Project projectWithSenior) throws DaoException {
+    public void updateProjectSenior(Project projectWithSenior) {
         PreparedStatement preparedStatement = null;
         try {
             preparedStatement = connection.prepareStatement(UPDATE_PROJECT_SENIOR);
@@ -260,7 +252,7 @@ public class ProjectDaoImpl implements ProjectDao {
     }
 
     @Override
-    public List<Project> findAllPersonalProjects(int managerId) throws DaoException {
+    public List<Project> findAllPersonalProjects(int managerId) {
         log.debug("findAllPersonalProjects()...");
         ClientDao clientDao = new ClientDaoImpl(connection);
         UserDao userDao = new UserDaoImpl(connection);
