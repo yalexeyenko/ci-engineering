@@ -43,7 +43,9 @@ public class ActionFactory {
         actions.put("GET/create-project", new ShowPageAction("create-project"));//MANAGER
         actions.put("POST/createProject", new CreateProjectAction());//MANAGER
         actions.put("POST/upload", new UploadFileAction());//MANAGER
-        actions.put("GET/view-project-files", new ViewProjectFilesAction());
+        actions.put("GET/download", new DownloadFileAction());//MANAGER
+        actions.put("GET/delete-file", new DeleteFileAction());//MANAGER
+        actions.put("GET/view-project-files", new ViewProjectFilesAction());//MANAGER
 
         actions.put("GET/pass-projectId", new PassProjectParametersAction());//MANAGER
         actions.put("POST/pass-projectId", new PassProjectParametersAction());//MANAGER
