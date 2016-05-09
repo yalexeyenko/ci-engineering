@@ -15,7 +15,7 @@ public class FileDocDaoImpl implements FileDocDao {
 
     private static final String INSERT_FILEDOC = "INSERT INTO filedoc (description, lastModified, status, staffId," +
             "  projectId, fileContent, fileName) VALUES (?, ?, ?, ?, ?, ?, ?)";
-    private static final String FIND_FILEDOC_BY_ID = "SELECT description, lastModified, status, staffId, projectId, fileContent, fileName" +
+    private static final String FIND_FILEDOC_BY_ID = "SELECT id, description, lastModified, status, staffId, projectId, fileContent, fileName" +
             " FROM filedoc WHERE id = ?";
     private static final String FIND_FILEDOCS_BY_PROJECT_ID = "SELECT id, description, lastModified, status, staffId, fileContent, fileName" +
             " FROM filedoc WHERE projectId = ?";
@@ -77,16 +77,26 @@ public class FileDocDaoImpl implements FileDocDao {
 
     @Override
     public FileDoc findById(int id) {
+        log.debug("findById()...");
         UserDao userDao = new UserDaoImpl(connection);
         ProjectDao projectDao = new ProjectDaoImpl(connection);
         FileDoc fileDoc = new FileDoc();
         PreparedStatement preparedStatement = null;
         try {
             preparedStatement = connection.prepareStatement(FIND_FILEDOC_BY_ID);
+            log.debug("preparedStatement: {}", preparedStatement);
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
+            log.debug("resultSet: {}", resultSet);
             resultSet.next();
             fileDoc.setId(resultSet.getInt("id"));
+            log.debug("resultSet.getString(\"description\"): {}", resultSet.getString("description"));
+            log.debug("new LocalDate(resultSet.getDate(\"lastModified\")): {}", new LocalDate(resultSet.getDate("lastModified")));
+            log.debug("FileDoc.Status.valueOf(resultSet.getString(\"status\")): {}", FileDoc.Status.valueOf(resultSet.getString("status")));
+            log.debug("userDao.findById(Integer.valueOf(resultSet.getString(\"staffId\"))): {}", userDao.findById(Integer.valueOf(resultSet.getString("staffId"))));
+            log.debug("projectDao.findById(Integer.valueOf(resultSet.getString(\"projectId\"))): {}", projectDao.findById(Integer.valueOf(resultSet.getString("projectId"))));
+            log.debug("resultSet.getBinaryStream(\"fileContent\"): {}", resultSet.getBinaryStream("fileContent"));
+            log.debug("resultSet.getString(\"fileName\"): {}", resultSet.getString("fileName"));
             fileDoc.setDescription(resultSet.getString("description"));
             fileDoc.setLastModified(new LocalDate(resultSet.getDate("lastModified")));
             fileDoc.setStatus(FileDoc.Status.valueOf(resultSet.getString("status")));
@@ -94,6 +104,7 @@ public class FileDocDaoImpl implements FileDocDao {
             fileDoc.setProject(projectDao.findById(Integer.valueOf(resultSet.getString("projectId"))));
             fileDoc.setFileContent(resultSet.getBinaryStream("fileContent"));
             fileDoc.setName(resultSet.getString("fileName"));
+            log.debug("fileDoc: {}", fileDoc);
             return fileDoc;
         } catch (SQLException e) {
             throw new DaoException("SQL FIND_FILEDOC_BY_ID error.", e);
