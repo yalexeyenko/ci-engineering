@@ -5,7 +5,8 @@
 <c:url var="main_page" value="/do/main-page"/>
 <c:url var="view_files" value="/do/view-project-files"/>
 <c:url var="add_file" value="/do/pass-projectId"/>
-<c:url var="download_file" value="/do/download-file"/>
+<c:url var="download_file" value="/download"/>
+<c:url var="delete_file" value="/do/delete-file"/>
 
 <link rel="stylesheet" href="${css_path}/manager-content-projects.css">
 
@@ -48,6 +49,7 @@
                     <th>Last modified</th>
                     <th>Status</th>
                     <th>download</th>
+                    <th>delete</th>
                 </tr>
                 <c:forEach items="${fileDocs}" var="item" varStatus="status">
                     <tr>
@@ -59,10 +61,18 @@
                         <td>${item.status}</td>
                         <td>
                             <a href="
-                            <c:url value="${download_file}">
-                                <c:param name="fileDocId" value="${item.id}"></c:param>
-                            </c:url>
-                        ">download</a>
+                                <c:url value="${download_file}/download">
+                                    <c:param name="fileDocId" value="${item.id}"></c:param>
+                                </c:url>
+                            " target="_blank">download</a>
+                        </td>
+                        <td>
+                            <a href="
+                                <c:url value="${delete_file}">
+                                    <c:param name="fileDocId" value="${item.id}"></c:param>
+                                    <c:param name="projectId" value="${projectId}"></c:param>
+                                </c:url>
+                            ">delete</a>
                         </td>
                     </tr>
                 </c:forEach>
