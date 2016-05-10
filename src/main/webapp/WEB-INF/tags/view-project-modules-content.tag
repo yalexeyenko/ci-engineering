@@ -1,10 +1,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@tag description="managerContentProjects" pageEncoding="UTF-8" %>
 <c:url var="css_path" value="${pageContext.request.contextPath}/css"/>
-<c:url var="view_project" value="/do/pass-projectId"/>
-<c:url var="view_module" value="/do/view-module"/>
 <c:url var="main_page" value="/do/main-page"/>
+<c:url var="view_project" value="/do/pass-projectId"/>
 <c:url var="view_modules" value="/do/view-project-modules"/>
+<c:url var="view_module" value="/do/view-module"/>
 <c:url var="add_module" value="/do/pass-projectId"/>
 
 <link rel="stylesheet" href="${css_path}/manager-content-projects.css">
@@ -25,7 +25,7 @@
                     <c:url value="${view_modules}">
                         <c:param name="projectId" value="${projectId}"></c:param>
                     </c:url>
-                ">View modules</a>
+                ">Modules</a>
             </li>
         </ul>
     </div>
@@ -62,7 +62,8 @@
                         <td>
                             <a href="
                                 <c:url value="${view_module}">
-                                    <c:param name="projectId" value="${item.id}"></c:param>
+                                    <c:param name="projectId" value="${projectId}"></c:param>
+                                    <c:param name="moduleId" value="${item.id}"></c:param>
                                 </c:url>
                             ">View</a>
                         </td>
