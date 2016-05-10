@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface FileDocDao extends Dao<FileDoc> {
     List<FileDoc> findAllFileDocsByProjectId(int projectId);
+    List<FileDoc> findAllFileDocsByModuleId(int moduleId);
 }
