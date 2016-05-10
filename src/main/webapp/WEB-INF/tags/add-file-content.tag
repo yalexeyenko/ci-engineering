@@ -27,7 +27,7 @@
             <c:url value="${view_files}">
                 <c:param name="projectId" value="${projectId}"></c:param>
             </c:url>
-    ">View files</a>
+    ">Files</a>
             </li>
             <li>
                 <a id="add-file" href="
