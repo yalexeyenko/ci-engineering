@@ -165,6 +165,7 @@ public class ProjectDaoImpl implements ProjectDao {
         return projects;
     }
 
+    @SuppressWarnings("Duplicates")
     @Override
     public void update(Project project) {
         PreparedStatement preparedStatement = null;
