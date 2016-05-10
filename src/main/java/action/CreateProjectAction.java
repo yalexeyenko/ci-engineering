@@ -1,13 +1,11 @@
 package action;
 
-import dao.DaoException;
 import entity.Project;
 import entity.User;
 import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import service.ProjectService;
-import service.ServiceException;
 import service.UserService;
 import validator.Validator;
 import validator.Violation;
@@ -50,7 +48,7 @@ public class CreateProjectAction implements Action {
         }
 
         Project currentProject = new Project();
-        User manager = null;
+        User manager;
 
         currentProject.setName(projectName);
         currentProject.setDeadline(new LocalDate(projectDeadline));
