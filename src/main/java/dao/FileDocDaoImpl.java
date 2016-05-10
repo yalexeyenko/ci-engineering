@@ -14,14 +14,15 @@ public class FileDocDaoImpl implements FileDocDao {
     private static final Logger log = LoggerFactory.getLogger(FileDocDaoImpl.class);
 
     private static final String INSERT_FILEDOC = "INSERT INTO filedoc (description, lastModified, status, staffId," +
-            "  projectId, fileContent, fileName) VALUES (?, ?, ?, ?, ?, ?, ?)";
-    private static final String FIND_FILEDOC_BY_ID = "SELECT id, description, lastModified, status, staffId, projectId, fileContent, fileName" +
+            "  projectId, fileContent, fileName, moduleId) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    private static final String FIND_FILEDOC_BY_ID = "SELECT id, description, lastModified, status, staffId, projectId, fileContent, fileName, moduleId" +
             " FROM filedoc WHERE id = ?";
-    private static final String FIND_FILEDOCS_BY_PROJECT_ID = "SELECT id, description, lastModified, status, staffId, fileContent, fileName" +
+    private static final String FIND_FILEDOCS_BY_PROJECT_ID = "SELECT id, description, lastModified, status, staffId, fileContent, fileName, moduleId" +
             " FROM filedoc WHERE projectId = ?";
+    private static final String FIND_FILEDOCS_BY_MODULE_ID = "SELECT id, description, lastModified, status, staffId, fileContent, fileName, projectId, moduleId FROM filedoc WHERE moduleId = ?";
     private static final String FIND_ALL_FILEDOCS = "SELECT * FROM filedoc";
     private static final String UPDATE_FILEDOC = "UPDATE filedoc SET description = ?, lastModified = ?, status = ?, staffId = ?," +
-            " projectId = ?, fileContent = ?, fileName = ? WHERE id = ?";
+            " projectId = ?, fileContent = ?, fileName = ?, moduleId = ? WHERE id = ?";
     private static final String DELETE_FILEDOC_BY_ID = "DELETE FROM filedoc WHERE id = ?";
 
     private final Connection connection;
@@ -32,14 +33,10 @@ public class FileDocDaoImpl implements FileDocDao {
 
     @Override
     public FileDoc insert(FileDoc fileDoc) {
+        log.debug("insert()...");
         PreparedStatement preparedStatement = null;
-
         try {
             preparedStatement = connection.prepareStatement(INSERT_FILEDOC, Statement.RETURN_GENERATED_KEYS);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        try {
             preparedStatement.setString(1, fileDoc.getDescription());
             preparedStatement.setDate(2, new Date(fileDoc.getLastModified().toDate().getTime()));
             preparedStatement.setString(3, fileDoc.getStatus().name());
@@ -47,32 +44,27 @@ public class FileDocDaoImpl implements FileDocDao {
             preparedStatement.setInt(5, fileDoc.getProject().getId());
             preparedStatement.setBinaryStream(6, fileDoc.getFileContent());
             preparedStatement.setString(7, fileDoc.getName());
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        try {
-            preparedStatement.executeUpdate();// todo edit try-catch
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        ResultSet resultSet = null;
-        try {
-            resultSet = preparedStatement.getGeneratedKeys();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        try {
+            if (fileDoc.getModule() != null) {
+                preparedStatement.setInt(8, fileDoc.getModule().getId());
+            } else if (fileDoc.getModule() == null) {
+                preparedStatement.setObject(8, null);
+            }
+            preparedStatement.executeUpdate();
+            ResultSet resultSet = preparedStatement.getGeneratedKeys();
             resultSet.next();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        try {
             fileDoc.setId(resultSet.getInt(1));
+            return fileDoc;
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DaoException("SQL INSERT_FILEDOC error.", e);
+        } finally {
+            if (preparedStatement != null) {
+                try {
+                    preparedStatement.close();
+                } catch (SQLException e) {
+                    throw new DaoException("Failed to close PreparedStatement", e);
+                }
+            }
         }
-        return fileDoc;
-
     }
 
     @Override
@@ -80,6 +72,7 @@ public class FileDocDaoImpl implements FileDocDao {
         log.debug("findById()...");
         UserDao userDao = new UserDaoImpl(connection);
         ProjectDao projectDao = new ProjectDaoImpl(connection);
+        ModuleDao moduleDao = new ModuleDaoImpl(connection);
         FileDoc fileDoc = new FileDoc();
         PreparedStatement preparedStatement = null;
         try {
@@ -104,6 +97,9 @@ public class FileDocDaoImpl implements FileDocDao {
             fileDoc.setProject(projectDao.findById(Integer.valueOf(resultSet.getString("projectId"))));
             fileDoc.setFileContent(resultSet.getBinaryStream("fileContent"));
             fileDoc.setName(resultSet.getString("fileName"));
+            if (resultSet.getInt("moduleId") > 0) {
+                fileDoc.setModule(moduleDao.findById(resultSet.getInt("moduleId")));
+            }
             log.debug("fileDoc: {}", fileDoc);
             return fileDoc;
         } catch (SQLException e) {
@@ -123,6 +119,7 @@ public class FileDocDaoImpl implements FileDocDao {
     public List<FileDoc> findAllFileDocsByProjectId(int projectId) {
         UserDaoImpl userDao = new UserDaoImpl(connection);
         ProjectDaoImpl projectDao = new ProjectDaoImpl(connection);
+        ModuleDaoImpl moduleDao = new ModuleDaoImpl(connection);
         List<FileDoc> fileDocs = new ArrayList<>();
         Project project = projectDao.findById(projectId);
         PreparedStatement preparedStatement = null;
@@ -131,7 +128,7 @@ public class FileDocDaoImpl implements FileDocDao {
             log.debug("preparedStatement: {}", preparedStatement);
             preparedStatement.setInt(1, projectId);
             ResultSet resultSet = preparedStatement.executeQuery();
-            while(resultSet.next()) {
+            while (resultSet.next()) {
                 FileDoc fileDoc = new FileDoc();
                 fileDoc.setId(resultSet.getInt("id"));
                 fileDoc.setDescription(resultSet.getString("description"));
@@ -142,10 +139,13 @@ public class FileDocDaoImpl implements FileDocDao {
                 if (resultSet.getString("fileName") != null) {
                     fileDoc.setName(resultSet.getString("fileName"));
                 }
+                if (resultSet.getInt("moduleId") > 0) {
+                    fileDoc.setModule(moduleDao.findById(resultSet.getInt("moduleId")));
+                }
                 fileDoc.setProject(project);
                 fileDocs.add(fileDoc);
             }
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             throw new DaoException("SQL FIND_FILEDOCS_BY_PROJECT_ID error.", e);
         } finally {
             if (preparedStatement != null) {
@@ -159,10 +159,55 @@ public class FileDocDaoImpl implements FileDocDao {
         return fileDocs;
     }
 
+    @SuppressWarnings("Duplicates")
+    @Override
+    public List<FileDoc> findAllFileDocsByModuleId(int moduleId) {
+        UserDaoImpl userDao = new UserDaoImpl(connection);
+        ProjectDaoImpl projectDao = new ProjectDaoImpl(connection);
+        ModuleDaoImpl moduleDao = new ModuleDaoImpl(connection);
+        List<FileDoc> fileDocs = new ArrayList<>();
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = connection.prepareStatement(FIND_FILEDOCS_BY_MODULE_ID);
+            preparedStatement.setInt(1, moduleId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                FileDoc fileDoc = new FileDoc();
+                fileDoc.setId(resultSet.getInt("id"));
+                fileDoc.setDescription(resultSet.getString("description"));
+                fileDoc.setLastModified(new LocalDate(resultSet.getDate("lastModified")));
+                fileDoc.setStatus(FileDoc.Status.valueOf(resultSet.getString("status")));
+                fileDoc.setUser(userDao.findById(resultSet.getInt("staffId")));
+                fileDoc.setFileContent(resultSet.getBinaryStream("fileContent"));
+                if (resultSet.getString("fileName") != null) {
+                    fileDoc.setName(resultSet.getString("fileName"));
+                }
+                fileDoc.setProject(projectDao.findById(resultSet.getInt("projectId")));
+                if (resultSet.getInt("moduleId") > 0) {
+                    fileDoc.setModule(moduleDao.findById(resultSet.getInt("moduleId")));
+                }
+                fileDocs.add(fileDoc);
+            }
+        } catch (SQLException e) {
+            throw new DaoException("SQL FIND_FILEDOCS_BY_MODULE_ID error.", e);
+        } finally {
+            if (preparedStatement != null) {
+                try {
+                    preparedStatement.close();
+                } catch (SQLException e) {
+                    throw new DaoException("Failed to close PreparedStatement", e);
+                }
+            }
+        }
+        return fileDocs;
+
+    }
+
     @Override
     public List<FileDoc> findAll() {
         UserDao userDao = new UserDaoImpl(connection);
         ProjectDao projectDao = new ProjectDaoImpl(connection);
+        ModuleDaoImpl moduleDao = new ModuleDaoImpl(connection);
         List<FileDoc> fileDocs = new ArrayList<>();
         Statement statement = null;
         try {
@@ -177,6 +222,12 @@ public class FileDocDaoImpl implements FileDocDao {
                 fileDoc.setUser(userDao.findById(Integer.valueOf(resultSet.getString("staffId"))));
                 fileDoc.setProject(projectDao.findById(Integer.valueOf(resultSet.getString("projectId"))));
                 fileDoc.setFileContent(resultSet.getBinaryStream("fileContent"));
+                if (resultSet.getString("fileName") != null) {
+                    fileDoc.setName(resultSet.getString("fileName"));
+                }
+                if (resultSet.getInt("moduleId") > 0) {
+                    fileDoc.setModule(moduleDao.findById(resultSet.getInt("moduleId")));
+                }
                 fileDocs.add(fileDoc);
             }
         } catch (SQLException e) {
@@ -205,7 +256,12 @@ public class FileDocDaoImpl implements FileDocDao {
             preparedStatement.setInt(5, fileDoc.getProject().getId());
             preparedStatement.setBinaryStream(6, fileDoc.getFileContent());
             preparedStatement.setString(7, fileDoc.getName());
-            preparedStatement.setInt(8, fileDoc.getId());
+            if (fileDoc.getModule() != null) {
+                preparedStatement.setInt(8, fileDoc.getModule().getId());
+            } else if (fileDoc.getModule() == null) {
+                preparedStatement.setObject(8, null);
+            }
+            preparedStatement.setInt(9, fileDoc.getId());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new DaoException("SQL UPDATE_FILEDOC error.", e);
