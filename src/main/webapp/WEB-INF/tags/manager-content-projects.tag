@@ -18,7 +18,7 @@
     </div>
 
     <%--projects table--%>
-    <div id="table-users">
+    <div id="table-projects">
         <c:if test="${not empty projects}">
             <table>
                 <tr>
