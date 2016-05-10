@@ -41,6 +41,7 @@ public class ActionFactory {
         actions.put("POST/change-password", new ChangePasswordAction());//all but UNREGISTERED
 
         actions.put("GET/create-project", new ShowPageAction("create-project"));//MANAGER
+        actions.put("GET/view-module", new ViewModulePageAction());//MANAGER
         actions.put("POST/create-module", new CreateModuleAction());//MANAGER
         actions.put("POST/createProject", new CreateProjectAction());//MANAGER
         actions.put("POST/upload", new UploadFileAction());//MANAGER
