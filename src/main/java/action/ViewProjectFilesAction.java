@@ -23,7 +23,6 @@ public class ViewProjectFilesAction implements Action {
         List<FileDoc> fileDocs;
 
         try (FileDocService fileDocService = new FileDocService()) {
-            log.debug("findAllProjectFileDocs()");
             fileDocs = fileDocService.findAllFileDocsByProjectId(Integer.valueOf(projectId));
         } catch (Exception e) {
             throw new ActionException("Failed to close findAllProjectFileDocs", e);
