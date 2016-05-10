@@ -24,6 +24,7 @@ public class PassProjectParametersAction implements Action {
     private ActionResult viewClient = new ActionResult("view-client");
     private ActionResult editClient = new ActionResult("edit-client");
     private ActionResult specifySenior = new ActionResult("specify-senior");
+    private ActionResult addModule = new ActionResult("add-module");
 
     @Override
     public ActionResult execute(HttpServletRequest req, HttpServletResponse resp) {
@@ -60,6 +61,8 @@ public class PassProjectParametersAction implements Action {
         } else if (passParam.equalsIgnoreCase("create-client")) {
             req.setAttribute("countriesMap", getCountries());
             return createClient;
+        } else if (passParam.equalsIgnoreCase("add-module")) {
+            return addModule;
         } else if (passParam.equalsIgnoreCase("view-client")) {
             req.setAttribute("countriesMap", getCountries());
             return viewClient;
