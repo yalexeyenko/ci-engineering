@@ -25,7 +25,7 @@ public class ViewProjectFilesAction implements Action {
         try (FileDocService fileDocService = new FileDocService()) {
             fileDocs = fileDocService.findAllFileDocsByProjectId(Integer.valueOf(projectId));
         } catch (Exception e) {
-            throw new ActionException("Failed to close findAllProjectFileDocs", e);
+            throw new ActionException("Failed to findAllProjectFileDocs()", e);
         }
 
         req.setAttribute("fileDocs",  fileDocs);
