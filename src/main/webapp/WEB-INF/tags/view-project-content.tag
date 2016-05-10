@@ -82,7 +82,7 @@
             <c:url value="${view_files}">
                 <c:param name="projectId" value="${projectId}"></c:param>
             </c:url>
-        ">View files</a>
+        ">Files</a>
     </div>
     <%--View modules--%>
     <div class="field-wrap">
@@ -90,6 +90,6 @@
             <c:url value="${view_modules}">
                 <c:param name="projectId" value="${projectId}"></c:param>
             </c:url>
-        ">View modules</a>
+        ">Modules</a>
     </div>
 </main>
