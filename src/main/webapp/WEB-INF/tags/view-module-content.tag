@@ -4,7 +4,7 @@
 <c:url var="view_project" value="/do/pass-projectId"/>
 <c:url var="view_modules" value="/do/view-project-modules"/>
 <c:url var="view_module" value="/do/view-module"/>
-<c:url var="edit_main_project_info" value="/do/pass-projectId"/>
+<c:url var="edit_main_module_info" value="/do/edit-main-module-info"/>
 <c:url var="create_client" value="/do/pass-projectId"/>
 <c:url var="view_client" value="/do/pass-projectId"/>
 <c:url var="specify_senior" value="/do/pass-projectId"/>
@@ -12,7 +12,7 @@
 <c:url var="css_path" value="${pageContext.request.contextPath}/css"/>
 
 
-<link rel="stylesheet" href="${css_path}/edit-project-content.css">
+<link rel="stylesheet" href="${css_path}/view-module-content.css">
 
 <main class="content">
     <div id="navcontainer">

@@ -7,7 +7,7 @@
 <c:url var="view_module" value="/do/view-module"/>
 <c:url var="add_module" value="/do/pass-projectId"/>
 
-<link rel="stylesheet" href="${css_path}/manager-content-projects.css">
+<link rel="stylesheet" href="${css_path}/view-project-modules.css">
 
 <main class="content">
     <div id="navcontainer">
