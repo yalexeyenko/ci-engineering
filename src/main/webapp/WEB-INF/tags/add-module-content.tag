@@ -25,7 +25,7 @@
                     <c:url value="${view_modules}">
                         <c:param name="projectId" value="${projectId}"></c:param>
                     </c:url>
-                ">View modules</a>
+                ">Modules</a>
             </li>
             <li>
                 <a id="add-module" href="
