@@ -38,7 +38,7 @@
             </c:url>
     ">Add file</a>
     </div>
-    <div id="table-users">
+    <div id="table-fileDocs">
         <c:if test="${not empty fileDocs}">
             <table>
                 <tr>
