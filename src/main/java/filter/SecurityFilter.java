@@ -78,6 +78,7 @@ public class SecurityFilter implements Filter {
         managerPaths.add("/delete-file");
         managerPaths.add("/view-project-files");
         managerPaths.add("/view-project-modules");
+        managerPaths.add("/view-module");
         managerPaths.add("/add-module");
         managerPaths.add("/create-module");
         managerPaths.add("/pass-projectId");
