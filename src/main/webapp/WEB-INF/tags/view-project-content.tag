@@ -8,6 +8,7 @@
 <c:url var="view_project" value="/do/pass-projectId"/>
 <c:url var="main_page" value="/do/main-page"/>
 <c:url var="view_files" value="/do/view-project-files"/>
+<c:url var="view_modules" value="/do/view-project-modules"/>
 
 <link rel="stylesheet" href="${css_path}/edit-project-content.css">
 
@@ -34,17 +35,8 @@
                 <c:param name="projectId" value="${projectId}"></c:param>
                 <c:param name="passProjectId" value="edit-main-project-info"></c:param>
             </c:url>
-    ">Edit project</a>
+        ">Edit project</a>
     </div>
-    <%--View files--%>
-    <div class="field-wrap">
-        <a id="view-files" href="
-            <c:url value="${view_files}">
-                <c:param name="projectId" value="${projectId}"></c:param>
-            </c:url>
-    ">View files</a>
-    </div>
-
     <h4>Client:
         <c:if test="${not empty project.client}">
             <a href="
@@ -84,4 +76,20 @@
             ">specify senior engineer</a>
         </c:if>
     </h4>
+    <%--View files--%>
+    <div class="field-wrap">
+        <a id="view-files" href="
+            <c:url value="${view_files}">
+                <c:param name="projectId" value="${projectId}"></c:param>
+            </c:url>
+        ">View files</a>
+    </div>
+    <%--View modules--%>
+    <div class="field-wrap">
+        <a id="view-modules" href="
+            <c:url value="${view_modules}">
+                <c:param name="projectId" value="${projectId}"></c:param>
+            </c:url>
+        ">View modules</a>
+    </div>
 </main>
