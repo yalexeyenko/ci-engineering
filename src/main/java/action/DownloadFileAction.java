@@ -68,7 +68,7 @@ public class DownloadFileAction implements Action {
 
             if ((sender != null) && sender.equals("module-sender")) {
                 if (projectId != null) req.setAttribute("projectId", projectId);
-                if (moduleId != null) req.setAttribute("'moduleId", moduleId);
+                if (moduleId != null) req.setAttribute("moduleId", moduleId);
                 return viewModuleFilesPage;
             }
             return returnPage;
@@ -77,7 +77,7 @@ public class DownloadFileAction implements Action {
             req.setAttribute("downloadFail", "Failed to download file.");
 
             if ((sender != null) && sender.equals("module-sender")) {
-                if (moduleId != null) req.setAttribute("'moduleId", moduleId);
+                if (moduleId != null) req.setAttribute("moduleId", moduleId);
                 if (projectId != null) req.setAttribute("projectId", projectId);
                 return viewModuleFilesPage;
             }
