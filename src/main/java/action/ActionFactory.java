@@ -46,7 +46,7 @@ public class ActionFactory {
         actions.put("POST/edit-main-module-info", new EditMainModuleInfoAction());//MANAGER
         actions.put("POST/create-module", new CreateModuleAction());//MANAGER
         actions.put("GET/view-module-files", new ViewModuleFilesAction());//MANAGER
-        actions.put("GET/add-module-file", new AddModuleFilePage());//MANAGER
+        actions.put("GET/add-module-file", new AddModuleFilePageAction());//MANAGER
 
         actions.put("POST/createProject", new CreateProjectAction());//MANAGER
         actions.put("POST/upload", new UploadFileAction());//MANAGER
