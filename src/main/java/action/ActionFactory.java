@@ -49,7 +49,7 @@ public class ActionFactory {
         actions.put("GET/add-module-file", new AddModuleFilePageAction());//MANAGER
         actions.put("GET/view-module-engineers", new ViewModuleEngineersPageAction());//MANAGER
         actions.put("POST/add-module-engineer", new AddModuleEngineerAction());//MANAGER
-        actions.put("GET/delete-user-from-module", new DeleteUserFromModuleAction());//MANAGER
+        actions.put("GET/delete-user-from-module", new DeleteEngineerFromModuleAction());//MANAGER
 
         actions.put("POST/createProject", new CreateProjectAction());//MANAGER
         actions.put("POST/upload", new UploadFileAction());//MANAGER
