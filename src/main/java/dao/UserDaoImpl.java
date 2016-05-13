@@ -12,6 +12,7 @@ public class UserDaoImpl implements UserDao {
     private static final Logger log = LoggerFactory.getLogger(UserDaoImpl.class);
 
     private static final String FIND_USER_BY_ID = "SELECT firstName, id, lastName, email, password, degree, role FROM staff WHERE id = ?";
+    private static final String FIND_USERS_IDS_BY_MODULE_ID = "SELECT staffId from module_staff WHERE moduleId = ?";
     private static final String INSERT_USER = "INSERT INTO staff (firstName, lastName, email, password, role) VALUES (?, ?, ?, ?, ?)";
     private static final String UPDATE_USER = "UPDATE staff SET firstName = ?, lastName = ?, email = ?, password = ?, " +
             "degree = ?, role = ? WHERE id = ?";
@@ -22,6 +23,7 @@ public class UserDaoImpl implements UserDao {
     private static final String DELETE_USER_BY_ID = "DELETE FROM staff WHERE id = ?";
     private static final String FIND_ALL = "SELECT * FROM staff";
     private static final String FIND_ALL_SENIORS = "SELECT id, firstName, lastName, email, password, role, degree FROM staff WHERE role = ?";
+    private static final String FIND_ALL_ENGINEERS = "SELECT id, firstName, lastName, email, password, role, degree FROM staff WHERE role = ?";
     private static final String FIND_USER_BY_EMAIL_AND_PASSWORD = "SELECT id, firstName, lastName, email, password, role, degree FROM staff WHERE email= ? AND password= ?";
 
     private final Connection connection;
@@ -344,5 +346,71 @@ public class UserDaoImpl implements UserDao {
             }
         }
         return seniors;
+    }
+
+    @Override
+    public List<User> findAllEngineers() {
+        log.debug("findAllEngineers()...");
+        List<User> users = new ArrayList<>();
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = connection.prepareStatement(FIND_ALL_ENGINEERS);
+            preparedStatement.setString(1, "ENGINEER");
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                User user = new User();
+                user.setFirstName(resultSet.getString("firstName"));
+                user.setId(resultSet.getInt("id"));
+                user.setLastName(resultSet.getString("lastName"));
+                user.setPassword(resultSet.getString("password"));
+                user.setEmail(resultSet.getString("email"));
+                if (resultSet.getString("degree") != null) {
+                    user.setDegree(resultSet.getString("degree"));
+                }
+                if (resultSet.getString("role") != null) {
+                    user.setRole(User.Role.valueOf(resultSet.getString("role")));
+                }
+                users.add(user);
+            }
+        } catch (SQLException e) {
+            throw new DaoException("SQL FIND_ALL_ENGINEERS error.", e);
+        } finally {
+            if (preparedStatement != null) {
+                try {
+                    preparedStatement.close();
+                } catch (SQLException e) {
+                    throw new DaoException("Failed to close PreparedStatement", e);
+                }
+            }
+        }
+        return users;
+    }
+
+    @Override
+    public List<User> findEngineersByModuleId(int moduleId) {
+        log.debug("findEngineersByModuleId()...");
+        log.debug("moduleId: {}", moduleId);
+        List<User> moduleUsers = new ArrayList<>();
+        UserDaoImpl userDao = new UserDaoImpl(connection);
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = connection.prepareStatement(FIND_USERS_IDS_BY_MODULE_ID);
+            preparedStatement.setInt(1, moduleId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                moduleUsers.add(userDao.findById(resultSet.getInt("staffId")));
+            }
+        } catch (SQLException e) {
+            throw new DaoException("SQL FIND_USERS_IDS_BY_MODULE_ID error.", e);
+        } finally {
+            if (preparedStatement != null) {
+                try {
+                    preparedStatement.close();
+                } catch (SQLException e) {
+                    throw new DaoException("Failed to close PreparedStatement", e);
+                }
+            }
+        }
+        return moduleUsers;
     }
 }

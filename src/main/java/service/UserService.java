@@ -70,9 +70,18 @@ public class UserService implements AutoCloseable {
         return userDao.findAll();
     }
 
+    public List<User> findEngineersByModuleId(int moduleId) {
+        return userDao.findEngineersByModuleId(moduleId);
+    }
+
     public List<User> findAllSeniors() {
         log.debug("findAllSeniors()...");
         return userDao.findAllSeniors();
+    }
+
+    public List<User> findAllEngineers() {
+        log.debug("findAllEngineers()...");
+        return userDao.findAllEngineers();
     }
 
     @Override
