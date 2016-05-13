@@ -9,6 +9,9 @@
 <c:url var="view_client" value="/do/pass-projectId"/>
 <c:url var="specify_senior" value="/do/pass-projectId"/>
 <c:url var="view_module_files" value="/do/view-module-files"/>
+
+<c:url var="view_module_engineers" value="/do/view-module-engineers"/>
+
 <c:url var="css_path" value="${pageContext.request.contextPath}/css"/>
 
 
@@ -65,6 +68,16 @@
                 <c:param name="moduleId" value="${moduleId}"></c:param>
             </c:url>
         ">Files</a>
+    </div>
+
+    <%--View module engineers--%>
+    <div class="field-wrap">
+        <a id="view-module-engineers" href="
+            <c:url value="${view_module_engineers}">
+                <c:param name="projectId" value="${projectId}"></c:param>
+                <c:param name="moduleId" value="${moduleId}"></c:param>
+            </c:url>
+        ">Engineers</a>
     </div>
 
 </main>
