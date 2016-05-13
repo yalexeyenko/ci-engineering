@@ -21,10 +21,15 @@ public class DownloadFileAction implements Action {
     private Map<String, String> contentTypesMap;
 
     private ActionResult returnPage = new ActionResult("view-project-files");
+    private ActionResult viewModuleFilesPage = new ActionResult("view-module-files");
 
     @Override
     public ActionResult execute(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         log.debug("execute()...");
+        String sender = req.getParameter("sender");
+        String projectId = req.getParameter("projectId");
+        String moduleId = req.getParameter("moduleId");
+
         if (contentTypesMap == null) {
             contentTypesMapInit();
         }
@@ -60,10 +65,22 @@ public class DownloadFileAction implements Action {
             if (servletOutputStream != null) servletOutputStream.close();
             req.setAttribute("downloadSuccess", "File successfully downloaded.");
             log.debug("download success. returnPage");
+
+            if ((sender != null) && sender.equals("module-sender")) {
+                if (projectId != null) req.setAttribute("projectId", projectId);
+                if (moduleId != null) req.setAttribute("'moduleId", moduleId);
+                return viewModuleFilesPage;
+            }
             return returnPage;
         } else {
             if (servletOutputStream != null) servletOutputStream.close();
             req.setAttribute("downloadFail", "Failed to download file.");
+
+            if ((sender != null) && sender.equals("module-sender")) {
+                if (moduleId != null) req.setAttribute("'moduleId", moduleId);
+                if (projectId != null) req.setAttribute("projectId", projectId);
+                return viewModuleFilesPage;
+            }
             return returnPage;
         }
     }

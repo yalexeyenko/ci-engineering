@@ -1,11 +1,13 @@
 package action;
 
 import entity.FileDoc;
+import entity.Module;
 import entity.Project;
 import entity.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import service.FileDocService;
+import service.ModuleService;
 import service.ProjectService;
 import service.UserService;
 import validator.Validator;
@@ -25,6 +27,7 @@ public class UploadFileAction implements Action {
     private Validator validator;
 
     private ActionResult returnPage = new ActionResult("add-file");
+    private ActionResult viewAddModuleFilePage = new ActionResult("add-module-file");
 
     public UploadFileAction() {
         validator = new Validator();
@@ -39,9 +42,14 @@ public class UploadFileAction implements Action {
         String staffId = req.getParameter("staffId");
         String projectId = req.getParameter("projectId");
 
+        // from module
+        String moduleId = req.getParameter("moduleId");
+        String sender = req.getParameter("sender");
+
         FileDoc fileDoc = new FileDoc();
         User user;
         Project project;
+        Module module;
         fileDoc.setDescription(description);
         fileDoc.setFileContent(fileContent);
         fileDoc.setName(fileName);
@@ -72,6 +80,17 @@ public class UploadFileAction implements Action {
             throw new ActionException("Failed to close findProjectById", e);
         }
 
+        if (sender != null) {
+            try (ModuleService moduleService = new ModuleService()) {
+                log.debug("findModuleById()");
+                module = moduleService.findModuleById(Integer.valueOf(moduleId));
+            } catch (Exception e) {
+                throw new ActionException("Failed to close findModuleById", e);
+            }
+            fileDoc.setModule(module);
+        }
+
+
         fileDoc.setUser(user);
         fileDoc.setProject(project);
         log.debug("fileDoc.getId(): {}",fileDoc.getId());
@@ -93,6 +112,12 @@ public class UploadFileAction implements Action {
         req.setAttribute("projectId", projectId);
         req.setAttribute("fileDocDescription", description);
         req.setAttribute("uploadFileSuccess", "File successfully created.");
+
+        if ((sender != null) && sender.equals("module-sender")) {
+            req.setAttribute("moduleId", moduleId);
+            return viewAddModuleFilePage;
+        }
+
         return returnPage;
     }
 }
