@@ -18,6 +18,8 @@ public class ModuleDaoImpl implements ModuleDao {
     private static final String FIND_ALL_MODULES = "SELECT * FROM module";
     private static final String UPDATE_MODULE = "UPDATE module SET moduleName = ?, deadline = ?, finished = ? WHERE id = ?";
     private static final String DELETE_MODULE_BY_ID = "DELETE FROM module WHERE id = ?";
+    private static final String DELETE_ENGINEER_FROM_MODULE = "DELETE FROM module_staff WHERE moduleId = ? AND staffId = ?";
+    private static final String ADD_ENGINEER_TO_MODULE = "INSERT INTO module_staff (moduleId, staffId) VALUES (?, ?)";
 
     private final Connection connection;
 
@@ -44,6 +46,29 @@ public class ModuleDaoImpl implements ModuleDao {
             return module;
         } catch (SQLException e) {
             throw new DaoException("SQL INSERT_MODULE error.", e);
+        } finally {
+            if (preparedStatement != null) {
+                try {
+                    preparedStatement.close();
+                } catch (SQLException e) {
+                    throw new DaoException("Failed to close PreparedStatement", e);
+                }
+            }
+        }
+    }
+
+    @Override
+    public void addEngineerToModule(int moduleId, int engineerId) {
+        log.debug("addEngineerToModule()...");
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = connection.prepareStatement(ADD_ENGINEER_TO_MODULE, Statement.RETURN_GENERATED_KEYS);
+            log.debug("preparedStatement: {}", preparedStatement);
+            preparedStatement.setInt(1, moduleId);
+            preparedStatement.setInt(2, engineerId);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new DaoException("SQL ADD_ENGINEER_TO_MODULE error.", e);
         } finally {
             if (preparedStatement != null) {
                 try {
@@ -156,6 +181,27 @@ public class ModuleDaoImpl implements ModuleDao {
             return (preparedStatement.executeUpdate() != 0);
         } catch (SQLException e) {
             throw new DaoException("SQL DELETE_MODULE_BY_ID error.", e);
+        } finally {
+            if (preparedStatement != null) {
+                try {
+                    preparedStatement.close();
+                } catch (SQLException e) {
+                    throw new DaoException("Failed to close PreparedStatement", e);
+                }
+            }
+        }
+    }
+
+    @Override
+    public boolean deleteEngineerFromModule(int moduleId, int engineerId) {
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = connection.prepareStatement(DELETE_ENGINEER_FROM_MODULE);
+            preparedStatement.setInt(1, moduleId);
+            preparedStatement.setInt(2, engineerId);
+            return (preparedStatement.executeUpdate() != 0);
+        } catch (SQLException e) {
+            throw new DaoException("SQL DELETE_ENGINEER_FROM_MODULE error.", e);
         } finally {
             if (preparedStatement != null) {
                 try {
