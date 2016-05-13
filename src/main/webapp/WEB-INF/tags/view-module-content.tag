@@ -8,7 +8,7 @@
 <c:url var="create_client" value="/do/pass-projectId"/>
 <c:url var="view_client" value="/do/pass-projectId"/>
 <c:url var="specify_senior" value="/do/pass-projectId"/>
-<c:url var="view_files" value="/do/view-project-files"/>
+<c:url var="view_module_files" value="/do/view-module-files"/>
 <c:url var="css_path" value="${pageContext.request.contextPath}/css"/>
 
 
