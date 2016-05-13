@@ -16,9 +16,6 @@
             <li><a href="
                     <c:url value="${view_project}">
                         <c:param name="projectId" value="${projectId}"></c:param>
-                        <%--<c:param name="projectName" value="${projectName}"></c:param>--%>
-                        <%--<c:param name="projectDeadline" value="${projectDeadline}"></c:param>--%>
-                        <%--<c:param name="projectFinished" value="${projectFinished}"></c:param>--%>
                         <c:param name="passProjectId" value="view-project"></c:param>
                     </c:url>
                 ">Project</a>
