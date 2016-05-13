@@ -15,6 +15,7 @@ public class DeleteFileAction implements Action {
     private static final Logger log = LoggerFactory.getLogger(DeleteFileAction.class);
 
     private ActionResult returnPage = new ActionResult("view-project-files");
+    private ActionResult viewModuleFilesPage = new ActionResult("view-module-files");
 
     @Override
     public ActionResult execute(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
@@ -24,6 +25,10 @@ public class DeleteFileAction implements Action {
         String projectId = req.getParameter("projectId");
         log.debug("fileDocId: {}", fileDocId);
         log.debug("projectId: {}", projectId);
+
+        // from module
+        String moduleId = req.getParameter("moduleId");
+        String sender = req.getParameter("sender");
 
         boolean deleted;
         List<FileDoc> fileDocs;
@@ -37,7 +42,19 @@ public class DeleteFileAction implements Action {
 
         if (!deleted) {
             req.setAttribute("removalFailure", "Failed to remove file.");
+            req.setAttribute("projectId", projectId);
+            req.setAttribute("fileDocs",  fileDocs);
             log.debug("Failed to remove file.");
+
+            if ((sender != null) && sender.equals("module-sender")) {
+                if (projectId != null) {
+                    req.setAttribute("projectId", projectId);
+                }
+                if (moduleId != null) {
+                    req.setAttribute("moduleId", moduleId);
+                }
+                return viewModuleFilesPage;
+            }
             return returnPage;
         }
         else {
@@ -45,6 +62,16 @@ public class DeleteFileAction implements Action {
             req.setAttribute("projectId", projectId);
             req.setAttribute("fileDocs",  fileDocs);
             log.debug("File successfully removed");
+
+            if ((sender != null) && sender.equals("module-sender")) {
+                if (moduleId != null){
+                    req.setAttribute("moduleId", moduleId);
+                }
+                if (projectId != null){
+                    req.setAttribute("projectId", projectId);
+                }
+                return viewModuleFilesPage;
+            }
             return returnPage;
         }
     }
