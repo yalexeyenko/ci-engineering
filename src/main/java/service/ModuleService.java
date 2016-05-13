@@ -1,6 +1,5 @@
 package service;
 
-import com.sun.org.apache.xpath.internal.operations.Mod;
 import dao.DaoFactory;
 import dao.ModuleDao;
 import entity.Module;
@@ -38,6 +37,14 @@ public class ModuleService implements AutoCloseable {
 
     public List<Module> findAllModules() {
         return moduleDao.findAll();
+    }
+
+    public void addEngineerToModule(int moduleId, int engineerId) {
+        moduleDao.addEngineerToModule(moduleId, engineerId);
+    }
+
+    public boolean deleteEngineerFromModule(int moduleId, int engineerId) {
+        return moduleDao.deleteEngineerFromModule(moduleId, engineerId);
     }
 
     public List<Module> findModulesByProjectId(int projectId) {
