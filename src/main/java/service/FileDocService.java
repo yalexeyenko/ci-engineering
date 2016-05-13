@@ -43,6 +43,10 @@ public class FileDocService implements AutoCloseable  {
         return fileDocDao.findAllFileDocsByProjectId(projectId);
     }
 
+    public List<FileDoc> findAllFileDocsByModuleId(int moduleId) {
+        return fileDocDao.findAllFileDocsByModuleId(moduleId);
+    }
+
     @Override
     public void close() throws Exception {
         log.debug("close()...");
