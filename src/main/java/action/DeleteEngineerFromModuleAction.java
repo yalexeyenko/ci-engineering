@@ -44,7 +44,7 @@ public class DeleteEngineerFromModuleAction implements Action {
             throw new ActionException("Failed to findAllEngineers()", e);
         }
 
-        req.setAttribute("removalSuccess", "Engineer successfully removed.");
+        req.setAttribute("removalSuccess", "Инженер успешно удален");
         req.setAttribute("moduleEngineers", moduleEngineers);
         req.setAttribute("engineers", engineers);
         req.setAttribute("projectId", projectId);

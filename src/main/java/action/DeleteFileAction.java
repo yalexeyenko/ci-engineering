@@ -33,17 +33,26 @@ public class DeleteFileAction implements Action {
         boolean deleted;
         List<FileDoc> fileDocs;
 
-        try (FileDocService fileDocService = new FileDocService()) {
-            deleted = fileDocService.deleteFileDoc(Integer.parseInt(fileDocId));
-            fileDocs = fileDocService.findAllFileDocsByProjectId(Integer.valueOf(projectId));
-        } catch (Exception e) {
-            throw new ActionException("Failed to deleteFileDoc()");
+        if (sender != null) {
+            try (FileDocService fileDocService = new FileDocService()) {
+                deleted = fileDocService.deleteFileDoc(Integer.parseInt(fileDocId));
+                fileDocs = fileDocService.findAllFileDocsByModuleId(Integer.valueOf(moduleId));
+            } catch (Exception e) {
+                throw new ActionException("Failed to deleteFileDoc()");
+            }
+        } else {
+            try (FileDocService fileDocService = new FileDocService()) {
+                deleted = fileDocService.deleteFileDoc(Integer.parseInt(fileDocId));
+                fileDocs = fileDocService.findAllFileDocsByProjectId(Integer.valueOf(projectId));
+            } catch (Exception e) {
+                throw new ActionException("Failed to deleteFileDoc()");
+            }
         }
 
         if (!deleted) {
             req.setAttribute("removalFailure", "Failed to remove file.");
             req.setAttribute("projectId", projectId);
-            req.setAttribute("fileDocs",  fileDocs);
+            req.setAttribute("fileDocs", fileDocs);
             log.debug("Failed to remove file.");
 
             if ((sender != null) && sender.equals("module-sender")) {
@@ -56,18 +65,17 @@ public class DeleteFileAction implements Action {
                 return viewModuleFilesPage;
             }
             return returnPage;
-        }
-        else {
+        } else {
             req.setAttribute("removalSuccess", "File successfully removed");
             req.setAttribute("projectId", projectId);
-            req.setAttribute("fileDocs",  fileDocs);
+            req.setAttribute("fileDocs", fileDocs);
             log.debug("File successfully removed");
 
             if ((sender != null) && sender.equals("module-sender")) {
-                if (moduleId != null){
+                if (moduleId != null) {
                     req.setAttribute("moduleId", moduleId);
                 }
-                if (projectId != null){
+                if (projectId != null) {
                     req.setAttribute("projectId", projectId);
                 }
                 return viewModuleFilesPage;

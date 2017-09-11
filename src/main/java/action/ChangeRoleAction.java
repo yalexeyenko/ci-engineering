@@ -60,7 +60,7 @@ public class ChangeRoleAction implements Action {
                 throw new ActionException("Failed to close changeUserRole", e);
         }
 
-        req.setAttribute("changeRoleSuccess", "Role has been changed successfully.");
+        req.setAttribute("changeRoleSuccess", "Изменения сохранены");
         req.setAttribute("adUser", user);
         return pageReturn;
     }

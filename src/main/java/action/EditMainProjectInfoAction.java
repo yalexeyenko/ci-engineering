@@ -59,7 +59,7 @@ public class EditMainProjectInfoAction implements Action {
             throw new ActionException("Failed to updateProject()", e);
         }
         req.setAttribute("project", project);
-        req.setAttribute("changesSavedSuccessfully", "Changes successfully saved.");
+        req.setAttribute("changesSavedSuccessfully", "Изменения сохранены");
         req.setAttribute("projectId", projectId);
         req.setAttribute("projectName", projectName);
         req.setAttribute("projectDeadline", projectDeadline);

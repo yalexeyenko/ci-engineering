@@ -64,7 +64,7 @@ public class SpecifySeniorAction implements Action {
             req.setAttribute("seniorId", project.getSenior().getId());
             req.setAttribute("projectId", projectId);
             req.setAttribute("project", project);
-            req.setAttribute("specifySeniorSuccess", "Changes were successfully saved.");
+            req.setAttribute("specifySeniorSuccess", "Изменения сохранены");
         }
         req.setAttribute("seniors", seniors);
         return specifySeniorSuccess;

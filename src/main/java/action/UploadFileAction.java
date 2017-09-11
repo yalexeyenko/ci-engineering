@@ -64,6 +64,10 @@ public class UploadFileAction implements Action {
             }
             req.setAttribute("projectId", projectId);
             req.setAttribute("description", description);
+            if (sender != null) {
+                req.setAttribute("moduleId", moduleId);
+                return viewAddModuleFilePage;
+            }
             return returnPage;
         }
 
@@ -111,7 +115,7 @@ public class UploadFileAction implements Action {
         req.setAttribute("fileDoc", fileDoc);
         req.setAttribute("projectId", projectId);
         req.setAttribute("fileDocDescription", description);
-        req.setAttribute("uploadFileSuccess", "File successfully created.");
+        req.setAttribute("uploadFileSuccess", "Файл успешно добавлен");
 
         if ((sender != null) && sender.equals("module-sender")) {
             req.setAttribute("moduleId", moduleId);

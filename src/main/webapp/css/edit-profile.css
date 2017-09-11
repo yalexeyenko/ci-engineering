@@ -1,0 +1,118 @@
+/*header*/
+.header {
+    height: 120px;
+    font-size: 14px;
+    font-family: Arial;
+    color: midnightblue;
+    border-bottom: 1px solid gainsboro;
+}
+
+#avatar {
+    float: left;
+    width: 100px;
+    height: 100px;
+    margin-left: 20px;
+    margin-top: 10px;
+}
+
+#header-info {
+    margin-left: 130px;
+    padding-top: 15px;
+}
+
+#header-info span {
+    display: block;
+}
+
+#sign-out {
+    margin: -80px 20px 0 0;
+    display: block;
+    float: right;
+}
+
+#view-profile:hover {
+    text-decoration: none;
+}
+
+#sign-out:hover {
+    text-decoration: none;
+}
+
+/*content*/
+#navcontainer {
+    margin-left: 20px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+
+#navlist li {
+    display: inline;
+    list-style-type: none;
+    font-size: 14px;
+    font-family: Arial;
+    font-weight: 500;
+}
+
+#navlist li a:hover {
+    text-decoration: none;
+}
+
+.content {
+    font-family: Arial;
+    font-size: 14px;
+}
+
+#edit-profile {
+    display: block;
+    margin: 0px auto;
+    width: 500px;
+}
+
+.edit-profile {
+    font-size: 14px;
+    font-family: Arial;
+}
+
+#edit-profile h3 {
+    text-align: center;
+}
+
+.edit-profile h4 {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.edit-profile form span {
+    display: block;
+    float: left;
+}
+
+input {
+    margin-left: 220px;
+    display: block;
+    width: 200px;
+}
+
+button {
+    display: block;
+    margin: 5px auto;
+}
+
+.field-wrap {
+    margin-top: 5px;
+}
+
+.success-edit {
+    margin-left: 290px;
+    margin-top: -23px;
+    font-size: 12px;
+    color: green;
+}
+
+.violation {
+    position: absolute;
+    margin-left: 425px;
+    margin-top: -19px;
+    font-size: 12px;
+    color: red;
+}

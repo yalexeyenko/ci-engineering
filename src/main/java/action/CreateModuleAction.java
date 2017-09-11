@@ -68,7 +68,7 @@ public class CreateModuleAction implements Action {
 
         req.setAttribute("module", module);
         req.setAttribute("projectId", projectId);
-        req.setAttribute("moduleCreatedSuccess", "Module successfully created.");
+        req.setAttribute("moduleCreatedSuccess", "Раздел успешно создан");
         return pageReturn;
     }
 }

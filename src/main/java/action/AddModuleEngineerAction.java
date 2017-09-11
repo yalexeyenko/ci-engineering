@@ -58,7 +58,7 @@ public class AddModuleEngineerAction implements Action {
                 throw new ActionException("Failed to findEngineersByModuleId()", e);
             }
 
-            req.setAttribute("addEngineerSuccess", "Engineer has been successfully added.");
+            req.setAttribute("addEngineerSuccess", "Инженер успешно добавлен");
 
             req.setAttribute("moduleEngineers", moduleEngineers);
             req.setAttribute("engineers", engineers);
@@ -67,7 +67,7 @@ public class AddModuleEngineerAction implements Action {
             return viewModuleEngineersPage;
         }
 
-        req.setAttribute("addEngineerFail", "Engineer already exists.");
+        req.setAttribute("addEngineerFail", "Инженер уже добавлен");
         req.setAttribute("moduleEngineers", moduleEngineers);
         req.setAttribute("engineers", engineers);
         req.setAttribute("projectId", projectId);

@@ -12,72 +12,91 @@
 
 <c:url var="view_module_engineers" value="/do/view-module-engineers"/>
 
-<c:url var="css_path" value="${pageContext.request.contextPath}/css"/>
-
-
-<link rel="stylesheet" href="${css_path}/view-module-content.css">
+<c:url var="images_path" value="${pageContext.request.contextPath}/images"/>
 
 <main class="content">
     <div id="navcontainer">
         <ul id="navlist">
-            <li><a href="${main_page}">Home</a></li>
+            <li><a href="${main_page}">Главная</a></li>
+            <li><img src="${images_path}/nav-arrow.png"></li>
             <li><a href="
                     <c:url value="${view_project}">
                         <c:param name="projectId" value="${projectId}"></c:param>
                         <c:param name="passProjectId" value="view-project"></c:param>
                     </c:url>
-                ">Project</a>
+                ">Просмотр проекта</a>
             </li>
+            <li><img src="${images_path}/nav-arrow.png"></li>
             <li>
                 <a id="view-modules" href="
                     <c:url value="${view_modules}">
                         <c:param name="projectId" value="${projectId}"></c:param>
                     </c:url>
-                ">Modules</a>
+                ">Разделы проекта</a>
             </li>
+            <li><img src="${images_path}/nav-arrow.png"></li>
             <li>
                 <a href="
                     <c:url value="${view_module}">
                         <c:param name="projectId" value="${projectId}"></c:param>
                         <c:param name="moduleId" value="${moduleId}"></c:param>
                     </c:url>
-                ">View module</a>
+                ">Просмотр раздела</a>
             </li>
         </ul>
     </div>
-    <h3>Module name: ${moduleName}</h3>
-    <h4>Start date: ${moduleStartDate}</h4>
-    <h4>Deadline: ${moduleDeadline}</h4>
-    <h4>Finished: ${moduleFinished}</h4>
+
+    <div id="view-module">
+        <h3>Просмотр раздела</h3>
+        <div class="wrapre">
+            <span class="sp">Название раздела: </span>
+            <span class="val">${moduleName}</span>
+        </div>
+        <div class="wrap">
+            <span class="sp">Дата начала: </span>
+            <span class="val">${moduleStartDate}</span>
+        </div>
+        <div class="wrap">
+            <span class="sp">Дата окончания: </span>
+            <span class="val">${moduleDeadline}</span>
+        </div>
+        <div class="wrap">
+            <span class="sp">Статус: </span>
+            <span class="val">
+                <c:if test="${moduleFinished eq false}">не завершен</c:if>
+                <c:if test="${moduleFinished eq true}">завершен</c:if>
+            </span>
+        </div>
+    </div>
 
     <%--Edit module--%>
-    <div class="field-wrap">
+    <div class="wrapref">
         <a id="edit-main-module-info" href="
             <c:url value="${edit_main_module_info}">
                 <c:param name="projectId" value="${projectId}"></c:param>
                 <c:param name="moduleId" value="${moduleId}"></c:param>
             </c:url>
-        ">Edit module</a>
+        ">Редактировать раздел</a>
     </div>
 
     <%--View files--%>
-    <div class="field-wrap">
+    <div class="wrapref">
         <a id="view-module-files" href="
             <c:url value="${view_module_files}">
                 <c:param name="projectId" value="${projectId}"></c:param>
                 <c:param name="moduleId" value="${moduleId}"></c:param>
             </c:url>
-        ">Files</a>
+        ">Документы раздела</a>
     </div>
 
     <%--View module engineers--%>
-    <div class="field-wrap">
+    <div class="wrapref">
         <a id="view-module-engineers" href="
             <c:url value="${view_module_engineers}">
                 <c:param name="projectId" value="${projectId}"></c:param>
                 <c:param name="moduleId" value="${moduleId}"></c:param>
             </c:url>
-        ">Engineers</a>
+        ">Инженеры</a>
     </div>
 
 </main>

@@ -98,7 +98,7 @@ public class EditClientAction implements Action {
         req.setAttribute("projectId", projectId);
         req.setAttribute("countriesMap", getCountries());
         req.setAttribute("clientId", clientId);
-        req.setAttribute("clientEdited", "Changes have been saved successfully.");
+        req.setAttribute("clientEdited", "Изменения сохранены");
 
         return pageReturn;
     }

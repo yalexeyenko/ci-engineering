@@ -14,6 +14,7 @@ public class FileDoc extends NamedEntity {
     private User user;
     private Module module;
     InputStream fileContent;
+    private String statusName;
 
     public FileDoc() {
         lastModified = new LocalDate();
@@ -87,10 +88,40 @@ public class FileDoc extends NamedEntity {
         this.module = module;
     }
 
+    public String getStatusName() {
+        return status.toString();
+    }
+
     public enum Status {
-        ONCHECK,
-        APPROVED,
-        REWORK,
-        DEFAULT
+        ONCHECK{
+            @Override
+            public String toString() {
+                return "на проверке";
+            }
+        },
+        APPROVED{
+            @Override
+            public String toString() {
+                return "одобрен";
+            }
+        },
+        REWORK{
+            @Override
+            public String toString() {
+                return "на доработке";
+            }
+        },
+        DEFAULT{
+            @Override
+            public String toString() {
+                return "создан";
+            }
+        };
+
+        private String toStr;
+
+        public String getToStr() {
+            return this.toString();
+        }
     }
 }

@@ -110,7 +110,7 @@ public class CreateClientAction implements Action {
         req.setAttribute("projectId", projectId);
         req.setAttribute("project", currentProject);
         req.setAttribute("countriesMap", getCountries());
-        req.setAttribute("clientCreated", "Client was successfully created.");
+        req.setAttribute("clientCreated", "Заказчик успешно создан");
 
         return pageReturn;
     }

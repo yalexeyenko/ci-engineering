@@ -1,0 +1,116 @@
+/* Header
+-----------------------------------------------------------------------------*/
+.header {
+    height: 120px;
+    font-size: 14px;
+    font-family: Arial;
+    color: midnightblue;
+    background: lightgrey;
+}
+
+#sign_in_form {
+    margin-right: 20px;
+    margin-top: 5px;
+    display: inline-block;
+    float: right;
+}
+
+#sign_in_form h3 {
+    padding-bottom: 5px;
+    text-align: center;
+}
+
+#sign_in_form form {
+    text-align: right;
+}
+
+.signError {
+    font-size: 12px;
+    color: red;
+    margin-top: -6px;
+    margin-bottom: -5px;
+}
+
+#sign_in_form form input {
+    padding: 2px;
+    margin-bottom: 5px;
+    margin-left: 10px;
+}
+
+.logotype {
+    float: left;
+    margin-left: 36%;
+    margin-top: 20px;
+}
+
+/* Middle
+-----------------------------------------------------------------------------*/
+
+.content {
+    font-size: 14px;
+    font-family: Arial;
+    color: midnightblue;
+}
+
+#sign_up_form {
+    max-width: 400px;
+    display: block;
+    margin: 0px auto;
+    padding-top: 80px;
+}
+
+#sign_up_form form {
+    text-align: right;
+}
+
+#sign_up_form span {
+    float: left;
+    margin-top: 7px;
+}
+
+#sign_up_form h3 {
+    padding-bottom: 5px;
+    text-align: center;
+}
+
+#sign_up_form form input {
+    padding: 2px;
+    margin-top: 5px;
+    width: 200px;
+}
+
+.violation {
+    color: red;
+    font-size: 12px;
+    display: inline-block;
+    position: absolute;
+    margin-left: 5px;
+}
+
+.in_up {
+    margin-top: 5px;
+    padding: 1px;
+}
+
+.create {
+    margin-top: 8px;
+    font-size: 12px;
+    padding: 1px;
+    text-align: center;
+}
+
+#sign_up_form form button {
+    padding: 1px;
+    margin: 5px auto;
+    display: block;
+}
+
+/* Footer
+-----------------------------------------------------------------------------*/
+.footer {
+    margin: -100px auto 0;
+    min-width: 1000px;
+    height: 100px;
+    background: lightgrey;
+    position: relative;
+}

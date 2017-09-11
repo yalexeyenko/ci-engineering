@@ -69,7 +69,7 @@ public class CreateProjectAction implements Action {
         }
 
         req.setAttribute("project", currentProject);
-        req.setAttribute("projectCreatedSuccess", "Project successfully created.");
+        req.setAttribute("projectCreatedSuccess", "Проект успешно создан");
         return pageReturn;
 
     }

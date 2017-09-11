@@ -50,7 +50,7 @@ public class EditMainModuleInfoAction implements Action {
         req.setAttribute("moduleName", moduleName);
         req.setAttribute("moduleDeadline", moduleDeadline);
         req.setAttribute("moduleFinished", moduleFinished);
-        req.setAttribute("changesSavedSuccessfully", "Changes successfully saved.");
+        req.setAttribute("changesSavedSuccessfully", "Изменения сохранены");
 
         return returnPage;
     }

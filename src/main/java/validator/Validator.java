@@ -26,7 +26,7 @@ public class Validator {
         regexMap.put("current-password", "^[A-Za-z0-9!@#$%^&*()_]{6,20}$");
         regexMap.put("repeatPassword", "^[A-Za-z0-9!@#$%^&*()_]{6,20}$");
 
-        regexMap.put("projectName", "[A-Za-z 0-9]{3,60}$");
+        regexMap.put("projectName", "[A-Za-zА-Яа-я 0-9]{3,200}$");
 
         regexMap.put("nameFirstName", "[A-Za-zА-Яа-я 0-9]{3,60}$");
         regexMap.put("fullNameLastName", "[A-Za-zА-Яа-я 0-9]{3,60}$");
@@ -64,11 +64,11 @@ public class Validator {
             log.debug("regex: {}", regex);
             if (!value.matches(regex)) {
                 if (key.equals("userFirstName")) {
-                    addViolation(key, violations, "Specify valid first name.");
+                    addViolation(key, violations, "Введите правильное имя");
                 } else if (key.equals("userLastName")) {
-                    addViolation(key, violations, "Specify valid last name.");
+                    addViolation(key, violations, "Введите правильную фамилию");
                 } else if (key.equals("userEmail")) {
-                    addViolation(key, violations, "Specify valid email.");
+                    addViolation(key, violations, "Введите правильный email");
                 }
             }
         }
@@ -79,13 +79,13 @@ public class Validator {
         log.debug("validatePassword()...");
         Set<Violation> violations = new HashSet<>();
         if (!password.matches(regexMap.get("password"))) {
-            addViolation("password", violations, "Invalid password.");
+            addViolation("password", violations, "Введите верный пароль");//Invalid password
         }
         if (!repeatPassword.matches(regexMap.get("repeatPassword"))) {
-            addViolation("repeatPassword", violations, "Specify valid password.");
+            addViolation("repeatPassword", violations, "Введите верный пароль");//Specify valid password
         }
         if (!password.equals(repeatPassword)) {
-            addViolation("mismatch", violations, "Password mismatch.");
+            addViolation("mismatch", violations, "Пароли не совпадают");//Password mismatch
         }
         return violations;
     }
@@ -105,15 +105,15 @@ public class Validator {
                     regex = regexMap.get(key);
                     if (!value.matches(regex)) {
                         log.debug(value + " matches " + regex + ": {}", value.matches(regex));
-                        addViolation(key, violations, "Please specify a valid project name.");
+                        addViolation(key, violations, "Введите верное название проекта");
                     }
                 }
             } else if (key.equals("projectDeadline") || key.equals("projectStartDate")) {
                 if (!validateDate(value)) {
-                    addViolation(key, violations, "Please specify a valid date.");
+                    addViolation(key, violations, "Введите правильную дату");
                 } else if (validateDate(value)) {
                     if (!validateDateRange(value)) {
-                        addViolation(key, violations, "Verify your date.");
+                        addViolation(key, violations, "Проверьте дату");
                     }
                 }
             }
@@ -141,25 +141,25 @@ public class Validator {
             log.debug("regex: {}", regex);
             if (!value.matches(regex)) {
                 if (key.equals("nameFirstName")) {
-                    addViolation(key, violations, "Specify valid first name.");
+                    addViolation(key, violations, "Введите правильное имя");
                 } else if (key.equals("fullNameLastName")) {
-                    addViolation(key, violations, "Specify valid last name.");
+                    addViolation(key, violations, "Введите правильную фамилию");
                 } else if (key.equals("clientEmail")) {
-                    addViolation(key, violations, "Specify valid email.");
+                    addViolation(key, violations, "Введите правильный email");
                 } else if (key.equals("clientCountry")) {
-                    addViolation(key, violations, "Specify valid country.");
+                    addViolation(key, violations, "Укажите верную страну");
                 } else if (key.equals("clientCity")) {
-                    addViolation(key, violations, "Specify valid city.");
+                    addViolation(key, violations, "Укажите верный город");
                 } else if (key.equals("clientAddress")) {
-                    addViolation(key, violations, "Specify valid address.");
+                    addViolation(key, violations, "Укажите верный адресс");
                 } else if (key.equals("clientTelephone")) {
-                    addViolation(key, violations, "Specify valid telephone.");
+                    addViolation(key, violations, "Укажите верный номер телефона");
                 } else if (key.equals("clientBankAccountNumber")) {
-                    addViolation(key, violations, "Specify valid bank account number.");
+                    addViolation(key, violations, "Укажите верный номер банковского счета");
                 } else if (key.equals("clientEinSsn")) {
-                    addViolation(key, violations, "Specify valid EIN/SSN.");
+                    addViolation(key, violations, "Укажите верный номер EIN/SSN");
                 } else if (key.equals("clientType")) {
-                    addViolation(key, violations, "Specify valid client type.");
+                    addViolation(key, violations, "Укажите верный тип клиента");
                 }
             }
         }
@@ -172,10 +172,10 @@ public class Validator {
         log.debug("filePart.getSize(): {}", filePart.getSize());
         Set<Violation> violations = new HashSet<>();
         if (!description.matches(regexMap.get("description"))) {
-            addViolation("description", violations, "Please specify a valid description.");
+            addViolation("description", violations, "Введите правильное описание");
         }
         if (filePart.getSize() > 4194304L) {
-            addViolation("filePartSize", violations, "File must be less than 4MB.");
+            addViolation("filePartSize", violations, "Размер файла не должен превышать 4MB");
         }
         return violations;
     }

@@ -52,7 +52,7 @@ public class ChangePasswordAction implements Action {
         if (!currentPassword.equals(currentUser.getPassword())) {
             Violation violation = new Violation();
             violation.setName("wrongPasswordViolation");
-            violation.setViolation("Password is wrong");
+            violation.setViolation("Неверный пароль");
             violations.add(violation);
         }
 
@@ -81,7 +81,7 @@ public class ChangePasswordAction implements Action {
             throw new ActionException("Failed to changePassword()");
         }
         req.getSession().setAttribute("user", currentUser);
-        req.setAttribute("changePasswordSuccess", "Successfully changed password.");
+        req.setAttribute("changePasswordSuccess", "Пароль успешно изменен");
         req.setAttribute("userFirstName", firstName);
         req.setAttribute("userLastName", lastName);
         req.setAttribute("userEmail", email);

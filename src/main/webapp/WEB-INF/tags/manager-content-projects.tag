@@ -1,20 +1,19 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@tag description="managerContentProjects" pageEncoding="UTF-8" %>
-<c:url var="css_path" value="${pageContext.request.contextPath}/css"/>
 <c:url var="create_project_action" value="/do/create-project"/>
 <c:url var="view_project" value="/do/pass-projectId"/>
 <c:url var="main_page" value="/do/main-page"/>
+<c:url var="images_path" value="${pageContext.request.contextPath}/images"/>
 
-<link rel="stylesheet" href="${css_path}/manager-content-projects.css">
 
 <main class="content">
     <div id="navcontainer">
         <ul id="navlist">
-            <li id="active"><a href="${main_page}">Home</a></li>
+            <li id="active"><a href="${main_page}">Главная</a></li>
         </ul>
     </div>
     <div class="field-wrap">
-        <a id="create-project" href="${create_project_action}">Create project</a>
+        <a id="create-project" href="${create_project_action}">Создать проект</a>
     </div>
 
     <%--projects table--%>
@@ -23,42 +22,43 @@
             <table>
                 <tr>
                     <th>№</th>
-                    <th>ID</th>
-                    <th>Project name</th>
-                    <th>Start date</th>
-                    <th>Deadline</th>
-                    <th>Finished</th>
-                    <th>Client</th>
-                    <th>Senior Engineer</th>
-                    <th>View project</th>
+                    <th>Название проекта</th>
+                    <th>Дата создания</th>
+                    <th>Дата окончания</th>
+                    <th>Статус</th>
+                    <th>Заказчик</th>
+                    <th>Главный инженер</th>
+                    <th>Просмотр проекта</th>
                 </tr>
                 <c:forEach items="${projects}" var="item" varStatus="status">
                     <tr>
                         <td>${status.count}</td>
-                        <td>${item.id}</td>
-                        <td>${item.name}</td>
+                        <td class="td-align-left">${item.name}</td>
                         <td>${item.startDate}</td>
                         <td>${item.deadline}</td>
-                        <td>${item.finished}</td>
+                        <td>
+                            <c:if test="${item.finished eq false}">не завершен</c:if>
+                            <c:if test="${item.finished eq true}">завершен</c:if>
+                        </td>
                         <td>
                             <c:if test="${item.client.clientType eq 'LEGAL'}">${item.client.firstName}</c:if>
                             <c:if test="${item.client.clientType eq 'INDIVIDUAL'}">${item.client.firstName} ${item.client.lastName}</c:if>
                         </td>
                         <td>${item.senior.firstName} ${item.senior.lastName}</td>
                         <td>
-                            <a href="
+                            <a id="view-ref" href="
                         <c:url value="${view_project}">
                             <c:param name="projectId" value="${item.id}"></c:param>
                             <c:param name="passProjectId" value="view-project"></c:param>
                         </c:url>
-                        ">View</a>
+                        "><img id="view-icon" src="${images_path}/view.png"></a>
                         </td>
                     </tr>
                 </c:forEach>
             </table>
         </c:if>
         <c:if test="${empty projects}">
-            <span>No projects found</span>
+            <span>Проекты не найдены</span>
         </c:if>
     </div>
 </main>

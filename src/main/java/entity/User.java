@@ -10,6 +10,7 @@ public class User extends BaseEntity {
     private Role role;
     private String degree;
     private List<Role> roleValues;
+    private String roleName;
 
     public User() {
     }
@@ -78,13 +79,53 @@ public class User extends BaseEntity {
         return Arrays.asList(Role.values());
     }
 
+    public String getRoleName() {
+        return role.toString();
+    }
+
     public enum Role {
-        ADMIN,
-        MANAGER,
-        SENIOR,
-        ENGINEER,
-        REGISTERED,
-        UNREGISTERED
+        ADMIN{
+            @Override
+            public String toString() {
+                return "Администратор";
+            }
+        },
+        MANAGER{
+            @Override
+            public String toString() {
+                return "Менеджер";
+            }
+        },
+        SENIOR{
+            @Override
+            public String toString() {
+                return "Главный инженер";
+            }
+        },
+        ENGINEER{
+            @Override
+            public String toString() {
+                return "Инженер";
+            }
+        },
+        REGISTERED{
+            @Override
+            public String toString() {
+                return "Зарегистрированный";
+            }
+        },
+        UNREGISTERED{
+            @Override
+            public String toString() {
+                return "Незарегистрированный";
+            }
+        };
+
+        private String toStr;
+
+        public String getToStr() {
+            return this.toString();
+        }
     }
 
     @Override

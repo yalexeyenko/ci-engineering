@@ -30,8 +30,8 @@ public class ViewModulePageAction implements Action {
             throw new ActionException("Failed to findModuleById()", e);
         }
 
-        req.setAttribute("projectId", projectId);
         req.setAttribute("module", module);
+        req.setAttribute("projectId", projectId);
         req.setAttribute("moduleId", module.getId());
         req.setAttribute("moduleName", module.getName());
         req.setAttribute("moduleStartDate", module.getStartDate());

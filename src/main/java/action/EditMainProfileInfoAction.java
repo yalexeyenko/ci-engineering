@@ -69,7 +69,7 @@ public class EditMainProfileInfoAction implements Action {
                 throw new ActionException("Failed to close updateMainProfileInfo()", e);
         }
         req.getSession().setAttribute("user", currentUser);
-        req.setAttribute("editMainProfileInfoSuccess", "Changes have been saved successfully.");
+        req.setAttribute("editMainProfileInfoSuccess", "Изменения сохранены");
         req.setAttribute("userFirstName", firstName);
         req.setAttribute("userLastName", lastName);
         req.setAttribute("userEmail", email);

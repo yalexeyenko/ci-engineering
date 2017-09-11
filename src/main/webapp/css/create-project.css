@@ -1,0 +1,109 @@
+/*header*/
+.header {
+    height: 120px;
+    font-size: 14px;
+    font-family: Arial;
+    color: midnightblue;
+    border-bottom: 1px solid gainsboro;
+}
+
+#avatar {
+    float: left;
+    width: 100px;
+    height: 100px;
+    margin-left: 20px;
+    margin-top: 10px;
+}
+
+#header-info {
+    margin-left: 130px;
+    padding-top: 15px;
+}
+
+#header-info span {
+    display: block;
+}
+
+#sign-out {
+    margin: -80px 20px 0 0;
+    display: block;
+    float: right;
+}
+
+#view-profile:hover {
+    text-decoration: none;
+}
+
+#sign-out:hover {
+    text-decoration: none;
+}
+
+/*content*/
+#navlist {
+    margin-left: 20px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+
+#navlist li {
+    display: inline;
+    list-style-type: none;
+    font-size: 14px;
+    font-family: Arial;
+    font-weight: 500;
+}
+
+#navlist li a:hover {
+    text-decoration: none;
+}
+
+.content {
+    font-size: 14px;
+    font-family: Arial;
+}
+
+#create-project {
+    display: block;
+    margin: 0px auto;
+    width: 350px;
+}
+
+#create-project h3 {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+#create-project form span {
+    display: block;
+    float: left;
+}
+
+#create-project form input {
+    margin-left: 120px;
+    display: block;
+    width: 200px;
+}
+
+.field-wrap {
+    margin-top: 5px;
+}
+
+#create-project form button {
+    display: block;
+    margin: 5px auto;
+}
+
+.violation {
+    margin-left: 323px;
+    position: absolute;
+    margin-top: -18px;
+    font-size: 12px;
+    color: red;
+}
+
+.created-message {
+    font-size: 12px;
+    margin-left: 206px;
+    margin-top: -23px;
+    color: green;
+}

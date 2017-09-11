@@ -1,0 +1,109 @@
+/*header*/
+.header {
+    height: 120px;
+    font-size: 14px;
+    font-family: Arial;
+    color: midnightblue;
+    border-bottom: 1px solid gainsboro;
+}
+
+#avatar {
+    float: left;
+    width: 100px;
+    height: 100px;
+    margin-left: 20px;
+    margin-top: 10px;
+}
+
+#header-info {
+    margin-left: 130px;
+    padding-top: 15px;
+}
+
+#header-info span {
+    display: block;
+}
+
+#sign-out {
+    margin: -80px 20px 0 0;
+    display: block;
+    float: right;
+}
+
+#view-profile:hover {
+    text-decoration: none;
+}
+
+#sign-out:hover {
+    text-decoration: none;
+}
+
+/*content*/
+#navlist {
+    margin-left: 20px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+
+#navlist li {
+    display: inline;
+    list-style-type: none;
+    font-size: 14px;
+    font-family: Arial;
+    font-weight: 500;
+}
+
+#navlist li a:hover {
+    text-decoration: none;
+}
+
+.content {
+    font-size: 14px;
+    font-family: Arial;
+}
+
+#view-user {
+    display: block;
+    margin: 0px auto;
+    width: 600px;
+}
+
+#view-user h3 {
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.sp {
+    display: block;
+    float: left;
+}
+
+.val {
+    margin-left: 230px;
+    display: block;
+}
+
+select {
+    margin-left: 103px;
+    display: block;
+    float: left;
+    margin-right: 5px;
+}
+
+select, option {
+    width: 170px;
+}
+
+button {
+    display: block;
+}
+
+.wrap {
+    margin-top: 5px;
+}
+
+.success-change-role{
+    font-size: 12px;
+    margin-left: 231px;
+    color: green;
+}

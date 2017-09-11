@@ -6,10 +6,10 @@
 <link rel="stylesheet" href="${css_path}/senior-content-projects.css">
 
 <main class="content">
-    senior content projects page
     <div id="navcontainer">
         <ul id="navlist">
             <li id="active"><a href="${main_page}">Home</a></li>
         </ul>
     </div>
+    Not implemented
 </main>
